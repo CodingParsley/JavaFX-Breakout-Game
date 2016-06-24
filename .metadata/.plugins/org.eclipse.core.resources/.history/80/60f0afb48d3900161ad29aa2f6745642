@@ -1,0 +1,19 @@
+package application;
+
+public class Rectangle {
+	private Coordinate topLeft;
+	private Coordinate bottomRight;
+	public Coordinate getTopLeft() {
+		return topLeft;
+	}
+	public Coordinate getBottomRight() {
+		return bottomRight;
+	}
+	public int getWidth(){
+		return Math.abs(topLeft.getX()-bottomRight.getX());
+	}
+	public Rectangle(Coordinate topLeft, Coordinate bottomRight){
+		this.topLeft = topLeft;
+		this.bottomRight = bottomRight;
+	}
+}

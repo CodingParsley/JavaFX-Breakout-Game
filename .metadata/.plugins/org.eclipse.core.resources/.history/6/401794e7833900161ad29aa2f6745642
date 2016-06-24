@@ -1,0 +1,33 @@
+package application;
+
+public class BoardModel {
+	private final int WIDTH;
+	private final int HEIGHT;
+	private final int BAT_WIDTH = 20;
+	private final int BAT_HEIGHT = 10;
+
+	Rectangle bat;
+	public BoardModel(){
+		this.WIDTH = 100;
+		this.HEIGHT = 100;
+		Coordinate batUL = new Coordinate((WIDTH-BAT_WIDTH)/2, (HEIGHT-BAT_HEIGHT)/2);
+		Coordinate batBR = new Coordinate(batUL.getX()+BAT_WIDTH, batUL.getY()+BAT_HEIGHT);
+		bat = new Rectangle();
+	}
+	public void movePaddleLeft(){
+
+	}
+	public void movePaddleRight(){
+
+	}
+
+	Coordinate[] getBoard(){
+		return null;
+	}
+	public int getWidth() {
+		return width;
+	}
+	public int getHeight() {
+		return height;
+	}
+}

@@ -1,0 +1,31 @@
+package application;
+
+public class BoardModel {
+	private final int WIDTH;
+	private final int HEIGHT;
+	private final int BAT_WIDTH = 20;
+	private final int BAT_HEIGHT = 10;
+
+	Rectangle bat;
+	public BoardModel(){
+		this.WIDTH = 100;
+		this.HEIGHT = 100;
+		bat = new Rectangle();
+	}
+	public void movePaddleLeft(){
+
+	}
+	public void movePaddleRight(){
+
+	}
+
+	Coordinate[] getBoard(){
+		return null;
+	}
+	public int getWidth() {
+		return width;
+	}
+	public int getHeight() {
+		return height;
+	}
+}

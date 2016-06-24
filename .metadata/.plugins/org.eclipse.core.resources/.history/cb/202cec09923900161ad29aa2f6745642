@@ -1,0 +1,42 @@
+package application;
+
+public class BoardModel {
+	private final int WIDTH;
+	private final int HEIGHT;
+	private final int BAT_WIDTH = 20;
+	private final int BAT_HEIGHT = 10;
+	private final int BAT_SPEED = 10;
+
+	Rectangle bat;
+	public BoardModel(){
+		this.WIDTH = 500;
+		this.HEIGHT = 500;
+		Coordinate batUL = new Coordinate((WIDTH-BAT_WIDTH)/2, (HEIGHT-BAT_HEIGHT));
+		Coordinate batBR = new Coordinate(batUL.getX()+BAT_WIDTH, batUL.getY()+BAT_HEIGHT);
+		bat = new Rectangle(batUL,batBR);
+	}
+	public void movePaddleLeft(){
+		if((bat.getTopLeft().getX()-BAT_SPEED)>0){
+		Coordinate batUL = new Coordinate(bat.getTopLeft().getX()-BAT_SPEED,bat.getTopLeft().getY());
+		Coordinate batBR = new Coordinate(bat.getBottomRight().getX()-BAT_SPEED,bat.getBottomRight().getY());
+		bat = new Rectangle(batUL,batBR);
+		}
+	}
+	public void movePaddleRight(){
+		if(bat.getTopLeft().getX()<=WIDTH){
+		Coordinate batUL = new Coordinate(bat.getTopLeft().getX()+BAT_SPEED,bat.getTopLeft().getY());
+		Coordinate batBR = new Coordinate(bat.getBottomRight().getX()+BAT_SPEED,bat.getBottomRight().getY());
+		bat = new Rectangle(batUL,batBR);
+		}
+	}
+
+	public Rectangle getBat(){
+		return bat;
+	}
+	public int getWidth() {
+		return WIDTH;
+	}
+	public int getHeight() {
+		return HEIGHT;
+	}
+}

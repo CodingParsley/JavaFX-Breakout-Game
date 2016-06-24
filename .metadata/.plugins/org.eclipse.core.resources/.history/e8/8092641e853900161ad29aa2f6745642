@@ -1,0 +1,13 @@
+package application;
+
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+import javafx.application.Application;
+public class TheView extends Application{
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		// TODO Auto-generated method stub
+
+	}
+}

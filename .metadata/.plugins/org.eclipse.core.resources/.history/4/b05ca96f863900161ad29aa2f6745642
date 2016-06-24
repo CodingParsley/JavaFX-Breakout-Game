@@ -1,0 +1,6 @@
+package application;
+
+public class TheController {
+	TheView view = new TheView();
+	BoardModel bm = new BoardModel();
+}

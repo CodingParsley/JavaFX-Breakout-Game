@@ -1,0 +1,17 @@
+package application;
+
+public class Rectangle {
+	private Coordinate topLeft;
+	private Coordinate bottomRight;
+	public Coordinate getTopLeft() {
+		return topLeft;
+	}
+	public Coordinate getBottomRight() {
+		return bottomRight;
+	}
+
+	public Rectangle(Coordinate topLeft, Coordinate bottomRight){
+		this.topLeft = topLeft;
+		this.bottomRight = bottomRight;
+	}
+}

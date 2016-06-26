@@ -1,9 +1,0 @@
-package application;
-
-public class TheController {
-	TheView view = new TheView();
-	BoardModel bm = new BoardModel();
-	public static void main(String[] args){
-		view.
-	}
-}

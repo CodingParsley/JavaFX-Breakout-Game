@@ -1,0 +1,33 @@
+package application;
+
+public class Ball extends Rectangle{
+	private double speed;
+	private double angleOfMovement;
+
+	public Ball(Coordinate topLeft, Coordinate bottomRight,double speed, double angleOfMovement) {
+		super(topLeft, bottomRight);
+		this.speed = speed;
+		this.angleOfMovement = angleOfMovement;
+	}
+
+	public Ball flipXDirection(){
+		double cos = Math.cos(angleOfMovement);
+		double sin = Math.sin(angleOfMovement);
+		double newAngle = Math.atan2(sin, -cos);
+		return new Ball(this.getTopLeft(),this.getBottomRight(),this.speed,newAngle);
+	}
+
+	public Ball flipYDirection(){
+		double cos = Math.cos(angleOfMovement);
+		double sin = Math.sin(angleOfMovement);
+		double newAngle = Math.atan2(sin, cos);
+		return new Ball(this.getTopLeft(),this.getBottomRight(),this.speed,newAngle);
+	}
+
+	public Ball MoveBall() {
+		return new Ball(
+				this.getTopLeft().getMoveVelocity(angleOfMovement, speed),
+				this.getBottomRight().getMoveVelocity(angleOfMovement, speed),
+				this.speed, this.angleOfMovement);
+	}
+}

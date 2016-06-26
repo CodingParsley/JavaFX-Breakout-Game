@@ -1,0 +1,8 @@
+import rx.subjects.BehaviorSubject;
+
+public class jfe {
+	BehaviorSubject<Integer> e = BehaviorSubject.create(0);
+	public void isd(){
+		e.filter(i->i>10).subscribe({System.out.println("Hey");};);
+	}
+}

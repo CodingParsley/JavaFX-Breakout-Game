@@ -1,0 +1,56 @@
+package application;
+
+public class Ball extends Rectangle {
+	private double speed;
+	public double getSpeed() {
+		return speed;
+	}
+
+	private double angleOfMovement;
+
+	public Ball(Coordinate topLeft, double width, double height, double speed, double angleOfMovement) {
+		super(topLeft, width, height);
+		this.speed = speed;
+		this.angleOfMovement = angleOfMovement;
+	}
+
+	public void moveBall(){
+		Ball tempBall = ball.MoveBall();
+		boolean shouldFlipX = false;
+		boolean shouldFlipY = false;
+
+		shouldFlipX = tempBall.getTopLeft().getX()<=0||tempBall.getBottomRight().getX()>=WIDTH;
+		shouldFlipY = tempBall.getBottomRight().getY()<=0||tempBall.getTopLeft().getY()>=HEIGHT;
+		if(shouldFlipX==true&&shouldFlipY==true){
+			ball = tempBall.flipXDirection().flipYDirection();
+		}
+		else if(shouldFlipX==true&&shouldFlipY==false){
+			ball = tempBall.flipXDirection();
+		}
+		else if(shouldFlipX==false&&shouldFlipY==true){
+			ball = tempBall.flipYDirection();
+		}
+		else {
+			ball = tempBall;
+		}
+	}
+
+	public Ball flipXDirection() {
+		double cos = Math.cos(angleOfMovement);
+		double sin = Math.sin(angleOfMovement);
+		double newAngle = Math.atan2(sin, -cos);
+		return new Ball(this.getTopLeft(), this.getWidth(), this.getHeight(), this.speed, newAngle);
+	}
+
+	public Ball flipYDirection() {
+		double cos = Math.cos(angleOfMovement);
+		double sin = Math.sin(angleOfMovement);
+		double newAngle = Math.atan2(-sin, cos);
+		return new Ball(this.getTopLeft(), this.getWidth(), this.getHeight(), this.speed, newAngle);
+	}
+
+	public Ball MoveBall() {
+		return new Ball(this.getTopLeft().getMoveVelocity(angleOfMovement, speed), this.getWidth(), this.getHeight(),
+				speed, angleOfMovement);
+	}
+}

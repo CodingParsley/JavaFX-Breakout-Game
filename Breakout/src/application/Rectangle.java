@@ -1,6 +1,11 @@
 package application;
 
 public class Rectangle {
+	private static int count;
+	private int id;
+	public int getId() {
+		return id;
+	}
 	private Coordinate topLeft;
 	private Coordinate bottomRight;
 	public Coordinate getTopLeft() {
@@ -9,20 +14,38 @@ public class Rectangle {
 	public Coordinate getBottomRight() {
 		return bottomRight;
 	}
-	public int getWidth(){
+	public double getWidth(){
 		return Math.abs(topLeft.getX()-bottomRight.getX());
 	}
-	public int getHeight(){
+	public double getHeight(){
 		return Math.abs(topLeft.getY()-bottomRight.getY());
 	}
-	public Rectangle(Coordinate topLeft, Coordinate bottomRight){
+
+	//Main constructor
+	protected Rectangle(Coordinate topLeft, Coordinate bottomRight,int id){
+		this.id=id;
 		this.topLeft = topLeft;
 		this.bottomRight = bottomRight;
 	}
-	public Rectangle(Coordinate topLeft,int width,int height){
-		this(topLeft,topLeft.CreateMove(width, height));
+
+	//Alternative to the main constructor, preserves id
+	protected Rectangle(Coordinate topLeft,double width,double height, int id){
+		this(topLeft,topLeft.getMoveDelta(width, height),id);
 	}
-	public Rectangle CreateMove(int dx,int dy){
-		return new Rectangle(topLeft.CreateMove(dx, dy),bottomRight.CreateMove(dx, dy));
+
+	//For creating brand new rectangles
+	public Rectangle(Coordinate topLeft, Coordinate bottomRight){
+		this(topLeft,bottomRight,count++);
+	}
+
+	//For creating brand new rectangles as well, calls the constructor above
+	public Rectangle(Coordinate topLeft,double width,double height){
+		this(topLeft,topLeft.getMoveDelta(width, height));
+	}
+
+
+
+	public Rectangle createMove(double dx,double dy){
+		return new Rectangle(topLeft.getMoveDelta(dx, dy),bottomRight.getMoveDelta(dx, dy),this.id);
 	}
 }

@@ -1,0 +1,17 @@
+package application;
+
+public class Ball extends Rectangle{
+	private int xDirection = 1;
+	private int yDirection = 5;
+	public Ball(Coordinate topLeft, Coordinate bottomRight) {
+		super(topLeft, bottomRight);
+		this.xDirection = (int) (Math.random() * 4 + 1);
+		this.yDirection = (int) (Math.random() * 4 + 1);
+	}
+	public void flipXDirection(){
+		this.xDirection = -this.xDirection;
+	}
+	public void flipYDirection(){
+		this.yDirection = -this.yDirection;
+	}
+}

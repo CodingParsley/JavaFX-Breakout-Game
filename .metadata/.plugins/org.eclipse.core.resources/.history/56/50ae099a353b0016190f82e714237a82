@@ -1,0 +1,9 @@
+package application;
+
+public class Ball extends Rectangle{
+
+	public Ball(Coordinate topLeft, Coordinate bottomRight) {
+		super(topLeft, bottomRight);
+	}
+
+}

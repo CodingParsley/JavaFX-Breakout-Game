@@ -1,0 +1,8 @@
+package application;
+
+public class Test {
+	public void run(){
+		Rectangle testR = new Rectangle(new Coordinate(0,0), 100,100);
+		LineSegment testL = new LineSegment(new Coordinate(-10,50),testR.getCenterCoordinate());
+	}
+}

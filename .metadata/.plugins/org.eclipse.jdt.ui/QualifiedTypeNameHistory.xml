@@ -22,4 +22,12 @@
 <fullyQualifiedTypeName name="java.util.LinkedList"/>
 <fullyQualifiedTypeName name="javafx.scene.Node"/>
 <fullyQualifiedTypeName name="java.util.Optional"/>
+<fullyQualifiedTypeName name="javafx.animation.Timeline"/>
+<fullyQualifiedTypeName name="javafx.util.Duration"/>
+<fullyQualifiedTypeName name="javafx.animation.KeyFrame"/>
+<fullyQualifiedTypeName name="javafx.animation.Animation"/>
+<fullyQualifiedTypeName name="javafx.animation.Animation.Status"/>
+<fullyQualifiedTypeName name="java.awt.geom.Line2D"/>
+<fullyQualifiedTypeName name="com.sun.javafx.geom.Line2D"/>
+<fullyQualifiedTypeName name="javafx.scene.shape.Line"/>
 </qualifiedTypeNameHistroy>

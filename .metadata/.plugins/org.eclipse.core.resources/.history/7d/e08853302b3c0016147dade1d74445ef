@@ -1,0 +1,7 @@
+package application;
+
+public enum RelativePosition {
+	ABOVE, TOUCHING_TOP, INSIDE, TOUCHING_BOTTON, BELOW;//Vertical RP
+	
+	
+}

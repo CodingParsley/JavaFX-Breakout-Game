@@ -3,17 +3,56 @@ package application;
 public class Rectangle {
 	private static int count;
 	private int id;
+	private int opacity= 1;
+	private boolean isAlive = true;
+	public boolean isAlive() {
+		return isAlive;
+	}
+	public void setAlive(boolean isAlive) {
+		this.isAlive = isAlive;
+	}
+	public int getOpacity() {
+		return opacity;
+	}
+	public void setOpacity(int opacity) {
+		this.opacity = opacity;
+	}
 	public int getId() {
 		return id;
 	}
 	private Coordinate topLeft;
 	private Coordinate bottomRight;
-	public Coordinate getTopLeft() {
+
+	public Coordinate getTopLeftCoordinate() {
 		return topLeft;
 	}
-	public Coordinate getBottomRight() {
+	public Coordinate getBottomRightCoordinate() {
 		return bottomRight;
 	}
+	public Coordinate getTopRightCoordinate(){
+		return new Coordinate(topLeft.getX() + this.getWidth(), topLeft.getY());
+	}
+	public Coordinate getBottomLeftCoordinate(){
+		return new Coordinate(topLeft.getX(), topLeft.getY()+this.getHeight());
+	}
+	public Coordinate getCenterCoordinate(){
+		return new Coordinate(this.getTopLeftCoordinate().getX()+(this.getWidth()/2),
+				this.getTopLeftCoordinate().getY()+(this.getHeight()/2));
+	}
+
+	public LineSegment getTopLineSegment(){
+		return new LineSegment(this.getTopLeftCoordinate(), this.getTopRightCoordinate());
+	}
+	public LineSegment getRightLineSegment(){
+		return new LineSegment(this.getTopRightCoordinate(), this.getBottomRightCoordinate());
+	}
+	public LineSegment getBottomLineSegement(){
+		return new LineSegment(this.getBottomLeftCoordinate(), this.getBottomRightCoordinate());
+	}
+	public LineSegment getLeftLineSegment(){
+		return new LineSegment(this.getTopLeftCoordinate(), this.getBottomLeftCoordinate());
+	}
+
 	public double getWidth(){
 		return Math.abs(topLeft.getX()-bottomRight.getX());
 	}
@@ -43,9 +82,8 @@ public class Rectangle {
 		this(topLeft,topLeft.getMoveDelta(width, height));
 	}
 
-
-
 	public Rectangle createMove(double dx,double dy){
 		return new Rectangle(topLeft.getMoveDelta(dx, dy),bottomRight.getMoveDelta(dx, dy),this.id);
 	}
+
 }

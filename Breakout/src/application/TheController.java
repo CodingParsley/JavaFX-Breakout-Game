@@ -1,34 +1,42 @@
 package application;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class TheController extends Application{
 	BoardModel bm;
 	TheView view;
-	ScheduledThreadPoolExecutor executor;
+	Timeline timeline;
+	Stage window;
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		bm = new BoardModel(500,500,20,2);
-		executor = new ScheduledThreadPoolExecutor(5);
+		window = primaryStage;
+		bm = new BoardModel(500,500,30,01,40,5,5);
 		Runnable onPaddleLeft = new MovePaddleLeft();
         Runnable onPaddleRight = new MovePaddleRight();
         view = new TheView(onPaddleLeft,onPaddleRight, bm.getWidth(), bm.getHeight());
 		view.start(primaryStage);
-		executor.scheduleAtFixedRate(new Update(), 20L, 20, TimeUnit.MILLISECONDS);
-		primaryStage.setOnCloseRequest(e -> {
+		for(application.Rectangle b: bm.getBricks()){
+			view.drawRectangle(b);
+		}
+		window.setOnCloseRequest(e -> {
 			Runtime.getRuntime().exit(0);
 		});
-	}
+		timeline = new Timeline(new KeyFrame(
+		        Duration.millis(2.3), // 240FPS
+		        ae -> updateScreen()));
+		timeline.setCycleCount(Animation.INDEFINITE);
+		timeline.play();
+
+		}
 	class MovePaddleLeft implements Runnable{
 		@Override
 		public void run() {
 			bm.movePaddleLeft();
 			view.drawRectangle(bm.getBat());
-			bm.update();
-			view.drawRectangle(bm.getBall());
 		}
 	}
 
@@ -36,23 +44,17 @@ public class TheController extends Application{
 		@Override
 		public void run() {
 			bm.movePaddleRight();
+			view.drawRectangle(bm.getBat());
+		}
+	}
+		public void updateScreen() {
+			view.drawRectangle(bm.getBall());
+			view.drawRectangle(bm.getBat());
 			for(application.Rectangle b: bm.getBricks()){
 				view.drawRectangle(b);
 			}
-			view.drawRectangle(bm.getBat());
-			bm.update();
-			view.drawRectangle(bm.getBall());
-		}
-	}
-	class Update implements Runnable{
-
-		@Override
-		public void run() {
-			view.drawRectangle(bm.getBall());
 			bm.update();
 		}
-
-	}
 
 	public static void main(String[] args){
 		launch(args);

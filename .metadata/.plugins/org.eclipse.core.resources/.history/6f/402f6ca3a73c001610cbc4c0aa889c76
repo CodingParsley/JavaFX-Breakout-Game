@@ -1,0 +1,5 @@
+package application;
+
+public enum HorizontalRelativePosition {
+	LEFT, TOUCHING_LEFT, INSIDE, TOUCHING_RIGHT, RIGHT;
+}

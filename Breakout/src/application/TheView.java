@@ -63,10 +63,11 @@ public class TheView extends Application {
 			graphicalRect.setId(Integer.toString(r.getId()));
 			layout.getChildren().add(graphicalRect);
 		}
+		graphicalRect.setOpacity(r.getOpacity());
 		graphicalRect.setWidth(r.getWidth());
 		graphicalRect.setHeight(r.getHeight());
-		graphicalRect.setTranslateX(r.getTopLeft().getX());
-		graphicalRect.setTranslateY(r.getTopLeft().getY());
+		graphicalRect.setTranslateX(r.getTopLeftCoordinate().getX());
+		graphicalRect.setTranslateY(r.getTopLeftCoordinate().getY());
 	}
 
 	public TheView(Runnable onTypePaddleMoveLeft, Runnable onTypePaddleMoveRight,int width,int height) {

@@ -21,21 +21,21 @@ public class Ball extends Rectangle {
 	}
 
 	public Ball getMove() {
-		return new Ball(this.getTopLeft().getMoveVelocity(angleOfMovement, speed), this.getWidth(), this.getHeight(),
+		return new Ball(this.getTopLeftCoordinate().getMoveVelocity(angleOfMovement, speed), this.getWidth(), this.getHeight(),
 		speed, angleOfMovement,this.getId());
 	}
 	public Ball flipXDirection() {
 		double cos = Math.cos(angleOfMovement);
 		double sin = Math.sin(angleOfMovement);
 		double newAngle = Math.atan2(sin, -cos);
-		return new Ball(this.getTopLeft(), this.getWidth(), this.getHeight(), this.speed, newAngle, this.getId());
+		return new Ball(this.getTopLeftCoordinate(), this.getWidth(), this.getHeight(), this.speed, newAngle, this.getId());
 	}
 
 	public Ball flipYDirection() {
 		double cos = Math.cos(angleOfMovement);
 		double sin = Math.sin(angleOfMovement);
 		double newAngle = Math.atan2(-sin, cos);
-		return new Ball(this.getTopLeft(), this.getWidth(), this.getHeight(), this.speed, newAngle, this.getId());
+		return new Ball(this.getTopLeftCoordinate(), this.getWidth(), this.getHeight(), this.speed, newAngle, this.getId());
 	}
 
 

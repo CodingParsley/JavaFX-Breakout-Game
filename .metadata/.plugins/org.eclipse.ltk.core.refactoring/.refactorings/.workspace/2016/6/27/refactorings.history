@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete resource &apos;Copy of Breakout&apos;" deleteContents="true" description="Delete resource &apos;Copy of Breakout&apos;" element1="/Copy of Breakout" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1467001055496"/>
+</session>

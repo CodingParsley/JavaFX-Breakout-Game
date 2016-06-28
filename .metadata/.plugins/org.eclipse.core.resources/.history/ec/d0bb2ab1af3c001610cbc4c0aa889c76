@@ -1,0 +1,77 @@
+package application;
+
+public class LineSegment {
+
+	// Given three colinear Coordinates p, q, r, the function checks if
+	// Coordinate q lies on line segment 'pr'
+
+	// To find orientation of ordered triplet (p, q, r).
+	// The function returns following values
+	// 0 --> p, q and r are colinear
+	// 1 --> Clockwise
+	// 2 --> Counterclockwise
+	public double orientation(Coordinate p, Coordinate q, Coordinate r) {
+		double val = (q.getY() - p.getY()) * (r.getX() - q.getX()) - (q.getX() - p.getX()) * (r.getY() - q.getY());
+
+		if (val == 0)
+			return 0; // colinear
+
+		return (val > 0) ? 1 : 2; // clock or counterclock wise
+	}
+
+	// The main function that returns true if line segment 'aq1'
+	// and 'bq2' intersect.
+	public boolean intersects(Coordinate a2, Coordinate b2) {
+		// Find the four orientations needed for general and
+		// special cases
+		double o1 = orientation(a, a2, b);
+		double o2 = orientation(a, a2, b2);
+		double o3 = orientation(b, b2, a);
+		double o4 = orientation(a, b2, a2);
+
+		// General case
+		if (o1 != o2 && o3 != o4)
+			return true;
+
+		// Special Cases
+		// a, q1 and b are colinear and b lies on segment aq1
+		if (o1 == 0 && onSegment(a, b, a2))
+			return true;
+
+		// a, q1 and b are colinear and q2 lies on segment aq1
+		if (o2 == 0 && onSegment(a, b2, a2))
+			return true;
+
+		// b, q2 and a are colinear and a lies on segment bq2
+		if (o3 == 0 && onSegment(b, a, b2))
+			return true;
+
+		// b, q2 and q1 are colinear and q1 lies on segment bq2
+		if (o4 == 0 && onSegment(b, a2, b2))
+			return true;
+
+		return false; // Doesn't fall in any of the above cases
+	}
+
+	private Coordinate a;
+	private Coordinate b;
+
+	public Coordinate getA() {
+		return a;
+	}
+
+	public Coordinate getB() {
+		return b;
+	}
+
+	public LineSegment(Coordinate a, Coordinate b) {
+		this.a = a;
+		this.b = b;
+	}
+
+	private double calculateSlope() {
+		double numerator = b.getY() - a.getY(); // Slope formula is y2-y1/x2-x1
+		double denomenator = b.getX() - a.getX();
+		return (numerator / denomenator);
+	}
+}

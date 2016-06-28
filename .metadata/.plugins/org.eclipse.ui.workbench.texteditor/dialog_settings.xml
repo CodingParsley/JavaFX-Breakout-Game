@@ -1,23 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.GotoLineAction$GotoLineDialog_dialogBounds">
+		<item value="895" key="DIALOG_X_ORIGIN"/>
+		<item value="505" key="DIALOG_Y_ORIGIN"/>
+	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="update" key="selection"/>
+		<item value="doLinesIntersect" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="update"/>
+			<item value="intersects"/>
+			<item value="p2"/>
+			<item value="p1"/>
+			<item value=".x"/>
+			<item value=".y"/>
+			<item value="Point"/>
+			<item value="2.9"/>
+			<item value="collisionAccuracyNu"/>
 		</list>
 		<list key="replacehistory">
+			<item value="doLinesIntersect"/>
+			<item value="b"/>
+			<item value="a"/>
+			<item value=".getX()"/>
+			<item value=".getY()"/>
+			<item value="Coordinate"/>
+			<item value="collisionAccuracyNum"/>
+			<item value="collisionAccuracyNu,"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="353" key="DIALOG_WIDTH"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-18|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 		<item value="513" key="DIALOG_HEIGHT"/>
-		<item value="1115" key="DIALOG_X_ORIGIN"/>
-		<item value="359" key="DIALOG_Y_ORIGIN"/>
+		<item value="638" key="DIALOG_X_ORIGIN"/>
+		<item value="878" key="DIALOG_Y_ORIGIN"/>
 	</section>
 </section>

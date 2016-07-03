@@ -47,3 +47,12 @@
 1467063519786	Rename local variable 'q2'
 1467063583149	Rename method 'doIntersect'
 1467065756900	Rename local variable 'CD'
+1467148280512	Rename method 'addRandomVariation'
+1467150181511	Rename type 'JavaCollisionDetecter'
+1467150530839	Rename local variable 'other'
+1467150996762	Rename method 'getBottomLineSegement'
+1467151175889	Rename local variable 'i'
+1467152118271	Delete element
+1467153395999	Rename method 'update'
+1467154157031	Rename field 'brickGap'
+1467154164121	Rename local variable 'brickGap'

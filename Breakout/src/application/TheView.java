@@ -47,7 +47,7 @@ public class TheView extends Application {
 		// if it isn't there, create one and add it to children
 		// then...
 		//
-		//    gr.setwidth, etc. according to r
+		// gr.setwidth, etc. according to r
 		Optional<Node> graphicalRectNode = layout
 			.getChildren()
 			.stream()

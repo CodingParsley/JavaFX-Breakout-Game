@@ -1,13 +1,10 @@
 package application;
-
 public class Ball extends Rectangle {
 	private double speed;
+	private double angleOfMovement;
 	public double getSpeed() {
 		return speed;
 	}
-
-	private double angleOfMovement;
-
 	//For creating a brand new ball
 	public Ball(Coordinate topLeft, double width, double height, double speed, double angleOfMovement) {
 		super(topLeft, width, height);
@@ -36,6 +33,13 @@ public class Ball extends Rectangle {
 		double sin = Math.sin(angleOfMovement);
 		double newAngle = Math.atan2(-sin, cos);
 		return new Ball(this.getTopLeftCoordinate(), this.getWidth(), this.getHeight(), this.speed, newAngle, this.getId());
+	}
+	public static double randomAngle(double rangeInDegrees){
+		double rangeInRadians = Math.toRadians(rangeInDegrees);
+		return (Math.random()*rangeInRadians)-(rangeInRadians/2);
+	}
+	public Ball changeAngle(double range){
+		return new Ball(this.getTopLeftCoordinate(), this.getWidth(),this.getHeight(),this.speed,this.angleOfMovement+randomAngle(range), this.getId());
 	}
 
 

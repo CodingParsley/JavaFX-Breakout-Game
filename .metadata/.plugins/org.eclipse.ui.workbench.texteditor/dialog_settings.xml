@@ -6,12 +6,13 @@
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="doLinesIntersect" key="selection"/>
+		<item value="" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="Ball"/>
 			<item value="intersects"/>
 			<item value="p2"/>
 			<item value="p1"/>
@@ -19,7 +20,6 @@
 			<item value=".y"/>
 			<item value="Point"/>
 			<item value="2.9"/>
-			<item value="collisionAccuracyNu"/>
 		</list>
 		<list key="replacehistory">
 			<item value="doLinesIntersect"/>

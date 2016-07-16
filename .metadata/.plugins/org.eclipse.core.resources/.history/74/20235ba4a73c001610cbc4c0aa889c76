@@ -1,7 +1,0 @@
-package application;
-
-public enum VerticalRelativePosition {
-	ABOVE, TOUCHING_TOP, INSIDE, TOUCHING_BOTTON, BELOW;
-
-
-}

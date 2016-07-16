@@ -3,7 +3,8 @@ import java.util.LinkedList;
 import java.util.Optional;
 
 public class BoardModel {
-	private final int RAN_ANGLE= 5;
+	private final int RAN_ANGLE = 5;
+	private int gameScore = 0;
 	private final int WIDTH;
 	private final int HEIGHT;
 	private final int BAT_WIDTH = 40;
@@ -25,7 +26,8 @@ public class BoardModel {
 	private LinkedList<Rectangle> destroyedBricks = new LinkedList<Rectangle>();
 	private ICollisionDetector detector;
 
-	public BoardModel(int width, int height, int brickRowHeight, int brickGapH, int brickGapV, int gapAboveBricks, int brickColumns,
+	public BoardModel(int width, int height, int brickRowHeight, int brickGapH, int brickGapV,
+			int gapAboveBricks, int brickColumns,
 		int brickRows, ICollisionDetector detector) {
 		this.WIDTH = width;
 		this.HEIGHT = height;
@@ -103,7 +105,6 @@ public class BoardModel {
 							destroyedBricks.add(brick);
 							break;
 						}
-
 					}
 				}
 		}
@@ -119,6 +120,11 @@ public class BoardModel {
 			ball = ball.flipXDirection().changeAngle(RAN_ANGLE);
 		} else if (shouldFlipX == false && shouldFlipY == true) {
 			ball = ball.flipYDirection().changeAngle(RAN_ANGLE);
+		}
+
+		//Gameover check
+		if(brickColumns*brickRows==destroyedBricks.size()){
+			gameScore+=1;
 		}
 	}
 
@@ -141,6 +147,9 @@ public class BoardModel {
 
 	public int getHeight() {
 		return HEIGHT;
+	}
+	public int getGameScore() {
+		return gameScore;
 	}
 
 	public LinkedList<Rectangle> getBricks() {

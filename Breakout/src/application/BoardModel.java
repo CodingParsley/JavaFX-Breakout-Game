@@ -1,17 +1,21 @@
 package application;
+
 import java.util.LinkedList;
 import java.util.Optional;
 
 public class BoardModel {
-	private final int RAN_ANGLE = 5;
+	private final double LEFT_ANGLE_LIMIT = -35;
+	private final double RIGHT_ANGLE_LIMIT = -145;
 	private int gameScore = 0;
 	private final int WIDTH;
 	private final int HEIGHT;
-	private final int BAT_WIDTH = 40;
+	private final int BAT_WIDTH = 80;
 	private final int BAT_HEIGHT = 10;
 	private final int BAT_SPEED = 10;
+	private int BALL_SPEED = 1;
 	private int gapAboveBricks;
-	private int brickRowHeight; // The height of a row of bricks, gap is not included
+	private int brickRowHeight; // The height of a row of bricks, gap is not
+								// included
 	private int brickHeight; // Similar to brickRowHeight but gap is included
 	private int brickGapH; // The gap that will separate the bricks horizontally
 	private int brickGapV; // The gap that will separate the bricks vertically
@@ -26,13 +30,12 @@ public class BoardModel {
 	private LinkedList<Rectangle> destroyedBricks = new LinkedList<Rectangle>();
 	private ICollisionDetector detector;
 
-	public BoardModel(int width, int height, int brickRowHeight, int brickGapH, int brickGapV,
-			int gapAboveBricks, int brickColumns,
-		int brickRows, ICollisionDetector detector) {
+	public BoardModel(int width, int height, int brickRowHeight, int brickGapH, int brickGapV, int gapAboveBricks,
+			int brickColumns, int brickRows, ICollisionDetector detector) {
 		this.WIDTH = width;
 		this.HEIGHT = height;
 		this.detector = detector;
-		this.windowRectangle = new Rectangle(new Coordinate(0,0),WIDTH,HEIGHT);
+		this.windowRectangle = new Rectangle(new Coordinate(0, 0), WIDTH, HEIGHT);
 		this.brickColumns = brickColumns;
 		this.brickRows = brickRows;
 		this.brickRowHeight = brickRowHeight;
@@ -42,19 +45,18 @@ public class BoardModel {
 		this.columnWidth = WIDTH / brickColumns;
 		this.brickWidth = columnWidth - brickGapH;
 		this.brickHeight = brickRowHeight - brickGapV;
-		//Brick creation algorithm
+		// Brick creation algorithm
 		for (int column = 0; column < brickColumns; column++) {
 			for (int row = 0; row < brickRows; row++) {
-				Rectangle r = new Rectangle(
-				new Coordinate((column * columnWidth)+(brickGapH/2), (row * brickRowHeight) + gapAboveBricks), brickWidth,
-				brickHeight);
+				Rectangle r = new Rectangle(new Coordinate((column * columnWidth) + (brickGapH / 2),
+						(row * brickRowHeight) + gapAboveBricks), brickWidth, brickHeight);
 				bricks.add(r);
 			}
 		}
-		//Brick creation algorithm end
+		// Brick creation algorithm end
 		Coordinate batUL = new Coordinate((WIDTH - BAT_WIDTH) / 2, (HEIGHT - BAT_HEIGHT));
 		bat = new Rectangle(batUL, BAT_WIDTH, BAT_HEIGHT);
-		ball = new Ball(new Coordinate(WIDTH / 2, HEIGHT / 2), 7, 7, 1, Math.toRadians(75));
+		ball = new Ball(new Coordinate(WIDTH / 2, HEIGHT / 2), 7, 7, BALL_SPEED, Math.toRadians(75));
 	}
 
 	public void movePaddleLeft() {
@@ -79,58 +81,82 @@ public class BoardModel {
 	public void updateBall() {
 		Ball nextBall = ball.getMove();
 		LineSegment ballPath = new LineSegment(ball.getCenterCoordinate(), ball.getMove().getCenterCoordinate());
-		boolean shouldFlipX = detector.intersects(ballPath, windowRectangle.getLeftLineSegment()) || detector.intersects(ballPath, windowRectangle.getRightLineSegment());
-		boolean shouldFlipY = detector.intersects(ballPath, windowRectangle.getTopLineSegment()) || detector.intersects(ballPath, windowRectangle.getBottomLineSegment());
+		boolean hitBat = false;
+		boolean shouldFlipX = detector.intersects(ballPath, windowRectangle.getLeftLineSegment())
+				|| detector.intersects(ballPath, windowRectangle.getRightLineSegment());
+		boolean shouldFlipY = detector.intersects(ballPath, windowRectangle.getTopLineSegment())
+				|| detector.intersects(ballPath, windowRectangle.getBottomLineSegment());
 		Optional<Double> r = bricks.stream().map(i -> i.getBottomRightCoordinate().getY()).max(Double::compare);
 		// Variables that will let the ball know what new object to be
 
 		// Bat collision detection
-		if (shouldFlipX==false&&shouldFlipY==false&&detector.intersects(ballPath, bat.getTopLineSegment())) {
-			shouldFlipY=true;
+		if (shouldFlipX == false && shouldFlipY == false && detector.intersects(ballPath, bat.getTopLineSegment())) {
+			shouldFlipY = true;
+			hitBat = true;
 		}
 		// Bat collision detection end
 
-		//Brick collision detection
-		else if (shouldFlipX==false&&shouldFlipY==false&&r.get() >= ball.getTopLeftCoordinate().getY()) {
+		// Brick collision detection
+		else if (shouldFlipX == false && shouldFlipY == false && r.get() >= ball.getTopLeftCoordinate().getY()) {
 			for (Rectangle brick : bricks) {
 				if (brick.isAlive()) {
-						if(detector.intersects(ballPath,brick.getBottomLineSegment())||
-						detector.intersects(ballPath,brick.getTopLineSegment())){
-						 shouldFlipY=true;
-						}
-						if(detector.intersects(ballPath,brick.getLeftLineSegment())||detector.intersects(ballPath, brick.getRightLineSegment())){
-							shouldFlipX=true;
-						}
-						if(shouldFlipY==true||shouldFlipX==true){
-							destroyedBricks.add(brick);
-							break;
-						}
+					if (detector.intersects(ballPath, brick.getBottomLineSegment())
+							|| detector.intersects(ballPath, brick.getTopLineSegment())) {
+						shouldFlipY = true;
+					}
+					if (detector.intersects(ballPath, brick.getLeftLineSegment())
+							|| detector.intersects(ballPath, brick.getRightLineSegment())) {
+						shouldFlipX = true;
+					}
+					if (shouldFlipY == true || shouldFlipX == true) {
+						destroyedBricks.add(brick);
+						break;
 					}
 				}
+			}
 		}
-		//Brick collision detection end
-
-		//Calculating ball's new position
-		if(shouldFlipX==false && shouldFlipY==false){
+		// Brick collision detection end
+		// System.out.println(Math.toDegrees(ball.getAngleOfMovement()));
+		// Calculating ball's new position
+		// System.out.println(Math.toDegrees(ball.getAngleOfMovement()));
+		if (shouldFlipX == false && shouldFlipY == false) {
 			ball = nextBall;
-		}
-		else if (shouldFlipX == true && shouldFlipY == true) {
-			ball = ball.flipXDirection().flipYDirection().changeAngle(RAN_ANGLE);
+		} else if (shouldFlipX == true && shouldFlipY == true) {
+			ball = ball.flipXDirection().flipYDirection();
 		} else if (shouldFlipX == true && shouldFlipY == false) {
-			ball = ball.flipXDirection().changeAngle(RAN_ANGLE);
+			ball = ball.flipXDirection();
+		} else if (shouldFlipX == false && shouldFlipY == true && hitBat == true) {
+			// Angle limit is between -160 and +160
+			// For every 1% offset, the ball should move 1 degree
+			ball = ball.flipYDirection().changeAngleDegrees(ball.calculatePercentageOffsetWith(bat));
+
+			if (ball.getAngleInDegrees() > LEFT_ANGLE_LIMIT) {
+				System.out.println("Before: " + ball.getAngleInDegrees());
+				ball = ball.setAngleInDegrees(LEFT_ANGLE_LIMIT);
+				System.out.println("After: "+ ball.getAngleInDegrees());
+				System.out.println();
+			}
+			if (ball.getAngleInDegrees() < RIGHT_ANGLE_LIMIT) {
+				System.out.println("Before: " + ball.getAngleInDegrees());
+				ball = ball.setAngleInDegrees(RIGHT_ANGLE_LIMIT);
+				System.out.println("After: " + ball.getAngleInDegrees());
+				System.out.println();
+				}
 		} else if (shouldFlipX == false && shouldFlipY == true) {
-			ball = ball.flipYDirection().changeAngle(RAN_ANGLE);
+			ball = ball.flipYDirection();
 		}
 
-		//Gameover check
-		if(brickColumns*brickRows==destroyedBricks.size()){
-			gameScore+=1;
+		// Gameover check
+		if (brickColumns * brickRows == destroyedBricks.size()) {
+			gameScore += 1;
 		}
 	}
 
 	public void updateAll() {
+		// double oldBallX = ball.getCenterCoordinate().getX();
 		updateBall();
 		updateBricks();
+		// bat = bat.createMove(ball.getCenterCoordinate().getX()-oldBallX, 0);
 	}
 
 	public Rectangle getBat() {
@@ -148,6 +174,7 @@ public class BoardModel {
 	public int getHeight() {
 		return HEIGHT;
 	}
+
 	public int getGameScore() {
 		return gameScore;
 	}
@@ -155,4 +182,5 @@ public class BoardModel {
 	public LinkedList<Rectangle> getBricks() {
 		return new LinkedList<Rectangle>(this.bricks);
 	}
+
 }

@@ -71,8 +71,7 @@ public class TheView extends Application {
 		}
 		else {
 			graphicalRect=new Rectangle();
-			graphicalRect.fillProperty().set(Color.AQUA);
-			Image i = new Image("Square.png");
+			//Image i = new Image("Square.png");
 
 			graphicalRect.setId(Integer.toString(r.getId()));
 			layout.getChildren().add(graphicalRect);

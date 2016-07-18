@@ -6,20 +6,20 @@
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="Ball" key="selection"/>
+		<item value="" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="ball"/>
-			<item value="b"/>
+			<item value="changeAngleRandom"/>
+			<item value="update"/>
+			<item value="createm"/>
+			<item value="1"/>
 			<item value="speed"/>
-			<item value="balls"/>
-			<item value="sc"/>
-			<item value="score"/>
-			<item value="games"/>
-			<item value="gameScore"/>
+			<item value="movep"/>
+			<item value="moveP"/>
+			<item value="= new r"/>
 		</list>
 		<list key="replacehistory">
 			<item value="doLinesIntersect"/>
@@ -36,7 +36,7 @@
 		<item value="353" key="DIALOG_WIDTH"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-18|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 		<item value="569" key="DIALOG_HEIGHT"/>
-		<item value="938" key="DIALOG_X_ORIGIN"/>
-		<item value="652" key="DIALOG_Y_ORIGIN"/>
+		<item value="1582" key="DIALOG_X_ORIGIN"/>
+		<item value="499" key="DIALOG_Y_ORIGIN"/>
 	</section>
 </section>

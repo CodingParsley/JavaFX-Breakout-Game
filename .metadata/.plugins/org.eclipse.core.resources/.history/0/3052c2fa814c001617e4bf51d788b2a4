@@ -1,0 +1,10 @@
+package application;
+
+public class Bat extends Rectangle{
+
+	public Bat(Coordinate topLeft, Coordinate bottomRight) {
+		super(topLeft, bottomRight);
+		// TODO Auto-generated constructor stub
+	}
+
+}

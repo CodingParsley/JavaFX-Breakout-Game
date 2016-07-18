@@ -94,6 +94,9 @@ public class Rectangle {
 	public double getHeight(){
 		return Math.abs(topLeft.getY()-bottomRight.getY());
 	}
+	public double getPercentCoordinate(double percentage){
+		return this.getTopLeftCoordinate().getX()+((percentage/100)*this.getWidth());
+	}
 
 
 }

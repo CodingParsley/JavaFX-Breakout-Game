@@ -17,7 +17,7 @@ public class TheController extends Application{
 		window = primaryStage;
 		hm = new HighscoreManager("Highscore.txt");
 		JavaCollisionDetector jcd = new JavaCollisionDetector();
-		bm = new BoardModel(500,500,30,0,0,0,15,16,jcd);
+		bm = new BoardModel(500,500,30,0,0,0,15,6,jcd);
 		Runnable onPaddleLeft = new MovePaddleLeft();
         Runnable onPaddleRight = new MovePaddleRight();
         view = new TheView(onPaddleLeft,onPaddleRight, bm.getWidth(), bm.getHeight());
@@ -42,7 +42,6 @@ public class TheController extends Application{
 		@Override
 		public void run() {
 			bm.movePaddleLeft();
-			view.drawRectangle(bm.getBat());
 		}
 	}
 
@@ -50,16 +49,11 @@ public class TheController extends Application{
 		@Override
 		public void run() {
 			bm.movePaddleRight();
-			updateScreen();
-			updateScreen();
-			updateScreen();
-			view.drawRectangle(bm.getBall());
-			view.drawRectangle(bm.getBat());
 		}
 	}
 		public void updateScreen() {
-			view.drawRectangle(bm.getBall());
 			view.drawRectangle(bm.getBat());
+			view.drawRectangle(bm.getBall());
 			for(application.Rectangle b: bm.getBricks()){
 				view.drawRectangle(b);
 			}

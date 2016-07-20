@@ -22,7 +22,6 @@ public class TheController extends Application{
         Runnable onPaddleRight = new MovePaddleRight();
         view = new TheView(onPaddleLeft,onPaddleRight, bm.getWidth(), bm.getHeight());
 		view.start(primaryStage);
-
 		for(application.Rectangle b: bm.getBricks()){
 			view.drawRectangle(b);
 		}
@@ -32,7 +31,7 @@ public class TheController extends Application{
 		});
 
 		timeline = new Timeline(new KeyFrame(
-		        Duration.millis(4),
+		        Duration.millis(3),
 		        ae -> updateScreen()));
 		timeline.setCycleCount(Animation.INDEFINITE);
 		timeline.play();
@@ -42,6 +41,7 @@ public class TheController extends Application{
 		@Override
 		public void run() {
 			bm.movePaddleLeft();
+
 		}
 	}
 

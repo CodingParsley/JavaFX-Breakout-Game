@@ -1,0 +1,7 @@
+package snippet;
+
+public class Snippet {
+	Image img = new Image("Square.png");
+	ImageView imgView = new ImageView(img);
+}
+

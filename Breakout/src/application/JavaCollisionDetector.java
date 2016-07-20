@@ -11,4 +11,14 @@ public class JavaCollisionDetector implements ICollisionDetector{
 		boolean result = line2.intersectsLine(line1);
 		return result;
 	}
+	public boolean basicIntersects(Rectangle r1, Rectangle r2){
+
+		if (r1.getTopLeftCoordinate().getX() < r2.getTopLeftCoordinate().getX() + r2.getWidth() &&
+				   r1.getTopLeftCoordinate().getX() + r1.getWidth() > r2.getTopLeftCoordinate().getX() &&
+				   r1.getTopLeftCoordinate().getY() < r2.getTopLeftCoordinate().getY() + r2.getHeight() &&
+				   r1.getHeight() + r1.getTopLeftCoordinate().getY() > r2.getTopLeftCoordinate().getY()) {
+				    return true;
+				}
+		else return false;
+	}
 }

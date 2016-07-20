@@ -39,4 +39,8 @@
 <fullyQualifiedTypeName name="javafx.scene.Group"/>
 <fullyQualifiedTypeName name="javafx.scene.canvas.Canvas"/>
 <fullyQualifiedTypeName name="javafx.scene.canvas.GraphicsContext"/>
+<fullyQualifiedTypeName name="javafx.scene.paint.ImagePattern"/>
+<fullyQualifiedTypeName name="application.RectangleType"/>
+<fullyQualifiedTypeName name="javafx.scene.shape.Ellipse"/>
+<fullyQualifiedTypeName name="javafx.scene.shape.Circle"/>
 </qualifiedTypeNameHistroy>

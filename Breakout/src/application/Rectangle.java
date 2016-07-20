@@ -2,6 +2,7 @@ package application;
 
 public class Rectangle {
 	private static int count;
+	private RectangleType type;
 	private int id;
 	private int opacity = 1;
 	private boolean isAlive = true;
@@ -9,29 +10,30 @@ public class Rectangle {
 	private Coordinate bottomRight;
 
 	//Main constructor
-	protected Rectangle(Coordinate topLeft, Coordinate bottomRight,int id){
+	protected Rectangle(Coordinate topLeft, Coordinate bottomRight,int id, RectangleType type){
 		this.id=id;
+		this.type = type;
 		this.topLeft = topLeft;
 		this.bottomRight = bottomRight;
 	}
 
 	//Alternative to the main constructor, preserves id
-	protected Rectangle(Coordinate topLeft,double width,double height, int id){
-		this(topLeft,topLeft.getMoveDelta(width, height),id);
+	protected Rectangle(Coordinate topLeft,double width,double height, int id, RectangleType type){
+		this(topLeft,topLeft.getMoveDelta(width, height),id,type);
 	}
 
 	//For creating brand new rectangles
-	public Rectangle(Coordinate topLeft, Coordinate bottomRight){
-		this(topLeft,bottomRight,count++);
+	public Rectangle(Coordinate topLeft, Coordinate bottomRight, RectangleType type){
+		this(topLeft,bottomRight,count++, type);
 	}
 
 	//For creating brand new rectangles as well, calls the constructor above
-	public Rectangle(Coordinate topLeft,double width,double height){
-		this(topLeft,topLeft.getMoveDelta(width, height));
+	public Rectangle(Coordinate topLeft,double width,double height, RectangleType type){
+		this(topLeft,topLeft.getMoveDelta(width, height), type);
 	}
 
-	public Rectangle createMove(double dx,double dy){
-		return new Rectangle(topLeft.getMoveDelta(dx, dy),bottomRight.getMoveDelta(dx, dy),this.id);
+	public Rectangle createMove(double dx,double dy, RectangleType type){
+		return new Rectangle(topLeft.getMoveDelta(dx, dy),bottomRight.getMoveDelta(dx, dy),this.id, type);
 	}
 
 	public boolean isAlive() {
@@ -96,6 +98,9 @@ public class Rectangle {
 	}
 	public double getPercentCoordinate(double percentage){
 		return this.getTopLeftCoordinate().getX()+((percentage/100)*this.getWidth());
+	}
+	public RectangleType getType() {
+		return type;
 	}
 
 

@@ -6,37 +6,37 @@
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="" key="selection"/>
+		<item value="LeftLine" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="changeAngleRandom"/>
-			<item value="update"/>
-			<item value="createm"/>
-			<item value="1"/>
-			<item value="speed"/>
-			<item value="movep"/>
-			<item value="moveP"/>
-			<item value="= new r"/>
+			<item value="TopLine"/>
+			<item value="BottomLine"/>
+			<item value="graphicalRect"/>
+			<item value="width"/>
+			<item value=".y"/>
+			<item value=".height"/>
+			<item value=".width"/>
+			<item value=".width()"/>
 		</list>
 		<list key="replacehistory">
-			<item value="doLinesIntersect"/>
-			<item value="b"/>
-			<item value="a"/>
-			<item value=".getX()"/>
-			<item value=".getY()"/>
-			<item value="Coordinate"/>
-			<item value="collisionAccuracyNum"/>
-			<item value="collisionAccuracyNu,"/>
+			<item value="LeftLine"/>
+			<item value="RightLine"/>
+			<item value="TopLine"/>
+			<item value="graphicalCircle"/>
+			<item value=".getTopLeftCoordinate().getY()"/>
+			<item value=".getHeight()"/>
+			<item value=".getWidth()"/>
+			<item value=".getTopLeftCoordinate().getX()"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="353" key="DIALOG_WIDTH"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-18|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 		<item value="569" key="DIALOG_HEIGHT"/>
-		<item value="1582" key="DIALOG_X_ORIGIN"/>
-		<item value="499" key="DIALOG_Y_ORIGIN"/>
+		<item value="1439" key="DIALOG_X_ORIGIN"/>
+		<item value="132" key="DIALOG_Y_ORIGIN"/>
 	</section>
 </section>

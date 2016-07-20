@@ -7,3 +7,36 @@
 1468863538673	Rename method 'changeAngle'
 1468864670919	Rename method 'setAngle'
 1468864688150	Rename method 'changeAngle'
+1468958871720	Copy file
+1468958882553	Copy file
+1468959579782	Delete element
+1468959585843	Copy file
+1468959614046	Copy file
+1468959623020	Delete element
+1468960024562	Delete element
+1468960030878	Copy file
+1468960034022	Delete element
+1468960037663	Delete element
+1468966301894	Delete element
+1468966794942	Delete element
+1468966902973	Rename enum constant 'Paddle'
+1468970359947	Rename local variable 'hitBat'
+1468970624777	Rename local variable 'hitBatTop'
+1468983829029	Rename local variable 'objA'
+1468983835596	Rename local variable 'objB'
+1468986003907	Delete element
+1468986100166	Rename field 'imagePattern'
+1468986132984	Rename field 'brickSkin'
+1468986138441	Rename field 'img'
+1468986191141	Rename field 'batSkin'
+1468990372597	Rename local variable 'ballPath'
+1468990748407	Rename local variable 'ballPathBottom'
+1468990754525	Rename local variable 'ballPathTop'
+1468990762614	Rename local variable 'ballPathRight'
+1468990767695	Rename local variable 'ballPathLeft'
+1468991362167	Rename local variable 'ballPath'
+1468991873717	Rename local variable 'ballPathTopLeft'
+1468991887438	Rename local variable 'ballPathBottomRight'
+1468994985406	Rename local variable 'ballPathTopLine'
+1468994990496	Rename local variable 'ballPathBottomLine'
+1468994997613	Rename local variable 'ballPathRightLine'

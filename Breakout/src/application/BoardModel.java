@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.Optional;
 
 public class BoardModel {
-	private boolean canUseBat =  true;
+	private boolean canUseBat = true;
 	private final double LEFT_ANGLE_LIMIT = -35;
 	private final double RIGHT_ANGLE_LIMIT = -150;
 	private int gameScore = 0;
@@ -12,7 +12,7 @@ public class BoardModel {
 	public static int HEIGHT;
 	private final int BAT_WIDTH = 100;
 	private final int BAT_HEIGHT = 15;
-	private final int BAT_SPEED = 15;
+	private final int BAT_SPEED = 25;
 	private double BALL_SPEED = 1;
 	private int gapAboveBricks;
 	private int brickRowHeight; // The height of a row of bricks, gap is not
@@ -57,7 +57,7 @@ public class BoardModel {
 		// Brick creation algorithm end
 		Coordinate batUL = new Coordinate((WIDTH - BAT_WIDTH) / 2, (HEIGHT - BAT_HEIGHT));
 		bat = new Rectangle(batUL, BAT_WIDTH, BAT_HEIGHT, RectangleType.Bat);
-		ball = new Ball(new Coordinate(WIDTH / 2, HEIGHT / 2), 15, 15, BALL_SPEED, Math.toRadians(75),
+		ball = new Ball(new Coordinate(WIDTH / 2, HEIGHT / 2), 10, 10, BALL_SPEED, Math.toRadians(75),
 				RectangleType.Ball);
 	}
 
@@ -80,42 +80,48 @@ public class BoardModel {
 		}
 	}
 
-	public void updateBall() {
+	//Updating Ball and Destroying bricks
+
+	public void updateBallAndDestroyBricks() {
 		Ball nextBall = ball.getMove();
 		LineSegment ballPathCenter = new LineSegment(ball.getCenterCoordinate(), ball.getMove().getCenterCoordinate());
-		LineSegment ballPathTopLeft = new LineSegment(ball.getTopLeftCoordinate(), ball.getMove().getTopLeftCoordinate());
-		LineSegment ballPathBottomRight = new LineSegment(ball.getBottomRightCoordinate(), ball.getMove().getBottomRightCoordinate());
-		LineSegment ballPathTopRight = new LineSegment(ball.getTopRightCoordinate(), ball.getMove().getBottomRightCoordinate());
-		LineSegment ballPathBottomLeft= new LineSegment(ball.getBottomLeftCoordinate(), ball.getMove().getBottomLeftCoordinate());
+		LineSegment ballPathTopLeft = new LineSegment(ball.getTopLeftCoordinate(),
+				ball.getMove().getTopLeftCoordinate());
+		LineSegment ballPathBottomRight = new LineSegment(ball.getBottomRightCoordinate(),
+				ball.getMove().getBottomRightCoordinate());
+		LineSegment ballPathTopRight = new LineSegment(ball.getTopRightCoordinate(),
+				ball.getMove().getBottomRightCoordinate());
+		LineSegment ballPathBottomLeft = new LineSegment(ball.getBottomLeftCoordinate(),
+				ball.getMove().getBottomLeftCoordinate());
 
 		boolean hitBat = false;
 		boolean shouldFlipX = detector.intersects(ballPathCenter, windowRectangle.getLeftLineSegment())
 				|| detector.intersects(ballPathCenter, windowRectangle.getRightLineSegment());
 		boolean shouldFlipY = detector.intersects(ballPathCenter, windowRectangle.getTopLineSegment())
-				//|| detector.intersects(ballPath, windowRectangle.getBottomLineSegment())
-						;
+		// || detector.intersects(ballPath,
+		// windowRectangle.getBottomLineSegment())
+		;
 		Optional<Double> r = bricks.stream().map(i -> i.getBottomRightCoordinate().getY()).max(Double::compare);
 		// Variables that will let the ball know what new object to be
 
+		// If Ball made a collision with the bat, then the bat will not be able
+		// to cause collision untill ball is above bat's topLeftY coordinate
 
-		//If Ball made a collision with the bat, then the bat will not be able to
-		//cause collision untill ball is above bat's topLeftY coordinate
 		// Bat collision detection
-		if(shouldFlipX==false && shouldFlipY==false &&
-		detector.basicIntersects(ball, bat) && canUseBat==true && ball.getTopLeftCoordinate().getY()>=bat.getTopLeftCoordinate().getY()){
-			shouldFlipX=true;
-			shouldFlipY=true;
-			hitBat=true;
-			canUseBat = false;
-			System.out.println("Hit!!!!!!");
-		}
-		else if (shouldFlipX == false && shouldFlipY == false && detector.intersects(ballPathBottomRight, bat.getTopLineSegment()) &&canUseBat==true){
+		if (shouldFlipX == false && shouldFlipY == false && detector.basicIntersects(ball, bat) && canUseBat == true
+				&& ball.getTopLeftCoordinate().getY() >= bat.getTopLeftCoordinate().getY()) {
+			shouldFlipX = true;
 			shouldFlipY = true;
 			hitBat = true;
 			canUseBat = false;
-			System.out.println("Hit");
+		} else if (shouldFlipX == false && shouldFlipY == false
+				&& detector.intersects(ballPathBottomRight, bat.getTopLineSegment()) && canUseBat == true) {
+			shouldFlipY = true;
+			hitBat = true;
+			canUseBat = false;
 		}
 		// Bat collision detection end
+
 
 		// Brick collision detection
 		else if (shouldFlipX == false && shouldFlipY == false && r.get() >= ball.getTopLeftCoordinate().getY()) {
@@ -124,21 +130,42 @@ public class BoardModel {
 					if (detector.intersects(ballPathTopLeft, brick.getBottomLineSegment())
 							|| detector.intersects(ballPathBottomRight, brick.getBottomLineSegment())
 							|| detector.intersects(ballPathTopRight, brick.getBottomLineSegment())
-							|| detector.intersects(ballPathBottomLeft, brick.getBottomLineSegment())
-							|| detector.intersects(ballPathTopLeft, brick.getTopLineSegment())
+							|| detector.intersects(ballPathBottomLeft, brick.getBottomLineSegment())) {
+						shouldFlipY = true;
+						if (ball.getTopLeftCoordinate().getY() < brick.getBottomLeftCoordinate().getY()) {
+							ball = ball.setPosition(ball.getTopLeftCoordinate().getX(),
+									(brick.getBottomLeftCoordinate().getY()));
+						}
+					}
+					if (detector.intersects(ballPathTopLeft, brick.getTopLineSegment())
 							|| detector.intersects(ballPathBottomRight, brick.getTopLineSegment())
 							|| detector.intersects(ballPathTopRight, brick.getTopLineSegment())
 							|| detector.intersects(ballPathBottomLeft, brick.getTopLineSegment())) {
+						if (ball.getBottomLeftCoordinate().getY() > brick.getTopLeftCoordinate().getY()) {
+							ball = ball.setPosition(ball.getTopLeftCoordinate().getX(),
+									(brick.getTopLeftCoordinate().getY() - ball.getHeight()));
+						}
 						shouldFlipY = true;
 					}
 					if (detector.intersects(ballPathTopLeft, brick.getRightLineSegment())
 							|| detector.intersects(ballPathBottomRight, brick.getRightLineSegment())
 							|| detector.intersects(ballPathTopRight, brick.getRightLineSegment())
-							|| detector.intersects(ballPathBottomLeft, brick.getRightLineSegment())
-							|| detector.intersects(ballPathTopLeft, brick.getLeftLineSegment())
+							|| detector.intersects(ballPathBottomLeft, brick.getRightLineSegment())) {
+						if (ball.getBottomLeftCoordinate().getX() < brick.getBottomLeftCoordinate().getX()) {
+							ball = ball.setPosition(brick.getBottomLeftCoordinate().getX(),
+									(ball.getTopLeftCoordinate().getY()));
+						}
+						shouldFlipX = true;
+					}
+
+					if (detector.intersects(ballPathTopLeft, brick.getLeftLineSegment())
 							|| detector.intersects(ballPathBottomRight, brick.getLeftLineSegment())
 							|| detector.intersects(ballPathTopRight, brick.getLeftLineSegment())
 							|| detector.intersects(ballPathBottomLeft, brick.getLeftLineSegment())) {
+						if (ball.getBottomRightCoordinate().getX() > brick.getBottomRightCoordinate().getX()) {
+							ball = ball.setPosition(brick.getBottomRightCoordinate().getX()-ball.getWidth(),
+									(ball.getTopLeftCoordinate().getY()));
+						}
 						shouldFlipX = true;
 					}
 					if (shouldFlipY == true || shouldFlipX == true) {
@@ -163,22 +190,15 @@ public class BoardModel {
 			ball = ball.flipYDirection().changeAngleDegrees(ball.calculatePercentageOffsetWith(bat));
 
 			if (ball.getAngleInDegrees() > LEFT_ANGLE_LIMIT) {
-				//System.out.println("Before: " + ball.getAngleInDegrees());
 				ball = ball.setAngleInDegrees(LEFT_ANGLE_LIMIT);
-				//System.out.println("After: " + ball.getAngleInDegrees());
-				System.out.println();
-			}
-			if (ball.getAngleInDegrees() < RIGHT_ANGLE_LIMIT) {
-				System.out.println("Before: " + ball.getAngleInDegrees());
+			} else if (ball.getAngleInDegrees() < RIGHT_ANGLE_LIMIT) {
 				ball = ball.setAngleInDegrees(RIGHT_ANGLE_LIMIT);
-				System.out.println("After: " + ball.getAngleInDegrees());
-				System.out.println();
 			}
 
 		} else if (shouldFlipX == false && shouldFlipY == true) {
 			ball = ball.flipYDirection();
 		}
-		if(ball.getBottomLeftCoordinate().getY()<bat.getTopLeftCoordinate().getY()){
+		if (ball.getBottomLeftCoordinate().getY() < bat.getTopLeftCoordinate().getY()) {
 			canUseBat = true;
 		}
 
@@ -187,12 +207,13 @@ public class BoardModel {
 			gameScore += 1;
 		}
 	}
+	//Update Ball End
 
 	public void updateAll() {
-		// double oldBallX = ball.getCenterCoordinate().getX();
-		updateBall();
+		double oldBallX = ball.getCenterCoordinate().getX();
+		updateBallAndDestroyBricks();
 		updateBricks();
-		//bat = bat.createMove(-0.11, 0, bat.getType());
+		bat = bat.createMove(ball.getCenterCoordinate().getX() - oldBallX, 0, bat.getType());
 		// bat.getType());
 	}
 
@@ -219,5 +240,4 @@ public class BoardModel {
 	public LinkedList<Rectangle> getBricks() {
 		return new LinkedList<Rectangle>(this.bricks);
 	}
-
 }

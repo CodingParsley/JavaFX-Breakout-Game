@@ -17,7 +17,7 @@ public class TheController extends Application{
 		window = primaryStage;
 		hm = new HighscoreManager("Highscore.txt");
 		JavaCollisionDetector jcd = new JavaCollisionDetector();
-		bm = new BoardModel(500,500,30,0,0,0,15,6,jcd);
+		bm = new BoardModel(500,500,30,1,1,80,15,6,jcd);
 		Runnable onPaddleLeft = new MovePaddleLeft();
         Runnable onPaddleRight = new MovePaddleRight();
         view = new TheView(onPaddleLeft,onPaddleRight, bm.getWidth(), bm.getHeight());
@@ -31,7 +31,7 @@ public class TheController extends Application{
 		});
 
 		timeline = new Timeline(new KeyFrame(
-		        Duration.millis(3),
+		        Duration.millis(4),
 		        ae -> updateScreen()));
 		timeline.setCycleCount(Animation.INDEFINITE);
 		timeline.play();
@@ -41,6 +41,7 @@ public class TheController extends Application{
 		@Override
 		public void run() {
 			bm.movePaddleLeft();
+			//updateScreen();updateScreen();updateScreen();updateScreen();
 
 		}
 	}
@@ -49,6 +50,7 @@ public class TheController extends Application{
 		@Override
 		public void run() {
 			bm.movePaddleRight();
+			//updateScreen();updateScreen();updateScreen();updateScreen();
 		}
 	}
 		public void updateScreen() {

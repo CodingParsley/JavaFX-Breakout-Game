@@ -40,3 +40,4 @@
 1468994985406	Rename local variable 'ballPathTopLine'
 1468994990496	Rename local variable 'ballPathBottomLine'
 1468994997613	Rename local variable 'ballPathRightLine'
+1469056777200	Rename method 'updateBall'

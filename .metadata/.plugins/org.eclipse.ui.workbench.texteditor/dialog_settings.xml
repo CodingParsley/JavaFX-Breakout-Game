@@ -6,22 +6,23 @@
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="LeftLine" key="selection"/>
+		<item value="" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="System.out.println(&quot;Made a change!&quot;);"/>
+			<item value="hit"/>
+			<item value="COLL"/>
+			<item value="INTE"/>
+			<item value="main"/>
 			<item value="TopLine"/>
 			<item value="BottomLine"/>
 			<item value="graphicalRect"/>
-			<item value="width"/>
-			<item value=".y"/>
-			<item value=".height"/>
-			<item value=".width"/>
-			<item value=".width()"/>
 		</list>
 		<list key="replacehistory">
+			<item value=""/>
 			<item value="LeftLine"/>
 			<item value="RightLine"/>
 			<item value="TopLine"/>
@@ -29,7 +30,6 @@
 			<item value=".getTopLeftCoordinate().getY()"/>
 			<item value=".getHeight()"/>
 			<item value=".getWidth()"/>
-			<item value=".getTopLeftCoordinate().getX()"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">

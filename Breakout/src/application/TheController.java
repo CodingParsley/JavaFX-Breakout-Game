@@ -17,7 +17,7 @@ public class TheController extends Application{
 		window = primaryStage;
 		hm = new HighscoreManager("Highscore.txt");
 		JavaCollisionDetector jcd = new JavaCollisionDetector();
-		bm = new BoardModel(500,500,30,1,1,80,15,6,jcd);
+		bm = new BoardModel(500,500,30,0,0,80,15,6,jcd);
 		Runnable onPaddleLeft = new MovePaddleLeft();
         Runnable onPaddleRight = new MovePaddleRight();
         view = new TheView(onPaddleLeft,onPaddleRight, bm.getWidth(), bm.getHeight());

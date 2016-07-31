@@ -1,5 +1,0 @@
-package application;
-
-public class Variables {
-	public final static String BRICK_TYPE = "Brick";
-}

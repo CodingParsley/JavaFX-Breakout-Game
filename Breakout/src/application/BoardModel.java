@@ -210,10 +210,10 @@ public class BoardModel {
 	//Update Ball End
 
 	public void updateAll() {
-		double oldBallX = ball.getCenterCoordinate().getX();
+		//double oldBallX = ball.getCenterCoordinate().getX();
 		updateBallAndDestroyBricks();
 		updateBricks();
-		bat = bat.createMove(ball.getCenterCoordinate().getX() - oldBallX, 0, bat.getType());
+		//bat = bat.createMove(ball.getCenterCoordinate().getX() - oldBallX, 0, bat.getType());
 		// bat.getType());
 	}
 

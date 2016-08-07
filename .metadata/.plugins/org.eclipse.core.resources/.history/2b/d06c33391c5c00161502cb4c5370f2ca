@@ -1,0 +1,25 @@
+package gameComponenets;
+
+public class ChiselBrick extends Rectangle{
+
+	private int hitCount = 0;
+	private int hitResistance = 1;
+
+	protected ChiselBrick(Coordinate topLeft, Coordinate bottomRight, int id, RectangleType type, int hitResistance, int hitCount) {
+		super(topLeft, bottomRight, id, type);
+		this.hitResistance = hitResistance;
+		this.hitCount = hitCount;
+	}
+
+	protected ChiselBrick(Coordinate topLeft,double width,double height, int id, RectangleType type){
+		super(topLeft,topLeft.getMoveDelta(width, height),id,type);
+	}
+
+	public ChiselBrick(Coordinate topLeft, Coordinate bottomRight, RectangleType type){
+		super(topLeft,bottomRight,count++, type);
+	}
+
+	public ChiselBrick(Coordinate topLeft,double width,double height, RectangleType type){
+		super(topLeft,topLeft.getMoveDelta(width, height), type);
+	}
+}

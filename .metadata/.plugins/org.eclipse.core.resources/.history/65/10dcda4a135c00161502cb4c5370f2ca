@@ -1,0 +1,13 @@
+package gameComponenets;
+
+public class ChiselBrick extends Rectangle{
+
+	protected ChiselBrick(Coordinate topLeft, Coordinate bottomRight, int id, RectangleType type) {
+		super(topLeft, bottomRight, id, type);
+	}
+
+	protected Rectangle(Coordinate topLeft,double width,double height, int id, RectangleType type){
+		super(topLeft,topLeft.getMoveDelta(width, height),id,type);
+	}
+
+}

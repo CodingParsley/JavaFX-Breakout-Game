@@ -1,0 +1,5 @@
+package gameComponenets;
+
+public enum RectangleType {
+	j,Brick, Bat, Ball, Window;
+}

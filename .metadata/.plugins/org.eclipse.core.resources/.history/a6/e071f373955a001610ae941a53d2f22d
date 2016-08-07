@@ -1,0 +1,62 @@
+package application;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
+public class MainScreen extends Application implements Initializable {
+	public Label hs;
+	private Stage window;
+	private Scene scene;
+	private HighscoreManager hm;
+	private Label highScoreLabel = new Label();
+	private Parent root;
+	public void start(Stage primaryStage) throws Exception {
+		highScoreLabel.setTranslateX(PlayScreen.getBoardWidth() / 2);
+		highScoreLabel.setTranslateY(PlayScreen.getBoardHeight() - 50);
+
+		root = FXMLLoader.load(getClass().getResource("MainScreen.fxml"));
+
+		scene = new Scene(root, PlayScreen.getBoardWidth(), PlayScreen.getBoardHeight());
+
+		window = primaryStage;
+		window.setTitle("Eyehurter");
+		window.setResizable(false);
+		window.getIcons().add(new Image("Sadeyes.png"));
+		window.setScene(scene);
+		window.show();
+	}
+
+	public Scene getScene() throws IOException {
+		root = FXMLLoader.load(getClass().getResource("MainScreen.fxml"));
+		return new Scene(root, PlayScreen.getBoardWidth(), PlayScreen.getBoardHeight());
+	}
+
+	public void play(ActionEvent event) {
+		PlayScreen ps = new PlayScreen(hm);
+		Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+		ps.start(stage);
+		stage.setScene(ps.getScene());
+		stage.show();
+	}
+
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		hm = new HighscoreManager("Highscore.txt");
+		hs.setText("Highscore: " + hm.getHighscore());
+		hs.setTranslateX(hs.getTranslateX() - 10);
+	}
+
+	public static void main(String[] args) {
+		launch(args);
+	}
+}

@@ -1,0 +1,29 @@
+package gameComponenets;
+
+public class Brick extends Rectangle{
+
+	//Main constructor
+		protected Rectangle(Coordinate topLeft, Coordinate bottomRight,int id, RectangleType type){
+			super.id=id;
+			super.type = type;
+			super.topLeft = topLeft;
+			super.bottomRight = bottomRight;
+		}
+
+		//Alternative to the main constructor, preserves id
+		protected Rectangle(Coordinate topLeft,double width,double height, int id, RectangleType type){
+			super(topLeft,topLeft.getMoveDelta(width, height),id,type);
+		}
+
+		//For creating brand new rectangles
+		public Rectangle(Coordinate topLeft, Coordinate bottomRight, RectangleType type){
+			super(topLeft,bottomRight,count++, type);
+		}
+
+		//For creating brand new rectangles as well, calls the constructor above
+		public Rectangle(Coordinate topLeft,double width,double height, RectangleType type){
+			super(topLeft,topLeft.getMoveDelta(width, height), type);
+		}
+
+
+}

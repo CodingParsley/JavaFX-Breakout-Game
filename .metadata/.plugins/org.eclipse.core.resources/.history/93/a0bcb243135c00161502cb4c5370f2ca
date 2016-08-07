@@ -1,0 +1,9 @@
+package gameComponenets;
+
+public class ChiselBrick extends Rectangle{
+
+	protected ChiselBrick(Coordinate topLeft, Coordinate bottomRight, int id, RectangleType type) {
+		super(topLeft, bottomRight, id, type);
+	}
+
+}

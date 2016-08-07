@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="400.0" type="Pane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.StartScreen">
+	<children>
+		<Button layoutX="96.0" layoutY="226.0" mnemonicParsing="false" onAction="#play" prefHeight="39.0" prefWidth="206.0" text="Play">
+			<font>
+				<Font name="Jokerman" size="23.0" />
+			</font>
+		</Button>
+	</children>
+</fx:root>

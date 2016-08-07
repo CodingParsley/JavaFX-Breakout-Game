@@ -1,0 +1,11 @@
+package gameComponenets;
+
+public class Brick extends Rectangle{
+	private int hitCount = 0;
+	private int hitResistance = 1;
+
+	protected Brick(Coordinate topLeft, Coordinate bottomRight, int id, RectangleType type) {
+		super(topLeft, bottomRight, id, type);
+	}
+
+}

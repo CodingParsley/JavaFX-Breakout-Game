@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+	minWidth="-Infinity" prefHeight="600.0" prefWidth="400.0" stylesheets="@MainScreen.css"
+	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="application.MainScreen">
+	<children>
+		<Label fx:id="hs" alignment="CENTER" contentDisplay="CENTER"
+			layoutX="137.0" layoutY="426.0" text="High Score">
+			<font>
+				<Font name="System Bold Italic" size="25.0" />
+			</font>
+		</Label>
+		<Button id="button" layoutX="96.0" layoutY="226.0"
+			mnemonicParsing="false" onAction="#play" prefHeight="39.0" prefWidth="206.0"
+			styleClass="application.css" text="Play">
+			<font>
+				<Font name="Jokerman" size="23.0" />
+			</font>
+		</Button>
+		<Label alignment="CENTER" layoutX="-1.0" layoutY="77.0"
+			prefHeight="45.0" prefWidth="400.0" text="Eyehurter">
+			<font>
+				<Font name="Jokerman" size="28.0" />
+			</font>
+		</Label>
+	</children>
+</Pane>

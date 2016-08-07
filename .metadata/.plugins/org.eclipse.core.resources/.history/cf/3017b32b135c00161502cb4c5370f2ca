@@ -1,0 +1,5 @@
+package gameComponenets;
+
+public class ChiselBrick extends Rectangle{
+
+}

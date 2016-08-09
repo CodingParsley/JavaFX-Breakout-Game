@@ -1,5 +1,7 @@
 package application;
 import audio.AudioPlayer;
+import gameComponenets.GameBoardModel;
+import gameComponenets.Variables;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +15,7 @@ public class StartScreenController extends Application {
 	private Parent root;
 	public void start(Stage primaryStage) throws Exception {
 		root = FXMLLoader.load(getClass().getResource("/fxmlDocs/StartScreenView.fxml"));
-		scene = new Scene(root, 500, 500);
+		scene = new Scene(root, Variables.getWIDTH(), Variables.getHEIGHT());
 		window = primaryStage;
 		window.setTitle("Breakout");
 		window.setResizable(false);
@@ -21,7 +23,7 @@ public class StartScreenController extends Application {
 		window.show();
 
 		//Play Background Music
-		AudioPlayer.playSoundEffectIndefinitely(AudioPlayer.gameMusicFile);
+		//AudioPlayer.playSoundEffectIndefinitely(AudioPlayer.gameMusicFile);
 		//Play Background Music end
 	}
 	public void play(ActionEvent event) {

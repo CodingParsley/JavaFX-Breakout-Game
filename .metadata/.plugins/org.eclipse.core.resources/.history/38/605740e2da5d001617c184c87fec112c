@@ -1,0 +1,23 @@
+package application;
+
+import javafx.application.Application;
+import javafx.stage.Stage;
+
+public class LevelsScreenController extends Application{
+	private Stage window;
+	private LevelsScreenView theView;
+	private LevelsScreenModel theModel;
+
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		theView = new LevelsScreenView(null);
+		theModel = new LevelsScreenModel(5, 1,10);
+		window = primaryStage;
+		theView.start(window);
+		theView.drawArrayOfRectangles(theModel.getButtons());
+	}
+	public static void main(String[] args){
+		launch(args);
+	}
+}

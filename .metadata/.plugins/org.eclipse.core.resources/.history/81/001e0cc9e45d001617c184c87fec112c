@@ -1,0 +1,18 @@
+package gameComponenets;
+
+public class Button extends Rectangle {
+	private Runnable doesSomething;
+
+	public Button(Coordinate topLeft, double width, double height, RectangleType type, Runnable doesSomething) {
+		super(topLeft, width, height, type);
+		this.doesSomething=doesSomething;
+	}
+
+	public String getOnAction() {
+		return onAction;
+	}
+	public Runnable getDoesSomething(){
+		return doesSomething;
+	}
+
+}

@@ -1,5 +1,0 @@
-package gameComponenets;
-
-public class Brick extends Rectangle{
-
-}

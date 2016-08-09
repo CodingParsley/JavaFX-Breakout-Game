@@ -17,6 +17,7 @@ import javafx.scene.shape.Rectangle;
 
 import java.util.Optional;
 
+import gameComponenets.Brick;
 import gameComponenets.RectangleType;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -67,7 +68,7 @@ public class GameView extends Application {
 		BackgroundImage myBI= new BackgroundImage(bgImage,
 		        BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
 		          BackgroundSize.DEFAULT);
-		//then you set to your node
+		//then you set to your layout
 		layout.setBackground(new Background(myBI));
 		//Another way end
 
@@ -122,9 +123,10 @@ public class GameView extends Application {
 					graphicalRect.setFill(ballPattern);
 				}
 
-
+		if(r instanceof Brick &&((Brick) r).isAlive()==false){
+			graphicalRect.setOpacity(0);
+		}
 		graphicalRect.setId(Integer.toString(r.getId()));
-		graphicalRect.setOpacity(r.getOpacity());
 		graphicalRect.setWidth(r.getWidth());
 		graphicalRect.setHeight(r.getHeight());
 		graphicalRect.setTranslateX(r.getTopLeftCoordinate().getX());

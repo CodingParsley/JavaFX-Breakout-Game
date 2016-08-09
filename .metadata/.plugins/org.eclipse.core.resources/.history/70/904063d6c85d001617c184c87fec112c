@@ -1,0 +1,13 @@
+package gameComponenets;
+
+public class Button extends Rectangle{
+
+	private String onAction;
+
+	protected Button(Coordinate topLeft, double width, double height, int id, RectangleType type, String onAction) {
+		super(topLeft, width, height, id, type);
+		this.onAction=onAction;
+	}
+
+
+}

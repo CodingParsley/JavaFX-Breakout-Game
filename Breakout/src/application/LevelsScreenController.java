@@ -3,11 +3,10 @@ package application;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class LevelsScreenController extends Application{
+public class LevelsScreenController extends Application {
 	private Stage window;
 	private LevelsScreenView theView;
 	private LevelsScreenModel theModel;
-
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -17,7 +16,8 @@ public class LevelsScreenController extends Application{
 		window = primaryStage;
 		theView.start(window);
 	}
-	public static void main(String[] args){
+
+	public static void main(String[] args) {
 		launch(args);
 	}
 }

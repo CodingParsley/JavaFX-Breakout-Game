@@ -1,9 +1,9 @@
 package gameComponenets;
+
 public class LineSegment {
 
 	private Coordinate a;
 	private Coordinate b;
-
 
 	public LineSegment(Coordinate a, Coordinate b) {
 		this.a = a;

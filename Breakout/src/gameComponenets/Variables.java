@@ -7,6 +7,7 @@ public class Variables {
 	public static int getWIDTH() {
 		return BOARD_WIDTH;
 	}
+
 	public static int getHEIGHT() {
 		return BOARD_HEIGHT;
 	}

@@ -31,7 +31,8 @@ public class GameBoardModel {
 	private ICollisionDetector detector;
 
 	public GameBoardModel(int width, int height, int brickRowHeight, int brickGapH, int brickGapV, int gapAboveBricks,
-			int brickColumns, int brickRows, int batWidth,int batHeight,int batSpeed, double ballSpeed,ICollisionDetector detector) {
+			int brickColumns, int brickRows, int batWidth, int batHeight, int batSpeed, double ballSpeed,
+			ICollisionDetector detector) {
 		WIDTH = width;
 		HEIGHT = height;
 		this.detector = detector;
@@ -42,18 +43,22 @@ public class GameBoardModel {
 		this.brickGapH = brickGapH;
 		this.brickGapV = brickGapV;
 		this.gapAboveBricks = gapAboveBricks;
-		if(brickColumns!=0) this.columnWidth = WIDTH / brickColumns; //Neccacery to prevent a "/ 0 error"
+		if (brickColumns != 0)
+			this.columnWidth = WIDTH / brickColumns; // Neccacery to prevent a
+														// "/ 0 error"
 		this.brickWidth = columnWidth - brickGapH;
 		this.brickHeight = brickRowHeight - brickGapV;
-		this.BAT_WIDTH=batWidth;
-		this.BAT_HEIGHT=batHeight;
-		this.BAT_SPEED=batSpeed;
-		this.BALL_SPEED=ballSpeed;
+		this.BAT_WIDTH = batWidth;
+		this.BAT_HEIGHT = batHeight;
+		this.BAT_SPEED = batSpeed;
+		this.BALL_SPEED = ballSpeed;
 		// Brick creation algorithm
 		for (int column = 0; column < brickColumns; column++) {
 			for (int row = 0; row < brickRows; row++) {
-				Brick r = new Brick(new Coordinate((column * columnWidth) + (brickGapH / 2),
-						(row * brickRowHeight) + gapAboveBricks), brickWidth, brickHeight, RectangleType.Brick,0,2);
+				Brick r = new Brick(
+						new Coordinate((column * columnWidth) + (brickGapH / 2),
+								(row * brickRowHeight) + gapAboveBricks),
+						brickWidth, brickHeight, RectangleType.Brick, 0, 2);
 				bricks.add(r);
 			}
 		}
@@ -64,12 +69,12 @@ public class GameBoardModel {
 				RectangleType.Ball);
 	}
 
-	//This method is for manually adding bricks so that they do not have to be in a dumb row
-	public void addBrick(int width, int height, int posX, int posY, RectangleType type, int hitResistance){
-		Brick r = new Brick(new Coordinate(posX,posY), width, height, type,0,hitResistance);
+	// This method is for manually adding bricks so that they do not have to be
+	// in a dumb row
+	public void addBrick(int width, int height, int posX, int posY, RectangleType type, int hitResistance) {
+		Brick r = new Brick(new Coordinate(posX, posY), width, height, type, 0, hitResistance);
 		bricks.add(r);
 	}
-
 
 	public void movePaddleLeft() {
 		if ((bat.getTopLeftCoordinate().getX() - BAT_SPEED) >= 0) {
@@ -85,25 +90,24 @@ public class GameBoardModel {
 
 	public void updateBricks() {
 		for (Brick brick : destroyedBricks) {
-			  Brick brick2=brick.kill();
-			  bricks.remove(brick);
-			  bricks.add(brick2);
-			  }
+			bricks.remove(brick);
+			bricks.add(brick.kill());
+			destroyedBricks.remove(brick);
+		}
 	}
 
-	//Updating Ball and Destroying bricks
+	// Updating Ball and Destroying bricks
 
 	public void updateBallAndDestroyBricks() {
 		Ball nextBall = ball.getMove();
-		LineSegment ballPathCenter = new LineSegment(ball.getCenterCoordinate(), ball.getMove().getCenterCoordinate());
-		LineSegment ballPathTopLeft = new LineSegment(ball.getTopLeftCoordinate(),
-				ball.getMove().getTopLeftCoordinate());
+		LineSegment ballPathCenter = new LineSegment(ball.getCenterCoordinate(), nextBall.getCenterCoordinate());
+		LineSegment ballPathTopLeft = new LineSegment(ball.getTopLeftCoordinate(), nextBall.getTopLeftCoordinate());
 		LineSegment ballPathBottomRight = new LineSegment(ball.getBottomRightCoordinate(),
-				ball.getMove().getBottomRightCoordinate());
+				nextBall.getBottomRightCoordinate());
 		LineSegment ballPathTopRight = new LineSegment(ball.getTopRightCoordinate(),
-				ball.getMove().getBottomRightCoordinate());
+				nextBall.getBottomRightCoordinate());
 		LineSegment ballPathBottomLeft = new LineSegment(ball.getBottomLeftCoordinate(),
-				ball.getMove().getBottomLeftCoordinate());
+				nextBall.getBottomLeftCoordinate());
 
 		boolean hitBat = false;
 		boolean shouldFlipX = detector.intersects(ballPathCenter, windowRectangle.getLeftLineSegment())
@@ -132,20 +136,22 @@ public class GameBoardModel {
 		}
 		// Bat collision detection end
 
-
 		// Brick collision detection
-		else if (shouldFlipX == false && shouldFlipY == false && ball.getTopLeftCoordinate().getY()<=r.get()) {
+		else if (shouldFlipX == false && shouldFlipY == false && ball.getTopLeftCoordinate().getY() <= r.get()) {
 			for (Brick brick : bricks) {
 				if (brick.isAlive()) {
 					if (detector.intersects(ballPathTopLeft, brick.getBottomLineSegment())
 							|| detector.intersects(ballPathBottomRight, brick.getBottomLineSegment())
 							|| detector.intersects(ballPathTopRight, brick.getBottomLineSegment())
 							|| detector.intersects(ballPathBottomLeft, brick.getBottomLineSegment())) {
-						shouldFlipY = true;
+
 						if (ball.getTopLeftCoordinate().getY() < brick.getBottomLeftCoordinate().getY()) {
 							ball = ball.setPosition(ball.getTopLeftCoordinate().getX(),
-									(brick.getBottomLeftCoordinate().getY()+1));
+									(brick.getBottomLeftCoordinate().getY() + 1));
+							System.out.println("did test 1");
 						}
+						shouldFlipY = true;
+						System.out.println("did 1");
 					}
 					if (detector.intersects(ballPathTopLeft, brick.getTopLineSegment())
 							|| detector.intersects(ballPathBottomRight, brick.getTopLineSegment())
@@ -153,8 +159,10 @@ public class GameBoardModel {
 							|| detector.intersects(ballPathBottomLeft, brick.getTopLineSegment())) {
 						if (ball.getBottomLeftCoordinate().getY() > brick.getTopLeftCoordinate().getY()) {
 							ball = ball.setPosition(ball.getTopLeftCoordinate().getX(),
-									(brick.getTopLeftCoordinate().getY() - ball.getHeight()-1));
+									(brick.getTopLeftCoordinate().getY() - ball.getHeight() - 1));
+							System.out.println("did test 2");
 						}
+						System.out.println("did 2");
 						shouldFlipY = true;
 					}
 					if (detector.intersects(ballPathTopLeft, brick.getRightLineSegment())
@@ -162,9 +170,11 @@ public class GameBoardModel {
 							|| detector.intersects(ballPathTopRight, brick.getRightLineSegment())
 							|| detector.intersects(ballPathBottomLeft, brick.getRightLineSegment())) {
 						if (ball.getBottomLeftCoordinate().getX() < brick.getBottomLeftCoordinate().getX()) {
-							ball = ball.setPosition(brick.getBottomLeftCoordinate().getX(),
+							ball = ball.setPosition(brick.getBottomLeftCoordinate().getX()-1,
 									(ball.getTopLeftCoordinate().getY()));
+							System.out.println("did test 3");
 						}
+						System.out.println("did 3");
 						shouldFlipX = true;
 					}
 
@@ -173,18 +183,20 @@ public class GameBoardModel {
 							|| detector.intersects(ballPathTopRight, brick.getLeftLineSegment())
 							|| detector.intersects(ballPathBottomLeft, brick.getLeftLineSegment())) {
 						if (ball.getBottomRightCoordinate().getX() > brick.getBottomRightCoordinate().getX()) {
-							ball = ball.setPosition(brick.getBottomRightCoordinate().getX()-ball.getWidth(),
+							ball = ball.setPosition(brick.getBottomRightCoordinate().getX() - ball.getWidth()+1,
 									(ball.getTopLeftCoordinate().getY()));
+									System.out.println("did test 4");
 						}
+						System.out.println("did 4");
+						System.out.println();
 						shouldFlipX = true;
 					}
 					if (shouldFlipY == true || shouldFlipX == true) {
 						Brick brick2 = brick.hitBrick();
-						if(brick2.getHitCount()==brick.getHitResistance()){
+						if (brick2.getHitCount() == brick.getHitResistance()) {
 							destroyedBricks.add(brick);
-						}
-						else{
-							brick2=brick2.chisel();
+						} else {
+							brick2 = brick2.chisel();
 							bricks.add(brick2);
 							bricks.remove(brick);
 						}
@@ -219,14 +231,16 @@ public class GameBoardModel {
 		if (ball.getBottomLeftCoordinate().getY() < bat.getTopLeftCoordinate().getY()) {
 			canUseBat = true;
 		}
+		nextBall = null;
 	}
-	//Update Ball End
+	// Update Ball End
 
 	public void updateAll() {
-		//double oldBallX = ball.getCenterCoordinate().getX();
+		// double oldBallX = ball.getCenterCoordinate().getX();
 		updateBallAndDestroyBricks();
 		updateBricks();
-		//bat = bat.createMove(ball.getCenterCoordinate().getX() - oldBallX, 0, bat.getType());
+		// bat = bat.createMove(ball.getCenterCoordinate().getX() - oldBallX, 0,
+		// bat.getType());
 		// bat.getType());
 	}
 

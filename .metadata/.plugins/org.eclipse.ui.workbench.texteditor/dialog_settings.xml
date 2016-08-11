@@ -6,20 +6,20 @@
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="lsm.getButtons()" key="selection"/>
+		<item value="new" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="package gameComponenets;"/>
+			<item value="new"/>
+			<item value="Audio"/>
 			<item value="buttonArray"/>
 			<item value="buttonangle"/>
 			<item value="rect"/>
 			<item value="Button r"/>
 			<item value="Rectangle"/>
-			<item value="5"/>
-			<item value="updatebr"/>
-			<item value="alive"/>
 		</list>
 		<list key="replacehistory">
 			<item value="lsm.getButtons()"/>

@@ -2,10 +2,9 @@ package application;
 
 import gameComponenets.Coordinate;
 import gameComponenets.GameBoardModel;
-import gameComponenets.JavaCollisionDetector;
-import gameComponenets.RectangleType;
 import gameComponenets.Button;
 import gameComponenets.Variables;
+
 public class LevelsScreenModel {
 	private int numButtonRows;
 	private int numButtonColumns;
@@ -24,8 +23,8 @@ public class LevelsScreenModel {
 		buttonGapH = (Variables.getWIDTH() - (buttonSize * numButtonColumns)) / (numButtonColumns + 1);
 		buttonGapV = (Variables.getHEIGHT() - (buttonSize * numButtonRows)) / (numButtonRows + 1);
 
-		brickRowHeight = buttonSize+buttonGapV;
-		brickColumnWidth = buttonSize+buttonGapH;
+		brickRowHeight = buttonSize + buttonGapV;
+		brickColumnWidth = buttonSize + buttonGapH;
 
 		arrayButtons = new Button[numButtonColumns][numButtonRows];
 
@@ -34,15 +33,15 @@ public class LevelsScreenModel {
 			for (int row = 0; row < numButtonRows; row++) {
 				int finalCount = count;
 				Button b = new Button(
-						new Coordinate(row * brickColumnWidth + (buttonGapH+5), column* brickRowHeight + buttonGapH),
-						buttonSize, buttonSize, new Runnable(){
+						new Coordinate(row * brickColumnWidth + (buttonGapH + 5), column * brickRowHeight + buttonGapH),
+						buttonSize, buttonSize, new Runnable() {
 							@Override
 							public void run() {
 								System.out.println("Directing you to: " + finalCount);
 							}
 
 						});
-				count+=1;
+				count += 1;
 				arrayButtons[column][row] = b;
 			}
 		}
@@ -52,4 +51,3 @@ public class LevelsScreenModel {
 		return arrayButtons;
 	}
 }
-

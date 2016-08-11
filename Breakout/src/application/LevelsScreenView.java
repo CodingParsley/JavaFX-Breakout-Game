@@ -15,26 +15,18 @@ public class LevelsScreenView extends Application {
 	private LevelsScreenModel lsm;
 
 	public LevelsScreenView(LevelsScreenModel lsm) {
-		this.lsm=lsm;
+		this.lsm = lsm;
 		layout = new Pane();
 	}
-	public void drawArrayOfButtons(){
+
+	public void drawArrayOfButtons() {
 		for (int column = 0; column < lsm.getButtons().length; column++) {
 
 			for (int row = 0; row < lsm.getButtons()[column].length; row++) {
 
 				gameComponenets.Button b = lsm.getButtons()[column][row];
-//				Optional<Node> graphicalRectNode = layout.getChildren()
-//						.stream()
-//						.filter(n -> n instanceof Rectangle)
-//						.filter(n -> n.getId().equals(Integer.toString(b.getId()))).findFirst();
-//				Rectangle graphicalRect = null;
-//				if (graphicalRectNode.isPresent()) {
-//					graphicalRect = (Rectangle) (graphicalRectNode.get());
-//				} else {
-					Rectangle graphicalRect = new Rectangle();
-					layout.getChildren().add(graphicalRect);
-				//}
+				Rectangle graphicalRect = new Rectangle();
+				layout.getChildren().add(graphicalRect);
 				// If statements are here for making the rectangle graphical
 
 				graphicalRect.setId(Integer.toString(b.getId()));

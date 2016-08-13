@@ -1,0 +1,12 @@
+package application;
+
+import javafx.event.ActionEvent;
+import javafx.scene.Node;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+
+public class DumbController{
+	public void hitPlay(ActionEvent event) {
+		System.out.println("HI");
+	}
+}

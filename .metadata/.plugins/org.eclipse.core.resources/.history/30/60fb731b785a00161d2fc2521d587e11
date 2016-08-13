@@ -1,8 +1,0 @@
-package application;
-
-public interface IRectangle {
-	int id;
-	public int getId() {
-		return id;
-	}
-}

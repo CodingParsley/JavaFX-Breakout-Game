@@ -6,30 +6,30 @@
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="new" key="selection"/>
+		<item value="Audi" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="package gameComponenets;"/>
-			<item value="new"/>
-			<item value="Audio"/>
-			<item value="buttonArray"/>
-			<item value="buttonangle"/>
-			<item value="rect"/>
-			<item value="Button r"/>
-			<item value="Rectangle"/>
+			<item value="AUdi"/>
+			<item value="hit"/>
+			<item value="brick"/>
+			<item value="this.ball"/>
+			<item value="hitb"/>
+			<item value="adjusted=true;"/>
+			<item value="100"/>
+			<item value="ball = ball.setPosition"/>
 		</list>
 		<list key="replacehistory">
-			<item value="lsm.getButtons()"/>
-			<item value="Button"/>
-			<item value="button"/>
-			<item value="Button b"/>
+			<item value="currentBrick"/>
+			<item value="xAdjustment"/>
+			<item value="number"/>
 			<item value=""/>
-			<item value="l3"/>
-			<item value="level2"/>
-			<item value="levels.level1"/>
+			<item value="r2"/>
+			<item value="r1Line"/>
+			<item value="TheController.getBoardHeight()"/>
+			<item value="TheController.getBoardWidth()"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">

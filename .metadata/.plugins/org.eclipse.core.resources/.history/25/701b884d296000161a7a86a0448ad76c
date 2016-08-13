@@ -1,0 +1,49 @@
+package gameComponents;
+
+import java.awt.geom.Line2D;
+
+public class JavaCollisionDetector implements ICollisionDetector {
+	@Override
+	public boolean intersects(LineSegment one, LineSegment two) {
+		Line2D line1 = new Line2D.Double(one.getA().getX(), one.getA().getY(), one.getB().getX(), one.getB().getY());
+		Line2D line2 = new Line2D.Double(two.getA().getX(), two.getA().getY(), two.getB().getX(), two.getB().getY());
+		boolean result = line2.intersectsLine(line1);
+		return result;
+	}
+
+	public boolean forseenCenterIntersects(Ball ball, LineSegment r2Line){
+		//This method will continuously call the ball.nextBall() method untill its center coordinate hypothetically collides with
+		//the other bricks center coordinate if the center coordinate collision intersects and the linesegment parameters intersect, then it
+		//will return true
+		int count =0;
+		Ball nextBall = ball.getMove();
+		LineSegment ballLine = new LineSegment(new Coordinate(ball.getCenterCoordinate().getX(),ball.getCenterCoordinate().getY()),
+				new Coordinate(nextBall.getCenterCoordinate().getX(),nextBall.getCenterCoordinate().getY()));
+		Line2D rectLine = new Line2D.Double(r2Line.getA().getX(), r2Line.getA().getY(), r2Line.getB().getX(), r2Line.getB().getY());
+
+		do{
+			//Check to see if rectangles centers collide and if they do, check linesegment intersection. If both true return true, otherwise if
+			//Neither do, ball = nextBall() but if the centers collide and thats it, return false
+			if(intersects(ballLine,r2Line)){
+				return true;
+			}
+			else{
+				ball = nextBall;
+			}
+			count++;
+
+		}while(count<10);
+		return false;
+
+	}
+
+	public boolean basicIntersects(Rectangle r1, Rectangle r2) {
+		if (r1.getTopLeftCoordinate().getX() < r2.getTopLeftCoordinate().getX() + r2.getWidth()
+				&& r1.getTopLeftCoordinate().getX() + r1.getWidth() > r2.getTopLeftCoordinate().getX()
+				&& r1.getTopLeftCoordinate().getY() < r2.getTopLeftCoordinate().getY() + r2.getHeight()
+				&& r1.getHeight() + r1.getTopLeftCoordinate().getY() > r2.getTopLeftCoordinate().getY()) {
+			return true;
+		} else
+			return false;
+	}
+}

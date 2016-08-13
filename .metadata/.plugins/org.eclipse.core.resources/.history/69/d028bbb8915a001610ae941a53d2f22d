@@ -1,7 +1,0 @@
-package application;
-
-public interface IRectangle {
-	public int getId();
-	public Coordinate getUpperLeft();
-	public Coordinate getBottomRight();
-}

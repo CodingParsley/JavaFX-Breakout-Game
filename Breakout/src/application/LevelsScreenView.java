@@ -6,8 +6,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.application.Application;
 
-import gameComponenets.Variables;
-
 public class LevelsScreenView extends Application {
 	private Stage window;
 	private Scene scene;
@@ -24,7 +22,7 @@ public class LevelsScreenView extends Application {
 
 			for (int row = 0; row < lsm.getButtons()[column].length; row++) {
 
-				gameComponenets.Button b = lsm.getButtons()[column][row];
+				gameComponents.Button b = lsm.getButtons()[column][row];
 				Rectangle graphicalRect = new Rectangle();
 				layout.getChildren().add(graphicalRect);
 				// If statements are here for making the rectangle graphical
@@ -45,7 +43,7 @@ public class LevelsScreenView extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		window = primaryStage;
 		window.setResizable(false);
-		scene = new Scene(layout, Variables.getWIDTH(), Variables.getHEIGHT());
+		scene = new Scene(layout, TheController.getBoardWidth(), TheController.getBoardHeight());
 		window.setScene(scene);
 		window.show();
 	}

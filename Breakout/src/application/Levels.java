@@ -1,11 +1,12 @@
 package application;
 
-import gameComponenets.GameBoardModel;
-import gameComponenets.JavaCollisionDetector;
+import gameComponents.GameBoardModel;
+import gameComponents.JavaCollisionDetector;
 
 public class Levels {
 	JavaCollisionDetector jcd = new JavaCollisionDetector();
-	public GameBoardModel level1 = new GameBoardModel(500, // Screen Width
+	GameBoardModel level1 = new GameBoardModel(1,
+			500, // Screen Width
 			500, // Screen Height
 			50, // Brick Height
 			30, // Horizontal Brick Gap
@@ -19,7 +20,8 @@ public class Levels {
 			1, // Ball Speed
 			jcd);
 
-	GameBoardModel level2 = new GameBoardModel(500, // Screen Width
+	GameBoardModel level2 = new GameBoardModel(2,
+			500, // Screen Width
 			500, // Screen Height
 			50, // Brick Height
 			30, // Horizontal Brick Gap
@@ -32,17 +34,18 @@ public class Levels {
 			8, // Bat Speed
 			1, // Ball Speed
 			jcd);
-	GameBoardModel level3 = new GameBoardModel(500, // Screen Width
+	GameBoardModel level3 = new GameBoardModel(3,
+			500, // Screen Width
 			500, // Screen Height
-			40, // Brick Height
-			0, // Horizontal Brick Gap
-			0, // Vertical Brick Gap
-			30, // Gap above bricks
-			10, // # of Columns
-			2, // # of Rows
+			80, // Brick Height
+			30, // Horizontal Brick Gap
+			40, // Vertical Brick Gap
+			70, // Gap above bricks
+			7, // # of Columns
+			4, // # of Rows
 			100, // Bat Width
 			20, // Bat Height
 			8, // Bat Speed
-			0.1, // Ball Speed
+			4, // Ball Speed
 			jcd);
 }

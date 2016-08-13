@@ -34,3 +34,36 @@
 1470714296190	Rename local variable 'r'
 1470719878883	Delete element
 1470773772890	Delete element
+1470947217096	Rename method 'getWIDTH'
+1470947230235	Rename method 'getHEIGHT'
+1470947792646	Rename field 'view'
+1470947809705	Rename field 'levels'
+1470951669246	Rename method 'play'
+1470951706421	Rename type 'GameController'
+1470951876995	Rename method 'goToPlayScreen'
+1470952143475	Delete element
+1470952467409	Rename local variable 'b'
+1470952548625	Rename type 'GameView'
+1470952564223	Move compilation unit
+1470952591013	Delete element
+1470953346162	Rename package 'gameComponenets'
+1470957851777	Delete element
+1470958346284	Rename field 'subtractionAmount'
+1470963485186	Rename local variable 'r1Ball'
+1470963491003	Rename local variable 'נall'
+1470977070064	Rename local variable 'r2Line'
+1470978265086	Rename local variable 'trueBall'
+1471120800119	Rename field 'number'
+1471120812573	Rename field 'counter'
+1471120823269	Rename field 'adjusted'
+1471125214677	Rename method 'updateBallAndDestroyBricks'
+1471125458307	Rename method 'n'
+1471127190782	Rename method 'calculateBallAndDestroyBricks'
+1471128790103	Move file
+1471128804470	Move file
+1471129016789	Delete element
+1471129248001	Rename type 'StartScreenBoardModel'
+1471129403684	Rename type 'StartScreenModel'
+1471130442105	Rename field 'b'
+1471130561790	Delete element
+1471131095672	Rename field 'play'

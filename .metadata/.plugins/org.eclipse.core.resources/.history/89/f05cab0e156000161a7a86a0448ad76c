@@ -1,0 +1,15 @@
+package gameComponents;
+
+public class Variables {
+	private static int BOARD_WIDTH = 510;
+	private static int BOARD_HEIGHT = 590;
+
+	public static int getWidth() {
+		return BOARD_WIDTH;
+	}
+
+	public static int getHeight() {
+		return BOARD_HEIGHT;
+	}
+
+}

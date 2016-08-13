@@ -54,7 +54,7 @@
 	</section>
 	<section name="FatJarPackageWizard">
 		<item value="C:\Users\Justin\Desktop\Breakout" key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION"/>
-		<item value="StartScreenController - Breakout" key="FatJarPackageWizardPage.LAUNCH_CONFIGURATION_SELECTION_NAME"/>
+		<item value="GameRunner - Breakout" key="FatJarPackageWizardPage.LAUNCH_CONFIGURATION_SELECTION_NAME"/>
 		<item value="C:\Users\Justin\Documents\BreakoutVersion1.jar" key="FatJarPackageWizardPage.DESTINATION_PATH_SELECTION"/>
 		<item value="false" key="FatJarPackageWizardPage.ANTSCRIPT_SAVE"/>
 		<item value="1" key="FatJarPackageWizardPage.LIBRARY_HANDLING"/>
@@ -71,6 +71,8 @@
 		<item value="false" key="Comments"/>
 		<item value="1" key="VisibilityModifier"/>
 		<item value="false" key="FinalModifier"/>
+	</section>
+	<section name="BreadcrumbItemDropDown">
 	</section>
 	<section name="RenameInformationPopup">
 	</section>

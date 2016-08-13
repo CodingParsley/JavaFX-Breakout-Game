@@ -1,14 +1,12 @@
 package application;
 
-import gameComponenets.Coordinate;
-import gameComponenets.GameBoardModel;
-import gameComponenets.Button;
-import gameComponenets.Variables;
+import gameComponents.Button;
+import gameComponents.Coordinate;
 
 public class LevelsScreenModel {
 	private int numButtonRows;
 	private int numButtonColumns;
-	private GameBoardModel selectedLevel;
+	private int selectedLevelNum;
 	private int buttonGapH;
 	private int buttonGapV;
 	private int brickRowHeight;
@@ -20,8 +18,8 @@ public class LevelsScreenModel {
 		this.numButtonColumns = columns;
 		int count = 1;
 
-		buttonGapH = (Variables.getWIDTH() - (buttonSize * numButtonColumns)) / (numButtonColumns + 1);
-		buttonGapV = (Variables.getHEIGHT() - (buttonSize * numButtonRows)) / (numButtonRows + 1);
+		buttonGapH = (TheController.getBoardWidth() - (buttonSize * numButtonColumns)) / (numButtonColumns + 1);
+		buttonGapV = (TheController.getBoardHeight() - (buttonSize * numButtonRows)) / (numButtonRows + 1);
 
 		brickRowHeight = buttonSize + buttonGapV;
 		brickColumnWidth = buttonSize + buttonGapH;
@@ -37,11 +35,12 @@ public class LevelsScreenModel {
 						buttonSize, buttonSize, new Runnable() {
 							@Override
 							public void run() {
-								System.out.println("Directing you to: " + finalCount);
+								selectedLevelNum=finalCount;
+								System.out.println("You have selected: " + selectedLevelNum);
 							}
 
 						});
-				count += 1;
+				count++;
 				arrayButtons[column][row] = b;
 			}
 		}
@@ -50,4 +49,8 @@ public class LevelsScreenModel {
 	public Button[][] getButtons() {
 		return arrayButtons;
 	}
+	public int getSelectedLevelNum() {
+		return selectedLevelNum;
+	}
+
 }

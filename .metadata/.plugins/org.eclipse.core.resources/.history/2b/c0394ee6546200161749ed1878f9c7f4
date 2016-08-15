@@ -1,0 +1,29 @@
+package tests;
+
+import static org.junit.Assert.*;
+import gameComponents.*;
+
+import org.junit.Test;
+
+public class GameModelTests {
+
+	@Test
+	public void stringEqualsTest() {
+		String s = "hi";
+		assertTrue(s=="hi");
+	}
+
+	@Test
+	public void equalsIsCaseSensitive(){
+		String zebra = "Zebra";
+		assertTrue(zebra.contains("z"));
+	}
+
+	@Test
+	public void intersectionTest(){
+		Ball b = new Ball(new Coordinate(0,0), 10, 10, double speed, double angleOfMovement,
+				RectangleType type);
+	}
+
+
+}

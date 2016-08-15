@@ -1,0 +1,32 @@
+package tests;
+
+import static org.junit.Assert.*;
+import gameComponents.*;
+
+import org.junit.Test;
+
+public class GameModelTests {
+
+	@Test
+	public void stringEqualsTest() {
+		String s = "hi";
+		assertTrue(s=="hi");
+	}
+
+	@Test
+	public void equalsIsCaseSensitive(){
+		String zebra = "Zebra";
+		assertTrue(zebra.contains("z"));
+	}
+
+	@Test
+	public void intersectionTest(){
+		Ball ball = new Ball(new Coordinate(0,0), 10, 10, 1,Math.toDegrees(180),
+				RectangleType.Ball);
+		Brick brick = new Brick(new Coordinate(50,50), new Coordinate(100,100), RectangleType.RegularBrick, 0, 1);
+		FlipDirection result = GameBoardModel.calculateFlipDirection(ball, brick);
+		assertEquals(FlipDirection.flipX,result);
+	}
+
+
+}

@@ -1,0 +1,28 @@
+package tests;
+
+import static org.junit.Assert.*;
+import gameComponents.*;
+
+import org.junit.Test;
+
+public class ArrayIntListTest {
+
+	@Test
+	public void stringEqualsTest() {
+		String s = "hi";
+		assertTrue(s=="hi");
+	}
+
+	@Test
+	public void equalsIsCaseSensitive(){
+		String zebra = "Zebra";
+		assertTrue(zebra.contains("z"));
+	}
+
+	@Test
+	public void flipsX(){
+
+	}
+
+
+}

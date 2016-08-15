@@ -6,27 +6,8 @@ import java.util.Optional;
 import application.TheController;
 
 public class GameBoardModel {
-	private Ball yAdjustment;
-	private Ball xAdjustment;
-	private Ball nextBall;
-	private Brick currentBrick;
-	private LineSegment ballPathTopLeft;
-	private LineSegment ballPathTopRight;
-	private LineSegment ballPathBottomLeft;
-	private LineSegment ballPathBottomRight;
-	private LineSegment ballPathCenter;
-
-	private boolean hitBat = false;
 	private boolean canUseBat = true;
-	private boolean hitBrick= false;
-	private boolean shouldFlipX = false;
-	private boolean shouldFlipY = false;
-
-	private int xScore;
-	private int yScore;
 	private int waitTimeAfterBrickCollision = 3;
-	private int brickCollisionCounter = waitTimeAfterBrickCollision;
-
 	private int levelNum;
 	private final double LEFT_ANGLE_LIMIT = -35;
 	private final double RIGHT_ANGLE_LIMIT = -150;
@@ -39,9 +20,8 @@ public class GameBoardModel {
 	private int brickWidth;
 	private Rectangle windowRectangle;
 	private Rectangle bat;
-	private Ball ball;
+	private LinkedList<Ball> balls = new LinkedList<Ball>();
 	private LinkedList<Brick> bricks = new LinkedList<Brick>();
-	private LinkedList<Brick> destroyedBricks = new LinkedList<Brick>();
 	private ICollisionDetector detector;
 
 	public GameBoardModel(int levelNum, int width, int height, int brickRowHeight, int brickGapH, int brickGapV,
@@ -66,7 +46,7 @@ public class GameBoardModel {
 				Brick r = new Brick(
 						new Coordinate(4 + (column * columnWidth) + (brickGapH / 2),
 								(row * brickRowHeight) + gapAboveBricks),
-						brickWidth, brickHeight, RectangleType.Brick, 0, 2);
+						brickWidth, brickHeight, RectangleType.Twohit2, 0, 2);
 				bricks.add(r);
 			}
 		}
@@ -74,8 +54,10 @@ public class GameBoardModel {
 		Coordinate batUL = new Coordinate((TheController.getBoardWidth() - BAT_WIDTH) / 2,
 				(TheController.getBoardHeight() - BAT_HEIGHT - 30));
 		bat = new Rectangle(batUL, BAT_WIDTH, BAT_HEIGHT, RectangleType.Bat);
-		ball = new Ball(new Coordinate(TheController.getBoardWidth() / 2, TheController.getBoardHeight() / 2), 10, 10,
-				BALL_SPEED, Math.toRadians(75), RectangleType.Ball);
+		balls.add(new Ball(new Coordinate(TheController.getBoardWidth() / 2, TheController.getBoardHeight() / 2), 10, 10,
+				BALL_SPEED, Math.toRadians(285), RectangleType.Ball));
+		balls.add(new Ball(new Coordinate(TheController.getBoardWidth() / 2, TheController.getBoardHeight() / 2), 10, 10,
+				BALL_SPEED, Math.toRadians(185), RectangleType.Ball));
 	}
 
 	// This method is for manually adding bricks so that they do not have to be
@@ -98,132 +80,146 @@ public class GameBoardModel {
 	}
 
 	public void updateBricks() {
-		if(currentBrick!=null&&hitBrick==true){
-		Brick brick2 = currentBrick.hitBrick();
-		if (brick2.getHitCount() == currentBrick.getHitResistance()) {
-			destroyedBricks.add(currentBrick);
-		} else {
-			brick2 = brick2.chisel();
-			bricks.add(brick2);
-			bricks.remove(currentBrick);
-		}
-		hitBrick=false;
-		}
-		for (Brick brick : destroyedBricks) {
-			bricks.remove(brick);
-			bricks.add(brick.kill());
-			destroyedBricks.remove(brick);
+		for (Ball ball : balls) {
+			if (ball.getBrickItHit() != null && ball.didHitBrick() == true) {
+				if (ball.getBrickItHit().hitBrick().getHitCount() == ball.getBrickItHit().getHitResistance()) {
+					bricks.add(ball.getBrickItHit().kill());
+				} else {
+					bricks.add(ball.getBrickItHit().hitBrick());
+				}
+			}
+			bricks.remove(ball.getBrickItHit());
+			ball.setHitBrick(false);
 		}
 	}
 
 	// Updating Ball and Destroying bricks
 
 	public void calculateBall() {
-		nextBall = ball.getMove();
-		ballPathCenter = new LineSegment(ball.getCenterCoordinate(), nextBall.getCenterCoordinate());
-		ballPathTopLeft = new LineSegment(ball.getTopLeftCoordinate(), nextBall.getTopLeftCoordinate());
-		ballPathBottomRight = new LineSegment(ball.getBottomRightCoordinate(), nextBall.getBottomRightCoordinate());
-		ballPathTopRight = new LineSegment(ball.getTopRightCoordinate(), nextBall.getTopRightCoordinate());
-		ballPathBottomLeft = new LineSegment(ball.getBottomLeftCoordinate(), nextBall.getBottomLeftCoordinate());
+		LinkedList<Ball> ballsCopy = (LinkedList<Ball>) balls.clone();
+		for (Ball ball : ballsCopy) {
+			Ball nextBall = ball.getMove();
+			//LineSegment ballPathCenter = new LineSegment(ball.getCenterCoordinate(), nextBall.getCenterCoordinate());
+			LineSegment ballPathTopLeft = new LineSegment(ball.getTopLeftCoordinate(), nextBall.getTopLeftCoordinate());
+			LineSegment ballPathBottomRight = new LineSegment(ball.getBottomRightCoordinate(),
+					nextBall.getBottomRightCoordinate());
+			LineSegment ballPathTopRight = new LineSegment(ball.getTopRightCoordinate(),
+					nextBall.getTopRightCoordinate());
+			LineSegment ballPathBottomLeft = new LineSegment(ball.getBottomLeftCoordinate(),
+					nextBall.getBottomLeftCoordinate());
 
-		hitBat = false;
-		shouldFlipX = detector.intersects(ballPathTopLeft, windowRectangle.getLeftLineSegment())
-				|| detector.intersects(ballPathTopRight, windowRectangle.getRightLineSegment());
-		shouldFlipY = detector.intersects(ballPathTopRight, windowRectangle.getTopLineSegment())
-		// || detector.intersects(ballPath,
-		// windowRectangle.getBottomLineSegment())
-		;
-		Optional<Double> r = bricks.stream().map(i -> i.getBottomRightCoordinate().getY()).max(Double::compare);
-		// Variables that will let the ball know what new object to be
+			//ball=ball.setHitBat(false);
+			if(detector.intersects(ballPathTopLeft, windowRectangle.getLeftLineSegment())
+					|| detector.intersects(ballPathTopRight, windowRectangle.getRightLineSegment())
+					|| detector.intersects(ballPathBottomRight, windowRectangle.getRightLineSegment())
+					|| detector.intersects(ballPathBottomLeft, windowRectangle.getLeftLineSegment())){
+				balls.add(ball.flipXDirection());
+				balls.remove(ball);
+			}
 
-		// If Ball made a collision with the bat, then the bat will not be able
-		// to cause collision untill ball is above bat's topLeftY coordinate
+			if(detector.intersects(ballPathTopRight, windowRectangle.getTopLineSegment())
+					|| detector.intersects(ballPathTopLeft, windowRectangle.getTopLineSegment())){
+				balls.add(ball.flipYDirection());
+				balls.remove(ball);
+			}
 
-		// Bat collision detection
-		if (shouldFlipX == false && shouldFlipY == false
-				&&
-				(detector.intersects(ballPathBottomRight, bat.getTopLineSegment())||
-				detector.intersects(ballPathBottomLeft, bat.getTopLineSegment()))
-				&& canUseBat == true) {
-			shouldFlipY = true;
-			hitBat = true;
-			canUseBat = false;
-		}
-		else if (shouldFlipX == false && shouldFlipY == false && detector.basicIntersects(ball, bat) && canUseBat == true) {
-			System.out.println("XANDY");
-			shouldFlipX = true;
-			shouldFlipY = true;
-			hitBat = true;
-			canUseBat = false;
-		}
-		// Bat collision detection end
+			Optional<Double> r = bricks.stream().map(i -> i.getBottomRightCoordinate().getY()).max(Double::compare);
+			// Variables that will let the ball know what new object to be
 
-		// Brick collision detection
-		else if (shouldFlipX == false && shouldFlipY == false
-				&& ball.getTopLeftCoordinate().getY() <= r.get() + waitTimeAfterBrickCollision * ball.getSpeed()) {
-			if (brickCollisionCounter >= waitTimeAfterBrickCollision) {
-				for (Brick brick : bricks) {
-					if (brick.isAlive() && detector.basicIntersects(nextBall, brick)) {
-						xScore = xScore(brick, ball, nextBall);
-						yScore = yScore(brick, ball, nextBall);
-						if (xScore > yScore) {
-							shouldFlipX = true;
+			// If Ball made a collision with the bat, then the bat will not be
+			// able
+			// to cause collision untill ball is above bat's topLeftY coordinate
 
-						} else if (yScore > xScore) {
-							shouldFlipY = true;
+			// Bat collision detection
+			if (detector.basicIntersects(ball, bat)) {
+				//ball=ball.shouldFlipY();
+				balls.add(ball.flipYDirection());
+				balls.remove(ball);
+				//ball=ball.setHitBat(true);
+				canUseBat = false;
+			}
+			// Bat collision detection end
 
-						} else if (xScore == yScore) {
-							System.out.println("XY");
-							shouldFlipX = true;
-							shouldFlipY = true;
+			// Brick collision detection
+			if (true) {
+				if (true) {
+					for (Brick brick : bricks) {
+						if (brick.isAlive() && detector.basicIntersects(nextBall, brick)) {
+							int xScore = xScore(brick, ball, nextBall);
+							int yScore = yScore(brick, ball, nextBall);
+							if (xScore > yScore) {
+								//ball = ball.shouldFlipX();
+								balls.add(ball.flipXDirection());
+								balls.remove(ball);
+
+							} else if (yScore > xScore) {
+								//ball = ball.shouldFlipY();
+								balls.add(ball.flipYDirection());
+								balls.remove(ball);
+
+							} else if (xScore == yScore) {
+								System.out.println("XY");
+								balls.add(ball.flipYDirection().flipXDirection());
+								balls.remove(ball);
+							}
+//							ball=ball.setBrickCollisionCounter(0);
+//							ball=ball.setBrickItHit(brick);
+//							ball=ball.setHitBrick(true);
+//							ball=ball.setScore(xScore, yScore);
 						}
-						brickCollisionCounter = 0;
-						currentBrick=brick;
-						hitBrick=true;
 					}
-				}
 
+				}
 			}
 		}
 	}
+
 	// Brick collision detection end
+	// Move balls to new positions
+	public void moveBalls() {
+		LinkedList<Ball> ballsCopy = (LinkedList<Ball>) balls.clone();
+		for (Ball ball : ballsCopy) {
+			if (ball.getShouldFlipX() == false && ball.getShouldFlipY() == false) {
+				//ball = ball.getMove();
+				balls.add(ball.getMove());
+				balls.remove(ball);
+//				ball = ball.getMove();
+//				ball=ball.setBrickCollisionCounter(ball.getBrickCollisionCounter() + 1);
+//				if (ball.getBrickCollisionCounter() > waitTimeAfterBrickCollision) {
+//					ball=ball.setBrickCollisionCounter(waitTimeAfterBrickCollision);
+//				}
 
-	// Move ball to new position
-	public void moveBall() {
-		if (shouldFlipX == false && shouldFlipY == false) {
-			ball = nextBall;
-			brickCollisionCounter++;
-			if (brickCollisionCounter > waitTimeAfterBrickCollision) {
-				brickCollisionCounter = waitTimeAfterBrickCollision;
-			}
-
-		} else {
-			if (shouldFlipY == true && hitBat == true) {
-				// Angle limit is between -160 and +160
-				// For every 1% offset, the ball should move 1 degree
-				ball = ball.flipYDirection().changeAngleDegrees(ball.calculatePercentageOffsetWith(bat));
-
-				if (ball.getAngleInDegrees() > LEFT_ANGLE_LIMIT) {
-					ball = ball.setAngleInDegrees(LEFT_ANGLE_LIMIT);
-				} else if (ball.getAngleInDegrees() < RIGHT_ANGLE_LIMIT) {
-					ball = ball.setAngleInDegrees(RIGHT_ANGLE_LIMIT);
-				}
 			} else {
-				if(xScore>yScore&&hitBrick==true){
-					ball=xAdjustment;
+				if (ball.getShouldFlipY() == true && ball.getHitBat()==true) {
+					System.out.println("NYAH");
+					// Angle limit is between -160 and +160
+					// For every 1% offset, the ball should move 1 degree
+					ball = ball.flipYDirection().changeAngleDegrees(ball.calculatePercentageOffsetWith(bat));
+					System.out.println("SOMETHING");
+
+					if (ball.getAngleInDegrees() > LEFT_ANGLE_LIMIT) {
+						ball = ball.setAngleInDegrees(LEFT_ANGLE_LIMIT);
+					} else if (ball.getAngleInDegrees() < RIGHT_ANGLE_LIMIT) {
+						ball = ball.setAngleInDegrees(RIGHT_ANGLE_LIMIT);
+					}
+				} else {
+					if (ball.getXScore() > ball.getYScore() && ball.didHitBrick() == true) {
+						ball = ball.getXAdjustment();
+					} else if (ball.getYScore() > ball.getXScore() && ball.didHitBrick() == true) {
+						ball = ball.getYAdjustment();
+					}
+					if (ball.getShouldFlipX() == true) {
+						balls.add(ball.flipXDirection());
+						balls.remove(ball);
+					}
+					if (ball.getShouldFlipY() == true) {
+						System.out.println("UGDI");
+						ball = ball.flipYDirection();
+					}
 				}
-				else if(yScore>xScore&&hitBrick==true){
-					ball=yAdjustment;
+				if (ball.getBottomLeftCoordinate().getY() < bat.getTopLeftCoordinate().getY()) {
+					canUseBat = true;
 				}
-				if (shouldFlipX == true) {
-					ball = ball.flipXDirection();
-				}
-				if (shouldFlipY == true) {
-					ball = ball.flipYDirection();
-				}
-			}
-			if (ball.getBottomLeftCoordinate().getY() < bat.getTopLeftCoordinate().getY()) {
-				canUseBat = true;
 			}
 		}
 	}
@@ -232,7 +228,7 @@ public class GameBoardModel {
 
 	public void updateAll() {
 		calculateBall();
-		moveBall();
+		moveBalls();
 		updateBricks();
 	}
 
@@ -240,9 +236,10 @@ public class GameBoardModel {
 		return bat;
 	}
 
-	public Rectangle getBall() {
-		return ball;
+	public LinkedList<Ball> getBalls() {
+		return balls;
 	}
+
 
 	public LinkedList<Brick> getBricks() {
 		return new LinkedList<Brick>(this.bricks);
@@ -253,95 +250,92 @@ public class GameBoardModel {
 	}
 
 	public int yScore(Brick brick, Ball ball, Ball nextBall) {
-		boolean adjustedBall = false;
-		yAdjustment = ball;
+		JavaCollisionDetector detector = new JavaCollisionDetector();
+		ball.setAdjustments(ball, ball.getXAdjustment());
 		int count = 0;
+
+		LineSegment ballPathCenter = new LineSegment(ball.getCenterCoordinate(), nextBall.getCenterCoordinate());
+		LineSegment ballPathTopLeft = new LineSegment(ball.getTopLeftCoordinate(), nextBall.getTopLeftCoordinate());
+		LineSegment ballPathBottomRight = new LineSegment(ball.getBottomRightCoordinate(),
+				nextBall.getBottomRightCoordinate());
+		LineSegment ballPathTopRight = new LineSegment(ball.getTopRightCoordinate(), nextBall.getTopRightCoordinate());
+		LineSegment ballPathBottomLeft = new LineSegment(ball.getBottomLeftCoordinate(),
+				nextBall.getBottomLeftCoordinate());
+
 		if (detector.intersects(ballPathTopLeft, brick.getTopLineSegment())) {
-			if (ball.getBottomLeftCoordinate().getY() >= brick.getTopLeftCoordinate().getY() && adjustedBall == false) {
-				yAdjustment = ball.setPosition(ball.getTopLeftCoordinate().getX(),
-						(brick.getTopLeftCoordinate().getY() - ball.getHeight() - 0.1));
-				adjustedBall = true;
+			if (ball.getBottomLeftCoordinate().getY() >= brick.getTopLeftCoordinate().getY()) {
+				ball.setAdjustments(ball.setPosition(ball.getTopLeftCoordinate().getX(),
+						(brick.getTopLeftCoordinate().getY() - ball.getHeight() - 0.1)), ball.getXAdjustment());
 
 			}
 			count++;
 		}
 		if (detector.intersects(ballPathBottomRight, brick.getTopLineSegment())) {
-			if (ball.getBottomLeftCoordinate().getY() >= brick.getTopLeftCoordinate().getY() && adjustedBall == false) {
-				yAdjustment = ball.setPosition(ball.getTopLeftCoordinate().getX(),
-						(brick.getTopLeftCoordinate().getY() - ball.getHeight() - 0.1));
-				adjustedBall = true;
-
+			if (ball.getBottomLeftCoordinate().getY() >= brick.getTopLeftCoordinate().getY()) {
+				ball.setAdjustments(ball.setPosition(ball.getTopLeftCoordinate().getX(),
+						(brick.getTopLeftCoordinate().getY() - ball.getHeight() - 0.1)), ball.getXAdjustment());
 			}
 			count++;
 		}
 		if (detector.intersects(ballPathTopRight, brick.getTopLineSegment())) {
-			if (ball.getBottomLeftCoordinate().getY() >= brick.getTopLeftCoordinate().getY() && adjustedBall == false) {
-				yAdjustment = ball.setPosition(ball.getTopLeftCoordinate().getX(),
-						(brick.getTopLeftCoordinate().getY() - ball.getHeight() - 0.1));
-				adjustedBall = true;
+			if (ball.getBottomLeftCoordinate().getY() >= brick.getTopLeftCoordinate().getY()) {
+				ball.setAdjustments(ball.setPosition(ball.getTopLeftCoordinate().getX(),
+						(brick.getTopLeftCoordinate().getY() - ball.getHeight() - 0.1)), ball.getXAdjustment());
 			}
 			count++;
 		}
 		if (detector.intersects(ballPathBottomLeft, brick.getTopLineSegment())) {
-			if (ball.getBottomLeftCoordinate().getY() >= brick.getTopLeftCoordinate().getY() && adjustedBall == false) {
-				yAdjustment = ball.setPosition(ball.getTopLeftCoordinate().getX(),
-						(brick.getTopLeftCoordinate().getY() - ball.getHeight() - 0.1));
-				adjustedBall = true;
+			if (ball.getBottomLeftCoordinate().getY() >= brick.getTopLeftCoordinate().getY()) {
+				ball.setAdjustments(ball.setPosition(ball.getTopLeftCoordinate().getX(),
+						(brick.getTopLeftCoordinate().getY() - ball.getHeight() - 0.1)), ball.getXAdjustment());
 
 			}
 			count++;
 		}
 		if (detector.intersects(ballPathCenter, brick.getTopLineSegment())) {
-			if (ball.getBottomLeftCoordinate().getY() >= brick.getTopLeftCoordinate().getY() && adjustedBall == false) {
-				yAdjustment = ball.setPosition(ball.getTopLeftCoordinate().getX(),
-						(brick.getTopLeftCoordinate().getY() - ball.getHeight() - 0.1));
-				adjustedBall = true;
+			if (ball.getBottomLeftCoordinate().getY() >= brick.getTopLeftCoordinate().getY()) {
+				ball.setAdjustments(ball.setPosition(ball.getTopLeftCoordinate().getX(),
+						(brick.getTopLeftCoordinate().getY() - ball.getHeight() - 0.1)), ball.getXAdjustment());
 
 			}
 			count++;
 		}
 		if (detector.intersects(ballPathTopLeft, brick.getBottomLineSegment())) {
-			if (ball.getTopLeftCoordinate().getY() <= brick.getBottomLeftCoordinate().getY() && adjustedBall == false) {
-				yAdjustment = ball.setPosition(ball.getTopLeftCoordinate().getX(),
-						(brick.getBottomLeftCoordinate().getY() + 0.1));
-				adjustedBall = true;
+			if (ball.getTopLeftCoordinate().getY() <= brick.getBottomLeftCoordinate().getY()) {
+				ball.setAdjustments(ball.setPosition(ball.getTopLeftCoordinate().getX(),
+						(brick.getBottomLeftCoordinate().getY() + 0.1)), ball.getXAdjustment());
 
 			}
 			count++;
 		}
 		if (detector.intersects(ballPathBottomRight, brick.getBottomLineSegment())) {
-			if (ball.getTopLeftCoordinate().getY() <= brick.getBottomLeftCoordinate().getY() && adjustedBall == false) {
-				yAdjustment = ball.setPosition(ball.getTopLeftCoordinate().getX(),
-						(brick.getBottomLeftCoordinate().getY() + 0.1));
-				adjustedBall = true;
+			if (ball.getTopLeftCoordinate().getY() <= brick.getBottomLeftCoordinate().getY()) {
+				ball.setAdjustments(ball.setPosition(ball.getTopLeftCoordinate().getX(),
+						(brick.getBottomLeftCoordinate().getY() + 0.1)), ball.getXAdjustment());
 
 			}
 			count++;
 		}
 		if (detector.intersects(ballPathTopRight, brick.getBottomLineSegment())) {
-			if (ball.getTopLeftCoordinate().getY() <= brick.getBottomLeftCoordinate().getY() && adjustedBall == false) {
-				yAdjustment = ball.setPosition(ball.getTopLeftCoordinate().getX(),
-						(brick.getBottomLeftCoordinate().getY() + 0.1));
-				adjustedBall = true;
+			if (ball.getTopLeftCoordinate().getY() <= brick.getBottomLeftCoordinate().getY()) {
+				ball.setAdjustments(ball.setPosition(ball.getTopLeftCoordinate().getX(),
+						(brick.getBottomLeftCoordinate().getY() + 0.1)), ball.getXAdjustment());
 
 			}
 			count++;
 		}
 		if (detector.intersects(ballPathBottomLeft, brick.getBottomLineSegment())) {
-			if (ball.getTopLeftCoordinate().getY() <= brick.getBottomLeftCoordinate().getY() && adjustedBall == false) {
-				yAdjustment = ball.setPosition(ball.getTopLeftCoordinate().getX(),
-						(brick.getBottomLeftCoordinate().getY() + 0.1));
-				adjustedBall = true;
+			if (ball.getTopLeftCoordinate().getY() <= brick.getBottomLeftCoordinate().getY()) {
+				ball.setAdjustments(ball.setPosition(ball.getTopLeftCoordinate().getX(),
+						(brick.getBottomLeftCoordinate().getY() + 0.1)), ball.getXAdjustment());
 
 			}
 			count++;
 		}
 		if (detector.intersects(ballPathCenter, brick.getBottomLineSegment())) {
-			if (ball.getTopLeftCoordinate().getY() <= brick.getBottomLeftCoordinate().getY() && adjustedBall == false) {
-				yAdjustment = ball.setPosition(ball.getTopLeftCoordinate().getX(),
-						(brick.getBottomLeftCoordinate().getY() + 0.1));
-				adjustedBall = true;
-
+			if (ball.getTopLeftCoordinate().getY() <= brick.getBottomLeftCoordinate().getY()) {
+				ball.setAdjustments(ball.setPosition(ball.getTopLeftCoordinate().getX(),
+						(brick.getBottomLeftCoordinate().getY() + 0.1)), ball.getXAdjustment());
 			}
 			count++;
 		}
@@ -349,110 +343,103 @@ public class GameBoardModel {
 	}
 
 	public int xScore(Brick brick, Ball ball, Ball nextBall) {
-		boolean adjustedBall = false;
+		LineSegment ballPathCenter = new LineSegment(ball.getCenterCoordinate(), nextBall.getCenterCoordinate());
+		LineSegment ballPathTopLeft = new LineSegment(ball.getTopLeftCoordinate(), nextBall.getTopLeftCoordinate());
+		LineSegment ballPathBottomRight = new LineSegment(ball.getBottomRightCoordinate(),
+				nextBall.getBottomRightCoordinate());
+		LineSegment ballPathTopRight = new LineSegment(ball.getTopRightCoordinate(),
+				nextBall.getTopRightCoordinate());
+		LineSegment ballPathBottomLeft = new LineSegment(ball.getBottomLeftCoordinate(),
+				nextBall.getBottomLeftCoordinate());
+
 		int count = 0;
-		xAdjustment = ball;
+		ball.setAdjustments(ball.getYAdjustment(), ball);
 		if (detector.intersects(ballPathTopLeft, brick.getRightLineSegment())) {
-			if (ball.getBottomLeftCoordinate().getX() <= brick.getBottomLeftCoordinate().getX()
-					&& adjustedBall == false) {
-				xAdjustment = ball.setPosition(brick.getBottomLeftCoordinate().getX() - 0.1,
-						(ball.getTopLeftCoordinate().getY()));
-				adjustedBall = true;
+			if (ball.getBottomLeftCoordinate().getX() <= brick.getBottomLeftCoordinate().getX()) {
+				ball.setAdjustments(ball.getYAdjustment(), ball.setPosition(
+						brick.getBottomLeftCoordinate().getX() - 0.1, (ball.getTopLeftCoordinate().getY())));
 
 			}
 			count++;
 		}
 		if (detector.intersects(ballPathBottomRight, brick.getRightLineSegment())) {
-			if (ball.getBottomLeftCoordinate().getX() <= brick.getBottomLeftCoordinate().getX()
-					&& adjustedBall == false) {
-				xAdjustment = ball.setPosition(brick.getBottomLeftCoordinate().getX() - 0.1,
-						(ball.getTopLeftCoordinate().getY()));
-				adjustedBall = true;
+			if (ball.getBottomLeftCoordinate().getX() <= brick.getBottomLeftCoordinate().getX()) {
+				ball.setAdjustments(ball.getYAdjustment(), ball.setPosition(
+						brick.getBottomLeftCoordinate().getX() - 0.1, (ball.getTopLeftCoordinate().getY())));
 
 			}
 			count++;
 		}
 		if (detector.intersects(ballPathTopRight, brick.getRightLineSegment())) {
-			if (ball.getBottomLeftCoordinate().getX() <= brick.getBottomLeftCoordinate().getX()
-					&& adjustedBall == false) {
-				xAdjustment = ball.setPosition(brick.getBottomLeftCoordinate().getX() - 0.1,
-						(ball.getTopLeftCoordinate().getY()));
-				adjustedBall = true;
+			if (ball.getBottomLeftCoordinate().getX() <= brick.getBottomLeftCoordinate().getX()) {
+				ball.setAdjustments(ball.getYAdjustment(), ball.setPosition(
+						brick.getBottomLeftCoordinate().getX() - 0.1, (ball.getTopLeftCoordinate().getY())));
 
 			}
 			count++;
 		}
 		if (detector.intersects(ballPathBottomLeft, brick.getRightLineSegment())) {
-			if (ball.getBottomLeftCoordinate().getX() <= brick.getBottomLeftCoordinate().getX()
-					&& adjustedBall == false) {
-				xAdjustment = ball.setPosition(brick.getBottomLeftCoordinate().getX() - 0.1,
-						(ball.getTopLeftCoordinate().getY()));
-				adjustedBall = true;
+			if (ball.getBottomLeftCoordinate().getX() <= brick.getBottomLeftCoordinate().getX()) {
+				ball.setAdjustments(ball.getYAdjustment(), ball.setPosition(
+						brick.getBottomLeftCoordinate().getX() - 0.1, (ball.getTopLeftCoordinate().getY())));
 
 			}
 			count++;
 		}
 		if (detector.intersects(ballPathCenter, brick.getRightLineSegment())) {
-			if (ball.getBottomLeftCoordinate().getX() <= brick.getBottomLeftCoordinate().getX()
-					&& adjustedBall == false) {
-				xAdjustment = ball.setPosition(brick.getBottomLeftCoordinate().getX() - 0.1,
-						(ball.getTopLeftCoordinate().getY()));
-				adjustedBall = true;
-
+			if (ball.getBottomLeftCoordinate().getX() <= brick.getBottomLeftCoordinate().getX()) {
+				ball.setAdjustments(ball.getYAdjustment(), ball.setPosition(
+						brick.getBottomLeftCoordinate().getX() - 0.1, (ball.getTopLeftCoordinate().getY())));
 			}
 			count++;
 		}
 		if (detector.intersects(ballPathTopLeft, brick.getLeftLineSegment())) {
-			if (ball.getBottomRightCoordinate().getX() >= brick.getBottomRightCoordinate().getX()
-					&& adjustedBall == false) {
-				xAdjustment = ball.setPosition(brick.getBottomRightCoordinate().getX() - ball.getWidth() + 0.1,
-						(ball.getTopLeftCoordinate().getY()));
-				adjustedBall = true;
-
+			if (ball.getBottomRightCoordinate().getX() >= brick.getBottomRightCoordinate().getX()) {
+				ball.setAdjustments(ball.getYAdjustment(),
+						ball.setPosition(brick.getBottomRightCoordinate().getX() - ball.getWidth() + 0.1,
+								(ball.getTopLeftCoordinate().getY())));
 			}
 			count++;
 		}
 		if (detector.intersects(ballPathBottomRight, brick.getLeftLineSegment())) {
-			if (ball.getBottomRightCoordinate().getX() >= brick.getBottomRightCoordinate().getX()
-					&& adjustedBall == false) {
-				xAdjustment = ball.setPosition(brick.getBottomRightCoordinate().getX() - ball.getWidth() + 0.1,
-						(ball.getTopLeftCoordinate().getY()));
-				adjustedBall = true;
-
+			if (ball.getBottomRightCoordinate().getX() >= brick.getBottomRightCoordinate().getX()) {
+				ball.setAdjustments(ball.getYAdjustment(),
+						ball.setPosition(brick.getBottomRightCoordinate().getX() - ball.getWidth() + 0.1,
+								(ball.getTopLeftCoordinate().getY())));
 			}
 			count++;
 		}
 		if (detector.intersects(ballPathTopRight, brick.getLeftLineSegment())) {
-			if (ball.getBottomRightCoordinate().getX() >= brick.getBottomRightCoordinate().getX()
-					&& adjustedBall == false) {
-				xAdjustment = ball.setPosition(brick.getBottomRightCoordinate().getX() - ball.getWidth() + 0.1,
-						(ball.getTopLeftCoordinate().getY()));
-				adjustedBall = true;
-
+			if (ball.getBottomRightCoordinate().getX() >= brick.getBottomRightCoordinate().getX()) {
+				ball.setAdjustments(ball.getYAdjustment(),
+						ball.setPosition(brick.getBottomRightCoordinate().getX() - ball.getWidth() + 0.1,
+								(ball.getTopLeftCoordinate().getY())));
 			}
 			count++;
 		}
 		if (detector.intersects(ballPathBottomLeft, brick.getLeftLineSegment())) {
-			if (ball.getBottomRightCoordinate().getX() >= brick.getBottomRightCoordinate().getX()
-					&& adjustedBall == false) {
-				xAdjustment = ball.setPosition(brick.getBottomRightCoordinate().getX() - ball.getWidth() + 0.1,
-						(ball.getTopLeftCoordinate().getY()));
-				adjustedBall = true;
-
+			if (ball.getBottomRightCoordinate().getX() >= brick.getBottomRightCoordinate().getX()) {
+				ball.setAdjustments(ball.getYAdjustment(),
+						ball.setPosition(brick.getBottomRightCoordinate().getX() - ball.getWidth() + 0.1,
+								(ball.getTopLeftCoordinate().getY())));
 			}
 			count++;
 		}
 		if (detector.intersects(ballPathCenter, brick.getLeftLineSegment())) {
-			if (ball.getBottomRightCoordinate().getX() >= brick.getBottomRightCoordinate().getX()
-					&& adjustedBall == false) {
-				xAdjustment = ball.setPosition(brick.getBottomRightCoordinate().getX() - ball.getWidth() + 0.1,
-						(ball.getTopLeftCoordinate().getY()));
-				adjustedBall = true;
-
+			if (ball.getBottomRightCoordinate().getX() >= brick.getBottomRightCoordinate().getX()) {
+				ball.setAdjustments(ball.getYAdjustment(),
+						ball.setPosition(brick.getBottomRightCoordinate().getX() - ball.getWidth() + 0.1,
+								(ball.getTopLeftCoordinate().getY())));
 			}
 			count++;
 		}
 		return count;
 	}
+
+}
+
+class intersectResults {
+	Ball newBall;
+	boolean didHit;
 
 }

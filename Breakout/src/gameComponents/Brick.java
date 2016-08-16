@@ -56,11 +56,6 @@ public class Brick extends Rectangle {
 				this.hitCount + 1, this.hitResistance);
 	}
 
-	public Brick chisel() {
-		return new Brick(this.getTopLeftCoordinate(), this.getBottomRightCoordinate(), this.getId(),
-				RectangleType.Twohit1, this.hitCount, this.hitResistance);
-	}
-
 	public int getHitCount() {
 		return hitCount;
 	}
@@ -75,7 +70,7 @@ public class Brick extends Rectangle {
 
 	public Brick kill() {
 		return new Brick(this.getTopLeftCoordinate(), this.getBottomRightCoordinate(), this.getId(), this.getType(),
-				this.getHitCount(), this.getHitResistance(), false);
+				this.getHitResistance(), this.getHitResistance(), false);
 	}
 
 }

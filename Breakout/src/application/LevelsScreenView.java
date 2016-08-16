@@ -62,7 +62,7 @@ public class LevelsScreenView extends Application {
 						} catch (Exception e1) {
 							e1.printStackTrace();
 						}
-						Timeline timeline = new Timeline(new KeyFrame(Duration.millis(6), ae -> updateScreen(gameView, gbm)));
+						Timeline timeline = new Timeline(new KeyFrame(Duration.millis(8), ae -> updateScreen(gameView, gbm)));
 						timeline.setCycleCount(Animation.INDEFINITE);
 						timeline.play();
 						window.show();

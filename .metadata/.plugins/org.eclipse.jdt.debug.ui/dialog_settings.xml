@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="conditionHistory">
+		<item value="3" key="conditionHistoryEntryCount"/>
+		<item value="balls.size()!=0" key="conditionHistoryEntry_0"/>
+		<item value="balls.size()&gt;1" key="conditionHistoryEntry_1"/>
+		<item value="balls.size()&gt;2" key="conditionHistoryEntry_2"/>
 	</section>
 	<section name="org.eclipse.jdt.internal.debug.ui.ExpressionInformationControlCreator$ExpressionInformationControl">
 		<item value="500" key="SashWeightTree"/>

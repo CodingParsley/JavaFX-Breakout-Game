@@ -63,6 +63,6 @@ public class Levels {
 			100, // Bat Width
 			20, // Bat Height
 			8, // Bat Speed
-			0.4, // Ball Speed
+			1, // Ball Speed
 			jcd);
 }

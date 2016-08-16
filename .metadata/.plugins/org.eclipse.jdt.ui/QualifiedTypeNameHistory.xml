@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="java.util.Scanner"/>
-<fullyQualifiedTypeName name="java.util.Random"/>
 <fullyQualifiedTypeName name="javafx.scene.paint.Paint"/>
 <fullyQualifiedTypeName name="javafx.scene.Group"/>
 <fullyQualifiedTypeName name="javafx.scene.canvas.Canvas"/>
@@ -60,4 +58,6 @@
 <fullyQualifiedTypeName name="gameComponents.GameBoardView"/>
 <fullyQualifiedTypeName name="gameComponents.GameBoardModel"/>
 <fullyQualifiedTypeName name="java.util.LinkedList"/>
+<fullyQualifiedTypeName name="gameComponents.LineSegment"/>
+<fullyQualifiedTypeName name="gameComponents.Ball"/>
 </qualifiedTypeNameHistroy>

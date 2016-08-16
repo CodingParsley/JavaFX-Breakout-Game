@@ -54,10 +54,18 @@ public class GameBoardModel {
 		Coordinate batUL = new Coordinate((TheController.getBoardWidth() - BAT_WIDTH) / 2,
 				(TheController.getBoardHeight() - BAT_HEIGHT - 30));
 		bat = new Rectangle(batUL, BAT_WIDTH, BAT_HEIGHT, RectangleType.Bat);
-		balls.add(new Ball(new Coordinate(TheController.getBoardWidth() / 2, TheController.getBoardHeight() / 2), 10, 10,
-				BALL_SPEED, Math.toRadians(285), RectangleType.Ball));
-		balls.add(new Ball(new Coordinate(TheController.getBoardWidth() / 2, TheController.getBoardHeight() / 2), 10, 10,
-				BALL_SPEED, Math.toRadians(185), RectangleType.Ball));
+		balls.add(new Ball(new Coordinate(300, TheController.getBoardHeight() / 2), 10, 10, BALL_SPEED,
+				Math.toRadians(285), RectangleType.Ball));
+		balls.add(new Ball(new Coordinate(400, TheController.getBoardHeight() / 2), 10, 10, BALL_SPEED,
+				Math.toRadians(180), RectangleType.Ball));
+		balls.add(new Ball(new Coordinate(100, TheController.getBoardHeight() / 2), 10, 10, BALL_SPEED, Math.toRadians(0),
+				RectangleType.Ball));
+		balls.add(new Ball(new Coordinate(200, TheController.getBoardHeight() / 2), 10, 10, BALL_SPEED, Math.toRadians(70),
+				RectangleType.Ball));
+		balls.add(new Ball(new Coordinate(450, TheController.getBoardHeight() / 2), 10, 10, BALL_SPEED, Math.toRadians(25),
+				RectangleType.Ball));
+		balls.add(new Ball(new Coordinate(150, TheController.getBoardHeight() / 2), 10, 10, BALL_SPEED, Math.toRadians(35),
+				RectangleType.Ball));
 	}
 
 	// This method is for manually adding bricks so that they do not have to be
@@ -80,26 +88,34 @@ public class GameBoardModel {
 	}
 
 	public void updateBricks() {
-		for (Ball ball : balls) {
-			if (ball.getBrickItHit() != null && ball.didHitBrick() == true) {
-				if (ball.getBrickItHit().hitBrick().getHitCount() == ball.getBrickItHit().getHitResistance()) {
-					bricks.add(ball.getBrickItHit().kill());
-				} else {
-					bricks.add(ball.getBrickItHit().hitBrick());
-				}
-			}
-			bricks.remove(ball.getBrickItHit());
-			ball.setHitBrick(false);
-		}
+		// LinkedList<Ball> copyBalls = (LinkedList<Ball>) balls.clone();
+		// for (Ball ball : copyBalls) {
+		// if (ball.getBrickItHit() != null) {
+		// if (ball.getBrickItHit().hitBrick().getHitCount() ==
+		// ball.getBrickItHit().getHitResistance()) {
+		// bricks.remove(ball.getBrickItHit());
+		// bricks.add(ball.getBrickItHit().kill());
+		// } else {
+		// bricks.remove(ball.getBrickItHit());
+		// bricks.add(ball.getBrickItHit().hitBrick());
+		// }
+		// balls.remove(ball);
+		// balls.add(ball.setBrickItHit(null));
+		// }
+		// }
 	}
 
 	// Updating Ball and Destroying bricks
 
 	public void calculateBall() {
+
+		// System.out.println(balls.size());
+		// System.out.println(bricks.size());
 		LinkedList<Ball> ballsCopy = (LinkedList<Ball>) balls.clone();
+		LinkedList<Ball> ballsCopy2 = (LinkedList<Ball>) ballsCopy.clone();
 		for (Ball ball : ballsCopy) {
 			Ball nextBall = ball.getMove();
-			//LineSegment ballPathCenter = new LineSegment(ball.getCenterCoordinate(), nextBall.getCenterCoordinate());
+			LineSegment ballPathCenter = new LineSegment(ball.getCenterCoordinate(), nextBall.getCenterCoordinate());
 			LineSegment ballPathTopLeft = new LineSegment(ball.getTopLeftCoordinate(), nextBall.getTopLeftCoordinate());
 			LineSegment ballPathBottomRight = new LineSegment(ball.getBottomRightCoordinate(),
 					nextBall.getBottomRightCoordinate());
@@ -107,20 +123,42 @@ public class GameBoardModel {
 					nextBall.getTopRightCoordinate());
 			LineSegment ballPathBottomLeft = new LineSegment(ball.getBottomLeftCoordinate(),
 					nextBall.getBottomLeftCoordinate());
+			// ballsCopy2.remove(ball);
+			for (Ball b : ballsCopy2) {
+				if (b != ball) {
+					if (detector.intersects(ballPathTopLeft, b.getBottomLineSegment())
+							|| detector.intersects(ballPathTopRight, b.getBottomLineSegment())
+							|| detector.intersects(ballPathCenter, b.getBottomLineSegment())
+							|| detector.intersects(ballPathTopLeft, b.getTopLineSegment())
+							|| detector.intersects(ballPathTopRight, b.getTopLineSegment())
+							|| detector.intersects(ballPathCenter, b.getTopLineSegment())) {
+						balls.remove(ball);
+						balls.add(ball.flipYDirection().getMove().getMove().getMove());
+					}
 
-			//ball=ball.setHitBat(false);
-			if(detector.intersects(ballPathTopLeft, windowRectangle.getLeftLineSegment())
-					|| detector.intersects(ballPathTopRight, windowRectangle.getRightLineSegment())
-					|| detector.intersects(ballPathBottomRight, windowRectangle.getRightLineSegment())
-					|| detector.intersects(ballPathBottomLeft, windowRectangle.getLeftLineSegment())){
-				balls.add(ball.flipXDirection());
+					else if (detector.basicIntersects(ball, b)) {
+						balls.remove(ball);
+						balls.add(ball.flipXDirection().getMove().getMove().getMove());
+					}
+				}
+			}
+			if (ball.getBottomLeftCoordinate().getY() > TheController.getBoardHeight()) {
 				balls.remove(ball);
 			}
 
-			if(detector.intersects(ballPathTopRight, windowRectangle.getTopLineSegment())
-					|| detector.intersects(ballPathTopLeft, windowRectangle.getTopLineSegment())){
-				balls.add(ball.flipYDirection());
+			// ball=ball.setHitBat(false);
+			if (detector.intersects(ballPathTopLeft, windowRectangle.getLeftLineSegment())
+					|| detector.intersects(ballPathTopRight, windowRectangle.getRightLineSegment())
+					|| detector.intersects(ballPathBottomRight, windowRectangle.getRightLineSegment())
+					|| detector.intersects(ballPathBottomLeft, windowRectangle.getLeftLineSegment())) {
 				balls.remove(ball);
+				balls.add(ball.flipXDirection());
+			}
+
+			else if (detector.intersects(ballPathTopRight, windowRectangle.getTopLineSegment())
+					|| detector.intersects(ballPathTopLeft, windowRectangle.getTopLineSegment())) {
+				balls.remove(ball);
+				balls.add(ball.flipYDirection());
 			}
 
 			Optional<Double> r = bricks.stream().map(i -> i.getBottomRightCoordinate().getY()).max(Double::compare);
@@ -131,11 +169,41 @@ public class GameBoardModel {
 			// to cause collision untill ball is above bat's topLeftY coordinate
 
 			// Bat collision detection
-			if (detector.basicIntersects(ball, bat)) {
-				//ball=ball.shouldFlipY();
-				balls.add(ball.flipYDirection());
+			if ((detector.intersects(ballPathBottomLeft, bat.getTopLineSegment())
+					|| detector.intersects(ballPathBottomRight, bat.getTopLineSegment())
+					|| detector.intersects(ballPathCenter, bat.getTopLineSegment()))
+					//&& ball.getBottomLeftCoordinate().getY() >= bat.getTopLeftCoordinate().getY()
+					) {
+				Ball ball2 = ball.flipYDirection().changeAngleDegrees(ball.calculatePercentageOffsetWith(bat));
+				if (ball2.getAngleInDegrees() > LEFT_ANGLE_LIMIT) {
+					ball2 = ball2.setAngleInDegrees(LEFT_ANGLE_LIMIT);
+				} else if (ball2.getAngleInDegrees() < RIGHT_ANGLE_LIMIT) {
+					ball2 = ball2.setAngleInDegrees(RIGHT_ANGLE_LIMIT);
+				}
+				// ball=ball.shouldFlipY();
 				balls.remove(ball);
-				//ball=ball.setHitBat(true);
+				balls.add(ball2);
+				// ball=ball.setHitBat(true);
+				// canUseBat = false;
+			} else if (detector.intersects(ballPathBottomLeft, bat.getRightLineSegment())
+					|| detector.intersects(ballPathBottomRight, bat.getRightLineSegment())
+					|| detector.intersects(ballPathCenter, bat.getRightLineSegment())
+					|| detector.intersects(ballPathBottomLeft, bat.getLeftLineSegment())
+					|| detector.intersects(ballPathBottomRight, bat.getLeftLineSegment())
+					|| detector.intersects(ballPathCenter, bat.getLeftLineSegment())
+					//&& ball.getBottomLeftCoordinate().getY() >= bat.getTopLeftCoordinate().getY()
+					) {
+				Ball ball2 = ball.flipXDirection().flipYDirection()
+						.changeAngleDegrees(ball.calculatePercentageOffsetWith(bat));
+				if (ball2.getAngleInDegrees() > LEFT_ANGLE_LIMIT) {
+					ball2 = ball2.setAngleInDegrees(LEFT_ANGLE_LIMIT);
+				} else if (ball2.getAngleInDegrees() < RIGHT_ANGLE_LIMIT) {
+					ball2 = ball2.setAngleInDegrees(RIGHT_ANGLE_LIMIT);
+				}
+				// ball=ball.shouldFlipY();
+				balls.remove(ball);
+				balls.add(ball2);
+				// ball=ball.setHitBat(true);
 				canUseBat = false;
 			}
 			// Bat collision detection end
@@ -143,35 +211,45 @@ public class GameBoardModel {
 			// Brick collision detection
 			if (true) {
 				if (true) {
-					for (Brick brick : bricks) {
+					LinkedList<Brick> copyBricks = (LinkedList<Brick>) bricks.clone();
+					for (Brick brick : copyBricks) {
 						if (brick.isAlive() && detector.basicIntersects(nextBall, brick)) {
+							if (brick.hitBrick().getHitCount() == brick.getHitResistance()) {
+								bricks.add(brick.kill());
+								bricks.remove(brick);
+							} else {
+								bricks.add(brick.hitBrick());
+								bricks.remove(brick);
+							}
 							int xScore = xScore(brick, ball, nextBall);
 							int yScore = yScore(brick, ball, nextBall);
 							if (xScore > yScore) {
-								//ball = ball.shouldFlipX();
-								balls.add(ball.flipXDirection());
+								// ball = ball.shouldFlipX();
 								balls.remove(ball);
+								balls.add(ball.flipXDirection().setBrickItHit(brick));
 
 							} else if (yScore > xScore) {
-								//ball = ball.shouldFlipY();
-								balls.add(ball.flipYDirection());
+								// ball = ball.shouldFlipY();
 								balls.remove(ball);
+								balls.add(ball.flipYDirection().setBrickItHit(brick));
 
 							} else if (xScore == yScore) {
 								System.out.println("XY");
-								balls.add(ball.flipYDirection().flipXDirection());
 								balls.remove(ball);
+								balls.add(ball.flipYDirection().setBrickItHit(brick));
+
 							}
-//							ball=ball.setBrickCollisionCounter(0);
-//							ball=ball.setBrickItHit(brick);
-//							ball=ball.setHitBrick(true);
-//							ball=ball.setScore(xScore, yScore);
+							// ball=ball.setBrickCollisionCounter(0);
+							// ball=ball.setBrickItHit(brick);
+							// ball=ball.setHitBrick(true);
+							// ball=ball.setScore(xScore, yScore);
 						}
 					}
 
 				}
 			}
 		}
+
 	}
 
 	// Brick collision detection end
@@ -180,46 +258,20 @@ public class GameBoardModel {
 		LinkedList<Ball> ballsCopy = (LinkedList<Ball>) balls.clone();
 		for (Ball ball : ballsCopy) {
 			if (ball.getShouldFlipX() == false && ball.getShouldFlipY() == false) {
-				//ball = ball.getMove();
+				// ball = ball.getMove();
 				balls.add(ball.getMove());
 				balls.remove(ball);
-//				ball = ball.getMove();
-//				ball=ball.setBrickCollisionCounter(ball.getBrickCollisionCounter() + 1);
-//				if (ball.getBrickCollisionCounter() > waitTimeAfterBrickCollision) {
-//					ball=ball.setBrickCollisionCounter(waitTimeAfterBrickCollision);
-//				}
+				// ball = ball.getMove();
+				// ball=ball.setBrickCollisionCounter(ball.getBrickCollisionCounter()
+				// + 1);
+				// if (ball.getBrickCollisionCounter() >
+				// waitTimeAfterBrickCollision) {
+				// ball=ball.setBrickCollisionCounter(waitTimeAfterBrickCollision);
+				// }
 
-			} else {
-				if (ball.getShouldFlipY() == true && ball.getHitBat()==true) {
-					System.out.println("NYAH");
-					// Angle limit is between -160 and +160
-					// For every 1% offset, the ball should move 1 degree
-					ball = ball.flipYDirection().changeAngleDegrees(ball.calculatePercentageOffsetWith(bat));
-					System.out.println("SOMETHING");
-
-					if (ball.getAngleInDegrees() > LEFT_ANGLE_LIMIT) {
-						ball = ball.setAngleInDegrees(LEFT_ANGLE_LIMIT);
-					} else if (ball.getAngleInDegrees() < RIGHT_ANGLE_LIMIT) {
-						ball = ball.setAngleInDegrees(RIGHT_ANGLE_LIMIT);
-					}
-				} else {
-					if (ball.getXScore() > ball.getYScore() && ball.didHitBrick() == true) {
-						ball = ball.getXAdjustment();
-					} else if (ball.getYScore() > ball.getXScore() && ball.didHitBrick() == true) {
-						ball = ball.getYAdjustment();
-					}
-					if (ball.getShouldFlipX() == true) {
-						balls.add(ball.flipXDirection());
-						balls.remove(ball);
-					}
-					if (ball.getShouldFlipY() == true) {
-						System.out.println("UGDI");
-						ball = ball.flipYDirection();
-					}
-				}
-				if (ball.getBottomLeftCoordinate().getY() < bat.getTopLeftCoordinate().getY()) {
-					canUseBat = true;
-				}
+			}
+			if (ball.getBottomLeftCoordinate().getY() < bat.getTopLeftCoordinate().getY()) {
+				canUseBat = true;
 			}
 		}
 	}
@@ -239,7 +291,6 @@ public class GameBoardModel {
 	public LinkedList<Ball> getBalls() {
 		return balls;
 	}
-
 
 	public LinkedList<Brick> getBricks() {
 		return new LinkedList<Brick>(this.bricks);
@@ -347,8 +398,7 @@ public class GameBoardModel {
 		LineSegment ballPathTopLeft = new LineSegment(ball.getTopLeftCoordinate(), nextBall.getTopLeftCoordinate());
 		LineSegment ballPathBottomRight = new LineSegment(ball.getBottomRightCoordinate(),
 				nextBall.getBottomRightCoordinate());
-		LineSegment ballPathTopRight = new LineSegment(ball.getTopRightCoordinate(),
-				nextBall.getTopRightCoordinate());
+		LineSegment ballPathTopRight = new LineSegment(ball.getTopRightCoordinate(), nextBall.getTopRightCoordinate());
 		LineSegment ballPathBottomLeft = new LineSegment(ball.getBottomLeftCoordinate(),
 				nextBall.getBottomLeftCoordinate());
 
@@ -435,11 +485,5 @@ public class GameBoardModel {
 		}
 		return count;
 	}
-
-}
-
-class intersectResults {
-	Ball newBall;
-	boolean didHit;
 
 }

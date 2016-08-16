@@ -11,3 +11,4 @@
 1471220883837	Rename method 'setHitBrick'
 1471221303922	Rename method 'isHitBrick'
 1471221317008	Rename method 'getHitBrick'
+1471374797580	Rename local variable 'oldCycleB'

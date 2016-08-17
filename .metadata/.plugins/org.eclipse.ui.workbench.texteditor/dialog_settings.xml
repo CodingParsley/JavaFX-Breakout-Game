@@ -6,20 +6,20 @@
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="BrickC" key="selection"/>
+		<item value="Brick " key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="brickc"/>
-			<item value="brick&apos;"/>
-			<item value="canuse"/>
-			<item value="CANus"/>
-			<item value="CAN"/>
-			<item value="upda"/>
-			<item value="Sys"/>
-			<item value="Syst"/>
+			<item value="stream"/>
+			<item value="Brick "/>
+			<item value="Brick r"/>
+			<item value="Optional"/>
+			<item value="FUGG"/>
+			<item value="inters"/>
+			<item value="updateb"/>
+			<item value="update"/>
 		</list>
 		<list key="replacehistory">
 			<item value="ball"/>

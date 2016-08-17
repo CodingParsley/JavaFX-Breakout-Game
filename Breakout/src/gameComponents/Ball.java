@@ -76,16 +76,6 @@ public class Ball extends Rectangle {
 				this.shouldFlipY, hitBat, this.brickItHit,xAdj,yAdj,this.xScore,this.yScore,this.getId(),this.brickCollisionCounter,this.getAngleOfMovement(),this.getSpeed());
 	}
 
-	public Ball setHitBat(boolean hitBat){
-		return new Ball(this.getTopLeftCoordinate(), this.getWidth(), this.getHeight(), this.getType(), this.shouldFlipX,
-				this.shouldFlipY, hitBat, this.brickItHit, this.xAdjustment,this.yAdjustment,this.xScore,this.yScore,this.getId(),this.brickCollisionCounter,this.getAngleOfMovement(),this.getSpeed());
-	}
-
-	public Ball resetData() {
-		return new Ball(this.getTopLeftCoordinate(), this.getWidth(), this.getHeight(), this.getType(), false,
-				false, false, null, null,null,0,0,this.getId(),this.brickCollisionCounter,this.getAngleOfMovement(),this.getSpeed());
-	}
-
 	public Ball getMove() {
 		return new Ball(this.getTopLeftCoordinate().getMoveVelocity(angleOfMovement, speed), this.getWidth(), this.getHeight(), this.getType(), this.shouldFlipX,
 				this.shouldFlipY, this.hitBat, this.brickItHit, this.xAdjustment,this.yAdjustment,this.xScore,this.yScore,this.getId(),this.brickCollisionCounter,

@@ -1,11 +1,16 @@
 package application;
 import audio.AudioPlayer;
+import gameComponents.Ball;
+import gameComponents.Button;
+import gameComponents.GameBoardModel;
 import gameComponents.GameBoardView;
+import gameComponents.Packet;
 import gameComponents.StartScreenView;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -30,9 +35,26 @@ public class TheController extends Application {
 	}
 
 	public void goToLevelScreen() {
-		LevelsScreenModel theModel = new LevelsScreenModel(4, 4, 20);
+		LevelsScreenModel theModel = new LevelsScreenModel(2,2, 40);
 		LevelsScreenView theView = new LevelsScreenView(theModel);
 		theView.drawArrayOfButtons();
+		int rectangleIterationCount = 0;
+
+		for(Rectangle r: theView.getGUIButtons()){
+			rectangleIterationCount++;
+			final int finalRectangleIterationCount = rectangleIterationCount;
+			r.setOnMouseClicked(e->{
+				int buttonIterationCount = 0;
+				for(Button button: theView.getDataButtons()){
+					buttonIterationCount++;
+					if(buttonIterationCount==finalRectangleIterationCount){
+					button.getDoesSomething().run();
+					break;
+					}
+				}
+				goToPlayScreen(theView.getLsm().getSelectedLevelNum());
+			});
+		}
 		try {
 			theView.start(window);
 		} catch (Exception e) {
@@ -40,24 +62,22 @@ public class TheController extends Application {
 		}
 	}
 
-//	public void goToPlayScreen() {
-//		Levels theModel = new Levels();
-//		Runnable onPaddleLeft = new MovePaddleLeft(theModel);
-//		Runnable onPaddleRight = new MovePaddleRight(theModel);
-//		GameBoardView theView = new GameBoardView(onPaddleLeft, onPaddleRight);
-//		try {
-//			theView.start(window);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(10), ae -> updateScreen(theView, theModel)));
-//		timeline.setCycleCount(Animation.INDEFINITE);
-//		timeline.play();
-//		window.setOnCloseRequest(e -> {
-//			Runtime.getRuntime().exit(0);
-//		});
-//		window.show();
-//	}
+	public void goToPlayScreen(int levelNum) {
+		int desiredFPS = 120;
+		Levels levels = new Levels();
+		GameBoardModel gbm=levels.findLevel(levelNum);
+		GameBoardView gameView=new GameBoardView(new MovePaddleLeft(gbm),
+		new MovePaddleRight(gbm));
+			try {
+				gameView.start(window);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+			Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000/desiredFPS), ae -> updateScreen(gameView, gbm)));
+			timeline.setCycleCount(Animation.INDEFINITE);
+			timeline.play();
+			window.show();
+	}
 
 	public void goToStartScreen() throws Exception {
 		StartScreenView theView = new StartScreenView();
@@ -71,52 +91,57 @@ public class TheController extends Application {
 	}
 
 	// Method for redrawing bat and balls
-//	public void updateScreen(GameBoardView theView, Levels theModel) {
-//		// Temporary solution
-//		if (window.getScene() == theView.getScene()) {
-//			theView.drawRectangle(theModel.level3.getBat());
-//			theView.drawRectangle(theModel.level3.getBall());
-//			for (gameComponents.Brick brick : theModel.level3.getBricks()) {
-//				theView.drawRectangle(brick);
-//			}
-//			theModel.level3.updateAll();
-//		} else {
-//			try {
-//				theView.stop();
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//			theModel = new Levels();
-//		}
-//
-//	}
+	public void updateScreen(GameBoardView theView, GameBoardModel theModel) {
+		// Temporary solution
+		if (window.getScene() == theView.getScene()) {
+			theView.drawRectangle(theModel.getBat());
+
+			for(Ball ball: theModel.getBalls()){
+			theView.drawRectangle(ball);
+			}
+			for(Packet packet:theModel.getPackets()){
+				theView.drawRectangle(packet);
+			}
+			for (gameComponents.Brick brick : theModel.getBricks()) {
+				theView.drawRectangle(brick);
+			}
+			theModel.updateAll();
+		} else {
+			try {
+				theView.stop();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
 	// Method for redrawing bat and balls end
 
 	// Connects Data Paddle Movement with view paddle movement
 	class MovePaddleLeft implements Runnable {
-		Levels theModel;
+		GameBoardModel theModel;
 
-		MovePaddleLeft(Levels theModel) {
+		MovePaddleLeft(GameBoardModel theModel) {
 			this.theModel = theModel;
 		}
 
 		@Override
 		public void run() {
-			theModel.level3.movePaddleLeft();
+			theModel.movePaddleLeft();
 		}
 	}
 
 	class MovePaddleRight implements Runnable {
 
-		Levels theModel;
+		GameBoardModel theModel;
 
-		MovePaddleRight(Levels theModel) {
+		MovePaddleRight(GameBoardModel theModel) {
 			this.theModel = theModel;
 		}
 
 		@Override
 		public void run() {
-			theModel.level3.movePaddleRight();
+			theModel.movePaddleRight();
 		}
 	}
 	// Paddle movement end

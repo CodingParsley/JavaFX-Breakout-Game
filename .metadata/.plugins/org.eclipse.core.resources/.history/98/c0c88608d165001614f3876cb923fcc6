@@ -1,0 +1,9 @@
+package gameComponents;
+
+public class Packet extends Rectangle{
+	double speed;
+	protected Packet(Coordinate topLeft, double width, double height, int id, RectangleType type) {
+		super(topLeft, width, height, id, type);
+	}
+
+}

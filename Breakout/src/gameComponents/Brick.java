@@ -42,7 +42,7 @@ public class Brick extends Rectangle {
 	}
 
 	public Brick hitBrick() {
-		RectangleType nextType=RectangleType.RegularBrick;
+		RectangleType nextType=this.getType();
 		if(this.getType()==RectangleType.Twohit2){
 			nextType=RectangleType.Twohit1;
 		}

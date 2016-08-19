@@ -1,0 +1,16 @@
+package gameComponents;
+
+public class Packet extends Rectangle{
+	private double speed;
+	protected Packet(Coordinate topLeft, double width, double height, int id, RectangleType type, double speed) {
+		super(topLeft, width, height, id, type);
+		this.speed=speed;
+	}
+	public Packet setSpeed(){
+		return new Packet()
+	}
+	public double getSpeed() {
+		return speed;
+	}
+
+}

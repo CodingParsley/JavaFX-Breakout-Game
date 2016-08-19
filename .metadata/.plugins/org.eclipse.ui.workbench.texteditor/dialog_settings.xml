@@ -6,36 +6,36 @@
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="Brick " key="selection"/>
+		<item value="random." key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="stream"/>
-			<item value="Brick "/>
-			<item value="Brick r"/>
-			<item value="Optional"/>
-			<item value="FUGG"/>
-			<item value="inters"/>
-			<item value="updateb"/>
-			<item value="update"/>
+			<item value="random."/>
+			<item value="this.xAdjustment,this.yAdjustment,"/>
+			<item value="System"/>
+			<item value="LEFT_ANGLE_LIMIT"/>
+			<item value="MovePaddleRight"/>
+			<item value="MovePaddleLeft"/>
+			<item value="Movep"/>
+			<item value="updateSc"/>
 		</list>
 		<list key="replacehistory">
-			<item value="ball"/>
 			<item value=""/>
+			<item value="changedBall2"/>
+			<item value="changedBall1"/>
+			<item value="ball"/>
 			<item value="currentBrick"/>
 			<item value="xAdjustment"/>
 			<item value="number"/>
 			<item value="r2"/>
-			<item value="r1Line"/>
-			<item value="TheController.getBoardHeight()"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="353" key="DIALOG_WIDTH"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-18|0|0|0|400|0|0|0|1|0|0|5|0|Segoe UI" key="DIALOG_FONT_NAME"/>
-		<item value="513" key="DIALOG_HEIGHT"/>
+		<item value="512" key="DIALOG_HEIGHT"/>
 		<item value="1852" key="DIALOG_X_ORIGIN"/>
 		<item value="127" key="DIALOG_Y_ORIGIN"/>
 	</section>

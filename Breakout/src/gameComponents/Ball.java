@@ -3,15 +3,10 @@ package gameComponents;
 public class Ball extends Rectangle {
 	private double speed;
 	private double angleOfMovement;
-	private boolean shouldFlipX = false;
-	private boolean shouldFlipY = false;
-	private int xScore = 0;
-	private int yScore = 0;
-	private Brick brickItHit = null;
-	private Ball yAdjustment = null;
-	private Ball xAdjustment = null;
-	private boolean hitBrick = false;
-	private boolean hitBat = false;
+	private boolean canUseBat;
+	private int xScore;
+	private int yScore;
+	private Brick brickItHit;
 	private int brickCollisionCounter = 0;
 
 	// For creating a brand new ball
@@ -22,63 +17,37 @@ public class Ball extends Rectangle {
 		this.angleOfMovement = angleOfMovement;
 	}
 
-	private Ball(Coordinate topLeft, double width, double height, RectangleType type, boolean shouldFlipX,
-			boolean shouldFlipY, boolean hitBat, Brick brickItHit, Ball xAdjustment, Ball yAdjustment, int xScore, int yScore, int id, int brickCollisionCounter, double angleOfMovement, double speed) {
+	public Ball(Coordinate topLeft, double width, double height, RectangleType type, boolean canUseBat, Brick brickItHit, int xScore, int yScore, int id, int brickCollisionCounter, double angleOfMovement, double speed) {
 		super(topLeft, width, height,id, type);
-		this.shouldFlipX = shouldFlipX;
-		this.shouldFlipY = shouldFlipY;
-		this.hitBat=hitBat;
+		this.canUseBat = canUseBat;
 		this.brickItHit=brickItHit;
-		this.xAdjustment=xAdjustment;
-		this.yAdjustment=yAdjustment;
 		this.xScore=xScore;
 		this.yScore=yScore;
 		this.brickCollisionCounter=brickCollisionCounter;
 		this.angleOfMovement=angleOfMovement;
 		this.speed=speed;
 	}
-	private Ball(Coordinate topLeft, double width, double height, RectangleType type, boolean hitBrick) {
-		super(topLeft, width, height, type);
-		this.hitBrick=hitBrick;
-	}
 
 	public Ball setBrickCollisionCounter(int brickCollisionCounter){
-		return new Ball(this.getTopLeftCoordinate(), this.getWidth(), this.getHeight(), this.getType(), true,
-				this.shouldFlipY, this.hitBat,this.brickItHit, this.xAdjustment,this.yAdjustment,this.xScore,this.yScore,this.getId(),brickCollisionCounter,this.getAngleOfMovement(),this.getSpeed());
-	}
-
-	public Ball shouldFlipX() {
-		return new Ball(this.getTopLeftCoordinate(), this.getWidth(), this.getHeight(), this.getType(), true,
-				this.shouldFlipY, this.hitBat,this.brickItHit, this.xAdjustment,this.yAdjustment,this.xScore,this.yScore,this.getId(),this.brickCollisionCounter,this.getAngleOfMovement(),this.getSpeed());
-	}
-
-	public Ball shouldFlipY() {
-		return new Ball(this.getTopLeftCoordinate(), this.getWidth(), this.getHeight(), this.getType(), this.shouldFlipX,
-				true, this.hitBat,this.brickItHit, this.xAdjustment,this.yAdjustment,this.xScore,this.yScore,this.getId(),this.brickCollisionCounter,this.getAngleOfMovement(),this.getSpeed());
+		return new Ball(this.getTopLeftCoordinate(), this.getWidth(), this.getHeight(), this.getType(), this.canUseBat, this.brickItHit, this.xScore,this.yScore,this.getId(),brickCollisionCounter,this.getAngleOfMovement(),this.getSpeed());
 	}
 
 	public Ball setScore(int xScore, int yScore) {
-		return new Ball(this.getTopLeftCoordinate(), this.getWidth(), this.getHeight(), this.getType(), this.shouldFlipX,
-				this.shouldFlipY, this.hitBat, brickItHit, this.xAdjustment,this.yAdjustment,xScore,yScore,this.getId(),this.brickCollisionCounter,this.getAngleOfMovement(),this.getSpeed());
+		return new Ball(this.getTopLeftCoordinate(), this.getWidth(), this.getHeight(), this.getType(), this.canUseBat,
+				  brickItHit, xScore,yScore,this.getId(),this.brickCollisionCounter,this.getAngleOfMovement(),this.getSpeed());
 	}
 
 	public Ball setBrickItHit(Brick brickItHit) {
-		return new Ball(this.getTopLeftCoordinate(), this.getWidth(), this.getHeight(), this.getType(), this.shouldFlipX,
-				this.shouldFlipY, this.hitBat, brickItHit, this.xAdjustment,this.yAdjustment,this.xScore,this.yScore,this.getId(),this.brickCollisionCounter,this.getAngleOfMovement(),this.getSpeed());
+		return new Ball(this.getTopLeftCoordinate(), this.getWidth(), this.getHeight(), this.getType(), this.canUseBat,
+				  brickItHit, this.xScore,this.yScore,this.getId(),this.brickCollisionCounter,this.getAngleOfMovement(),this.getSpeed());
 	}
-	public Ball setHitBrick(boolean hitBrick){
-		return new Ball(this.getTopLeftCoordinate(), this.getWidth(), this.getHeight(), this.getType(), true,
-				this.shouldFlipY, this.hitBat,this.brickItHit, this.xAdjustment,this.yAdjustment,this.xScore,this.yScore,this.getId(),this.brickCollisionCounter,this.getAngleOfMovement(),this.getSpeed());
+	public Ball setCanUseBat(boolean canUseBat) {
+		return new Ball(this.getTopLeftCoordinate(), this.getWidth(), this.getHeight(), this.getType(), canUseBat,
+				  brickItHit, xScore,yScore,this.getId(),this.brickCollisionCounter,this.getAngleOfMovement(),this.getSpeed());
 	}
-
-	public Ball setAdjustments(Ball yAdj, Ball xAdj) {
-		return new Ball(this.getTopLeftCoordinate(), this.getWidth(), this.getHeight(), this.getType(), this.shouldFlipX,
-				this.shouldFlipY, hitBat, this.brickItHit,xAdj,yAdj,this.xScore,this.yScore,this.getId(),this.brickCollisionCounter,this.getAngleOfMovement(),this.getSpeed());
-	}
-
 	public Ball getMove() {
-		return new Ball(this.getTopLeftCoordinate().getMoveVelocity(angleOfMovement, speed), this.getWidth(), this.getHeight(), this.getType(), this.shouldFlipX,
-				this.shouldFlipY, this.hitBat, this.brickItHit, this.xAdjustment,this.yAdjustment,this.xScore,this.yScore,this.getId(),this.brickCollisionCounter,
+		return new Ball(this.getTopLeftCoordinate().getMoveVelocity(angleOfMovement, speed), this.getWidth(), this.getHeight(), this.getType(), this.canUseBat,
+			  this.brickItHit, this.xScore,this.yScore,this.getId(),this.brickCollisionCounter,
 				this.getAngleOfMovement(),this.getSpeed());
 	}
 
@@ -86,31 +55,35 @@ public class Ball extends Rectangle {
 		double cos = Math.cos(angleOfMovement);
 		double sin = Math.sin(angleOfMovement);
 		double newAngle = Math.atan2(sin, -cos);
-		return new Ball(this.getTopLeftCoordinate(), this.getWidth(), this.getHeight(), this.getType(), this.shouldFlipX,
-				this.shouldFlipY, this.hitBat, this.brickItHit, this.xAdjustment,this.yAdjustment,this.xScore,this.yScore,this.getId(),this.brickCollisionCounter,newAngle,this.getSpeed());
+		return new Ball(this.getTopLeftCoordinate(), this.getWidth(), this.getHeight(), this.getType(), this.canUseBat,
+				  this.brickItHit, this.xScore,this.yScore,this.getId(),this.brickCollisionCounter,newAngle,this.getSpeed());
 	}
 
 	public Ball flipYDirection() {
 		double cos = Math.cos(angleOfMovement);
 		double sin = Math.sin(angleOfMovement);
 		double newAngle = Math.atan2(-sin, cos);
-		return new Ball(this.getTopLeftCoordinate(), this.getWidth(), this.getHeight(), this.getType(), this.shouldFlipX,
-				this.shouldFlipY, this.hitBat, this.brickItHit, this.xAdjustment,this.yAdjustment,this.xScore,this.yScore,this.getId(),this.brickCollisionCounter,newAngle,this.getSpeed());
+		return new Ball(this.getTopLeftCoordinate(), this.getWidth(), this.getHeight(), this.getType(), this.canUseBat,
+				 this.brickItHit, this.xScore,this.yScore,this.getId(),this.brickCollisionCounter,newAngle,this.getSpeed());
 	}
 
 	public Ball changeAngleDegrees(double changeAmount) {
-		return new Ball(this.getTopLeftCoordinate(), this.getWidth(), this.getHeight(), this.getType(), this.shouldFlipX,
-				this.shouldFlipY, this.hitBat, this.brickItHit, this.xAdjustment,this.yAdjustment,this.xScore,this.yScore,this.getId(),this.brickCollisionCounter,(this.angleOfMovement + Math.toRadians(changeAmount)),this.getSpeed());
+		return new Ball(this.getTopLeftCoordinate(), this.getWidth(), this.getHeight(), this.getType(), this.canUseBat,
+				  this.brickItHit, this.xScore,this.yScore,this.getId(),this.brickCollisionCounter,(this.angleOfMovement + Math.toRadians(changeAmount)),this.getSpeed());
 	}
 
 	public Ball setPosition(double setX, double setY) {
-		return new Ball(new Coordinate(setX,setY), this.getWidth(), this.getHeight(), this.getType(), this.shouldFlipX,
-				this.shouldFlipY, this.hitBat, this.brickItHit, this.xAdjustment,this.yAdjustment,this.xScore,this.yScore,this.getId(),this.brickCollisionCounter,this.angleOfMovement,this.getSpeed());
+		return new Ball(new Coordinate(setX,setY), this.getWidth(), this.getHeight(), this.getType(), this.canUseBat,
+				  this.brickItHit, this.xScore,this.yScore,this.getId(),this.brickCollisionCounter,this.angleOfMovement,this.getSpeed());
 	}
 
 	public Ball setAngleInDegrees(double changeAmount) {
-		return new Ball(this.getTopLeftCoordinate(), this.getWidth(), this.getHeight(), this.getType(), this.shouldFlipX,
-				this.shouldFlipY, this.hitBat, this.brickItHit, this.xAdjustment,this.yAdjustment,this.xScore,this.yScore,this.getId(),this.brickCollisionCounter,(Math.toRadians(changeAmount)),this.getSpeed());
+		return new Ball(this.getTopLeftCoordinate(), this.getWidth(), this.getHeight(), this.getType(), this.canUseBat,
+				 this.brickItHit, this.xScore,this.yScore,this.getId(),this.brickCollisionCounter,(Math.toRadians(changeAmount)),this.getSpeed());
+	}
+	public Ball setSpeed(double speed){
+		return new Ball(this.getTopLeftCoordinate(), this.getWidth(), this.getHeight(), this.getType(), this.canUseBat,
+				 this.brickItHit, this.xScore,this.yScore,this.getId(),this.brickCollisionCounter,angleOfMovement,speed);
 	}
 
 	public double calculatePercentageOffsetWith(Rectangle r) {
@@ -140,32 +113,12 @@ public class Ball extends Rectangle {
 		return yScore;
 	}
 
-	public boolean getShouldFlipX() {
-		return shouldFlipX;
-	}
-
-	public boolean getShouldFlipY() {
-		return shouldFlipY;
+	public boolean getCanUseBat() {
+		return canUseBat;
 	}
 
 	public Brick getBrickItHit() {
 		return brickItHit;
-	}
-
-	public Ball getXAdjustment() {
-		return yAdjustment;
-	}
-
-	public Ball getYAdjustment() {
-		return xAdjustment;
-	}
-
-	public boolean didHitBrick() {
-		return hitBrick;
-	}
-
-	public boolean getHitBat() {
-		return hitBat;
 	}
 
 	public int getBrickCollisionCounter() {

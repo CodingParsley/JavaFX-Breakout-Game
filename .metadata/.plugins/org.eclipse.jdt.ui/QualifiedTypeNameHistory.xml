@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="javafx.scene.paint.Paint"/>
-<fullyQualifiedTypeName name="javafx.scene.Group"/>
-<fullyQualifiedTypeName name="javafx.scene.canvas.Canvas"/>
-<fullyQualifiedTypeName name="javafx.scene.canvas.GraphicsContext"/>
-<fullyQualifiedTypeName name="application.RectangleType"/>
 <fullyQualifiedTypeName name="javafx.scene.shape.Ellipse"/>
 <fullyQualifiedTypeName name="javafx.scene.shape.Circle"/>
 <fullyQualifiedTypeName name="javafx.scene.control.Label"/>
@@ -37,7 +32,6 @@
 <fullyQualifiedTypeName name="java.lang.Integer"/>
 <fullyQualifiedTypeName name="gameComponenets.Button"/>
 <fullyQualifiedTypeName name="gameComponenets.BarebonesLevelPicker"/>
-<fullyQualifiedTypeName name="javafx.scene.shape.Rectangle"/>
 <fullyQualifiedTypeName name="javafx.scene.Node"/>
 <fullyQualifiedTypeName name="javafx.animation.KeyValue"/>
 <fullyQualifiedTypeName name="javafx.scene.CacheHint"/>
@@ -57,7 +51,13 @@
 <fullyQualifiedTypeName name="javafx.scene.input.MouseEvent"/>
 <fullyQualifiedTypeName name="gameComponents.GameBoardView"/>
 <fullyQualifiedTypeName name="gameComponents.GameBoardModel"/>
-<fullyQualifiedTypeName name="java.util.LinkedList"/>
 <fullyQualifiedTypeName name="gameComponents.LineSegment"/>
+<fullyQualifiedTypeName name="gameComponents.Brick"/>
 <fullyQualifiedTypeName name="gameComponents.Ball"/>
+<fullyQualifiedTypeName name="java.util.LinkedList"/>
+<fullyQualifiedTypeName name="javafx.scene.shape.Rectangle"/>
+<fullyQualifiedTypeName name="gameComponents.Button"/>
+<fullyQualifiedTypeName name="gameComponents.Packet"/>
+<fullyQualifiedTypeName name="java.util.Random"/>
+<fullyQualifiedTypeName name="gameComponents.RectangleType"/>
 </qualifiedTypeNameHistroy>

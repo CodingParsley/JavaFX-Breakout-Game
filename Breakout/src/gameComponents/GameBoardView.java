@@ -113,6 +113,9 @@ public class GameBoardView extends Application {
 		if (r instanceof Brick && ((Brick) r).isAlive() == false) {
 			graphicalRect.setOpacity(0);
 		}
+		else if(r instanceof Packet && ((Packet) r).isConsumed()){
+			graphicalRect.setOpacity(0);
+		}
 		graphicalRect.setId(Integer.toString(r.getId()));
 		graphicalRect.setWidth(r.getWidth());
 		graphicalRect.setHeight(r.getHeight());

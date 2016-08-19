@@ -18,3 +18,13 @@
 1471401690893	Rename local variable 'ball2'
 1471401699545	Rename local variable 'ball2'
 1471403140106	Rename method 'calculateBall'
+1471491461823	Rename field 'shouldFlipX'
+1471491468953	Rename local variable 'shouldFlipX'
+1471491579697	Rename method 'getShouldFlipX'
+1471498668041	Rename field 'buttons'
+1471499236306	Rename local variable 'bcount'
+1471499249534	Rename local variable 'rcount'
+1471499301423	Rename method 'getButtons'
+1471584348373	Rename local variable 'a'
+1471585865943	Delete element
+1471591817861	Rename local variable 'oneOutOfFive'

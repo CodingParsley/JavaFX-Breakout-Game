@@ -1,0 +1,17 @@
+package gameComponents;
+
+public class PhotonBlasters {
+	private Rectangle rightBlaster;
+	private Rectangle leftBlaster;
+	private double gap;
+	private double width;
+	private double height = 30;
+	protected PhotonBlasters(double gap, Coordinate batTopLeft){
+		this.gap=gap;
+		double yPosition=batTopLeft.getY()-height;
+		Coordinate leftBlasterTopLeft=new Coordinate(batTopLeft.getX(),yPosition);
+		Coordinate rightBlasterTopLeft=new Coordinate(batTopLeft.getX()+gap,yPosition);
+		leftBlaster = new Rectangle(leftBlasterTopLeft,width,height,RectangleType.PhotonBlaster);
+		rightBlaster = new Rectangle(rightBlasterTopLeft,width,height,RectangleType.PhotonBlaster);
+	}
+}

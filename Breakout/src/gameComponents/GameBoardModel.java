@@ -9,6 +9,8 @@ import application.TheController;
 public class GameBoardModel {
 	private Random random;
 	private int levelNum;
+	private int fireIntervalTime = 100;
+	private int fireCount = 0;
 	private final double LEFT_ANGLE_LIMIT = -35;
 	private final double RIGHT_ANGLE_LIMIT = -150;
 	private final int BAT_WIDTH;
@@ -19,10 +21,12 @@ public class GameBoardModel {
 	private int columnWidth;
 	private int brickWidth;
 	private Rectangle windowRectangle;
-	private Rectangle bat;
+	private Bat bat;
+	private PhotonBlasters photonBlasters;
 	private LinkedList<Ball> balls = new LinkedList<Ball>();
 	private LinkedList<Brick> bricks = new LinkedList<Brick>();
 	private LinkedList<Packet> packets = new LinkedList<Packet>();
+	private LinkedList<PhotonBullet> photonBullets = new LinkedList<PhotonBullet>();
 
 	private ICollisionDetector detector;
 
@@ -56,7 +60,7 @@ public class GameBoardModel {
 		// Brick creation algorithm end
 		Coordinate batUL = new Coordinate((TheController.getBoardWidth() - BAT_WIDTH) / 2,
 				(TheController.getBoardHeight() - BAT_HEIGHT - 30));
-		bat = new Rectangle(batUL, BAT_WIDTH, BAT_HEIGHT, RectangleType.Bat);
+		bat = new Bat(batUL, BAT_WIDTH, BAT_HEIGHT, RectangleType.Bat);
 		balls.add(new Ball(new Coordinate(300, TheController.getBoardHeight() / 2 + 100), 10, 10, BALL_SPEED,
 				Math.toRadians(225), RectangleType.Ball));
 		balls.add(new Ball(new Coordinate(400, TheController.getBoardHeight() / 2), 10, 10, BALL_SPEED,
@@ -69,6 +73,13 @@ public class GameBoardModel {
 				Math.toRadians(25), RectangleType.Ball));
 		balls.add(new Ball(new Coordinate(150, TheController.getBoardHeight() / 2), 10, 10, BALL_SPEED,
 				Math.toRadians(35), RectangleType.Ball));
+		balls.add(new Ball(new Coordinate(150, TheController.getBoardHeight() / 2), 10, 10, BALL_SPEED,
+				Math.toRadians(45), RectangleType.Ball));
+		balls.add(new Ball(new Coordinate(150, TheController.getBoardHeight() / 2), 10, 10, BALL_SPEED,
+				Math.toRadians(38), RectangleType.Ball));
+		balls.add(new Ball(new Coordinate(150, TheController.getBoardHeight() / 2), 10, 10, BALL_SPEED,
+				Math.toRadians(11.7), RectangleType.Ball));
+		photonBlasters = new PhotonBlasters(bat.getWidth(), bat.getTopLeftCoordinate());
 	}
 
 	// Updating Ball and Destroying bricks
@@ -78,21 +89,22 @@ public class GameBoardModel {
 
 		@SuppressWarnings("unchecked")
 		LinkedList<Brick> copyBricks = (LinkedList<Brick>) bricks.clone();
+		if (bricks.size() > 0) {
+			if (nextBall.getTopLeftCoordinate().getY() <= r.get()) {
+				for (Brick brick : copyBricks) {
+					if (brick.isAlive() && detector.basicIntersects(nextBall, brick)) {
+						ball = ball.setBrickItHit(brick).setSpeed(ball.getSpeed() + 0.03);
+						int xScore = xScore(brick, ball, detector);
+						int yScore = yScore(brick, ball, detector);
+						if (xScore > yScore) {
+							return ball.flipXDirection();
+						} else if (yScore > xScore) {
+							return ball.flipYDirection();
 
-		if (nextBall.getTopLeftCoordinate().getY() <= r.get()) {
-			for (Brick brick : copyBricks) {
-				if (brick.isAlive() && detector.basicIntersects(nextBall, brick)) {
-					ball = ball.setBrickItHit(brick).setSpeed(ball.getSpeed() + 0.03);
-					int xScore = xScore(brick, ball, detector);
-					int yScore = yScore(brick, ball, detector);
-					if (xScore > yScore) {
-						return ball.flipXDirection();
-					} else if (yScore > xScore) {
-						return ball.flipYDirection();
-
-					} else if (xScore == yScore) {
-						System.out.println("XY");
-						return ball.flipYDirection();
+						} else if (xScore == yScore) {
+							System.out.println("XY");
+							return ball.flipYDirection();
+						}
 					}
 				}
 			}
@@ -204,7 +216,7 @@ public class GameBoardModel {
 				balls.add(calculateBallHitBricks(ball, bricks, detector));
 				balls.remove(ball);
 			} else {
-				balls.add(ball.getMove());
+				balls.add(ball.getMove().setBrickItHit(null));
 				balls.remove(ball);
 			}
 		}
@@ -214,24 +226,17 @@ public class GameBoardModel {
 		@SuppressWarnings("unchecked")
 		LinkedList<Packet> copyPackets = (LinkedList<Packet>) packets.clone();
 		for (Packet packet : copyPackets) {
-			if (detector.basicIntersects(packet, bat)) { 
-				packets.add(packet.setConsumed(true));
-				packets.remove(packet);
+			packets.remove(packet);
+			packets.add(packet.getMove());
+		}
+	}
 
-				if (packet.getType() == RectangleType.BallPacket) {
-					balls.add(new Ball(new Coordinate(TheController.getBoardWidth()/2, TheController.getBoardHeight() / 2), 10, 10, BALL_SPEED,
-							Math.toRadians(25), RectangleType.Ball));
-					System.out.println("BALLS");
-				} else if (packet.getType() == RectangleType.GunPacket) {
-					System.out.println("GUNZZ");
-				} else if (packet.getType() == RectangleType.UnstoppablePacket) {
-					System.out.println("UNSTAWPPABLE");
-				}
-
-			} else {
-				packets.remove(packet);
-				packets.add(packet.getMove());
-			}
+	public void movePhotonBullets() {
+		@SuppressWarnings("unchecked")
+		LinkedList<PhotonBullet> bulletsCopy = (LinkedList<PhotonBullet>) photonBullets.clone();
+		for (PhotonBullet bullet : bulletsCopy) {
+			photonBullets.add(bullet.getMove());
+			photonBullets.remove(bullet);
 		}
 	}
 
@@ -249,7 +254,7 @@ public class GameBoardModel {
 		@SuppressWarnings("unchecked")
 		LinkedList<Ball> copyBalls = (LinkedList<Ball>) balls.clone();
 		for (Ball ball : copyBalls) {
-			if (ball.getBottomLeftCoordinate().getY() > TheController.getBoardHeight()) {
+			if (ball.getTopLeftCoordinate().getY() > TheController.getBoardHeight()) {
 				balls.remove(ball);
 			}
 		}
@@ -265,37 +270,69 @@ public class GameBoardModel {
 		}
 	}
 
-	public void updateBricks() {
+	public void cleanPhotonBullets() {
 		@SuppressWarnings("unchecked")
+		LinkedList<PhotonBullet> copyBullets = (LinkedList<PhotonBullet>) photonBullets.clone();
+		for (PhotonBullet bullet : copyBullets) {
+			if (bullet.getBottomLeftCoordinate().getY() <= 0) {
+				photonBullets.remove(bullet);
+			}
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public void updateBricks() {
+		int odds = 5;
 		LinkedList<Ball> copyBalls = (LinkedList<Ball>) balls.clone();
+		LinkedList<PhotonBullet> copyBullets = (LinkedList<PhotonBullet>) photonBullets.clone();
+		LinkedList<Brick> copyBricks = (LinkedList<Brick>) bricks.clone();
 		for (Ball ball : copyBalls) {
 			if (ball.getBrickItHit() != null) {
-				if (ball.getBrickItHit().getHitCount() >= ball.getBrickItHit().getHitResistance()) {
-					bricks.add(ball.getBrickItHit().kill());
-					bricks.remove(ball.getBrickItHit());
-
-					int odds = 2;
-					if (random.nextInt(odds) == (odds - 1)) {
-						int randomNum = random.nextInt(3);
-						if (randomNum == 0) {
-							packets.add(new Packet(ball.getBrickItHit().getCenterCoordinate(), 10, 10,
-									RectangleType.BallPacket, 0.6, false));
-						} else if (randomNum == 1) {
-							packets.add(new Packet(ball.getBrickItHit().getCenterCoordinate(), 10, 10,
-									RectangleType.UnstoppablePacket, 0.6, false));
-						} else if (randomNum == 2) {
-							packets.add(new Packet(ball.getBrickItHit().getCenterCoordinate(), 10, 10,
-									RectangleType.GunPacket, 0.6, false));
-						}
-					}
-				} else {
-					bricks.add(ball.getBrickItHit().hitBrick());
-					bricks.remove(ball.getBrickItHit());
-				}
-				balls.add(ball.setBrickItHit(null));
-				balls.remove(ball);
+				hitBrick(ball.getBrickItHit(), odds);
 			}
 
+		}
+		for (PhotonBullet bullet : copyBullets) {
+			for (Brick brick : copyBricks) {
+				if (detector.basicIntersects(bullet, brick)) {
+					hitBrick(brick, odds);
+				}
+			}
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public void updatePhotonBullets() {
+		LinkedList<PhotonBullet> copyBullets = (LinkedList<PhotonBullet>) photonBullets.clone();
+		LinkedList<Brick> copyBricks = (LinkedList<Brick>) bricks.clone();
+		for (PhotonBullet bullet : copyBullets) {
+			for (Brick brick : copyBricks) {
+				if (detector.basicIntersects(bullet, brick)) {
+					photonBullets.add(bullet.kill());
+					photonBullets.remove(bullet);
+				}
+			}
+		}
+	}
+
+	public void updatePackets() {
+		@SuppressWarnings("unchecked")
+		LinkedList<Packet> copyPackets = (LinkedList<Packet>) packets.clone();
+		for (Packet packet : copyPackets) {
+			if (detector.basicIntersects(packet, bat)) {
+				packets.add(packet.setConsumed(true));
+				packets.remove(packet);
+				if (packet.getType() == RectangleType.BallPacket) {
+					balls.add(new Ball(
+							new Coordinate(TheController.getBoardWidth() / 2, TheController.getBoardHeight() / 2), 10,
+							10, BALL_SPEED, Math.toRadians(25), RectangleType.Ball));
+					System.out.println("BALLS");
+				} else if (packet.getType() == RectangleType.PhotonPacket) {
+					System.out.println("GUNZZ");
+				} else if (packet.getType() == RectangleType.UnstoppablePacket) {
+					System.out.println("UNSTAWPPABLE");
+				}
+			}
 		}
 	}
 
@@ -303,11 +340,43 @@ public class GameBoardModel {
 		cleanBalls();
 		cleanPackets();
 		cleanBricks();
+		cleanPhotonBullets();
 
 		moveBalls();
 		movePackets();
+		movePhotonBullets();
+		fireCount++;
+		if (fireCount >= fireIntervalTime) {
+			photonBlasters.fireLeftBlaster(photonBullets);
+			photonBlasters.fireRightBlaster(photonBullets);
+			fireCount = 0;
+		}
 
 		updateBricks();
+		updatePhotonBullets();
+		updatePackets();
+	}
+
+	public void hitBrick(Brick brick, int odds) {
+		if (brick.getHitCount() >= brick.getHitResistance()) {
+			bricks.add(brick.kill());
+			bricks.remove(brick);
+			if (random.nextInt(odds) == (odds - 1)) {
+				int randomNum = random.nextInt(3);
+				if (randomNum == 0) {
+					packets.add(new Packet(brick.getCenterCoordinate(), 10, 10, RectangleType.BallPacket, 0.6, false));
+				} else if (randomNum == 1) {
+					packets.add(new Packet(brick.getCenterCoordinate(), 10, 10, RectangleType.UnstoppablePacket, 0.6,
+							false));
+				} else if (randomNum == 2) {
+					packets.add(
+							new Packet(brick.getCenterCoordinate(), 10, 10, RectangleType.PhotonPacket, 0.6, false));
+				}
+			}
+		} else {
+			bricks.add(brick.hitBrick());
+			bricks.remove(brick);
+		}
 	}
 
 	// This method is for manually adding bricks so that they do not have to be
@@ -319,14 +388,16 @@ public class GameBoardModel {
 
 	public void movePaddleLeft() {
 		if ((bat.getTopLeftCoordinate().getX() - BAT_SPEED) >= 0) {
-			bat = bat.createMove(-BAT_SPEED, 0, bat.getType());
+			bat = bat.createMove(-BAT_SPEED, 0);
 		}
+		photonBlasters = photonBlasters.getMove(bat.getWidth(), bat.getTopLeftCoordinate());
 	}
 
 	public void movePaddleRight() {
 		if (bat.getBottomRightCoordinate().getX() + BAT_SPEED <= TheController.getBoardWidth()) {
-			bat = bat.createMove(BAT_SPEED, 0, bat.getType());
+			bat = bat.createMove(BAT_SPEED, 0);
 		}
+		photonBlasters = photonBlasters.getMove(bat.getWidth(), bat.getTopLeftCoordinate());
 	}
 
 	public static int yScore(Brick brick, Ball ball, ICollisionDetector detector) {
@@ -420,16 +491,24 @@ public class GameBoardModel {
 		return bat;
 	}
 
+	public PhotonBlasters getPhotonBlasters() {
+		return photonBlasters;
+	}
+
 	public LinkedList<Ball> getBalls() {
 		return balls;
 	}
 
 	public LinkedList<Brick> getBricks() {
-		return this.bricks;
+		return bricks;
 	}
 
 	public LinkedList<Packet> getPackets() {
 		return packets;
+	}
+
+	public LinkedList<PhotonBullet> getPhotonBullets() {
+		return photonBullets;
 	}
 
 	public int getLevelNum() {

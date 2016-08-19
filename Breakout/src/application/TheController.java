@@ -105,6 +105,14 @@ public class TheController extends Application {
 			for (gameComponents.Brick brick : theModel.getBricks()) {
 				theView.drawRectangle(brick);
 			}
+
+			for(gameComponents.Rectangle rectangle: theModel.getPhotonBullets()){
+				theView.drawRectangle(rectangle);
+			}
+
+			theView.drawRectangle(theModel.getPhotonBlasters().getLeftBlaster());
+			theView.drawRectangle(theModel.getPhotonBlasters().getRightBlaster());
+
 			theModel.updateAll();
 		} else {
 			try {

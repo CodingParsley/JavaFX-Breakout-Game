@@ -28,3 +28,16 @@
 1471584348373	Rename local variable 'a'
 1471585865943	Delete element
 1471591817861	Rename local variable 'oneOutOfFive'
+1471625996411	Rename enum constant 'GunPacket'
+1471626210872	Rename type 'Guns'
+1471626226503	Rename enum constant 'LaserPacket'
+1471626293326	Rename type 'PhotonBlaster'
+1471627201134	Delete element
+1471627286369	Rename method 'createMove'
+1471627321236	Rename method 'createMovie'
+1471628162630	Rename local variable 'startingOnLeft'
+1471628182847	Rename local variable 'trueStartingCoordinate'
+1471628398487	Rename field 'pb'
+1471628784524	Rename local variable 'gap'
+1471628793564	Rename field 'gap'
+1471631391268	Rename local variable 'packet'

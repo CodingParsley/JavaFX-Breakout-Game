@@ -1,0 +1,9 @@
+package gameComponents;
+
+public class PhotonBullet extends Rectangle{
+
+	protected PhotonBullet(Coordinate topLeft, Coordinate bottomRight, int id, RectangleType type) {
+		super(topLeft, bottomRight, id, type);
+	}
+
+}

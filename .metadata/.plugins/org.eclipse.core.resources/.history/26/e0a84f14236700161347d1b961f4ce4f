@@ -65,7 +65,7 @@ public class TheController extends Application {
 	}
 
 	public void goToPlayScreen(int levelNum) {
-		int desiredFPS = 120;
+		int desiredFPS = 100;
 		Levels levels = new Levels();
 		GameBoardModel gbm = levels.findLevel(levelNum);
 		GameBoardView gameView = new GameBoardView(new MovePaddleLeft(gbm), new MovePaddleRight(gbm));

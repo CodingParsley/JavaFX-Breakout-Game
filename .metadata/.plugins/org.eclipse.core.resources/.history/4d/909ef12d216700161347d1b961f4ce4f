@@ -19,7 +19,6 @@ public class TheController extends Application {
 	private Stage window;
 	private static int BOARD_WIDTH;
 	private static int BOARD_HEIGHT;
-	Timeline timeline;
 
 	TheController(int width, int height) {
 		BOARD_WIDTH = width;
@@ -74,10 +73,8 @@ public class TheController extends Application {
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		timeline = new Timeline(new KeyFrame(Duration.millis(1000 / desiredFPS), ae -> {
-			updateScreen(gameView, gbm);
-			System.out.println(timeline.getCycleDuration());
-		}));
+		Timeline timeline = new Timeline(
+				new KeyFrame(Duration.millis(1000 / desiredFPS), ae -> updateScreen(gameView, gbm)));
 		timeline.setCycleCount(Animation.INDEFINITE);
 		timeline.play();
 		window.show();
@@ -117,9 +114,9 @@ public class TheController extends Application {
 			}
 			theView.drawRectangle(theModel.getPhotonBlasters().getLeftBlaster());
 			theView.drawRectangle(theModel.getPhotonBlasters().getRightBlaster());
-			// if(theModel.getRectangleOfDestruction()!=null){
-			// theView.drawRectangle(theModel.getRectangleOfDestruction());
-			// }
+//			if(theModel.getRectangleOfDestruction()!=null){
+//			theView.drawRectangle(theModel.getRectangleOfDestruction());
+//			}
 
 			theModel.updateAll();
 		} else {

@@ -19,7 +19,6 @@ public class TheController extends Application {
 	private Stage window;
 	private static int BOARD_WIDTH;
 	private static int BOARD_HEIGHT;
-	Timeline timeline;
 
 	TheController(int width, int height) {
 		BOARD_WIDTH = width;
@@ -76,7 +75,6 @@ public class TheController extends Application {
 		}
 		timeline = new Timeline(new KeyFrame(Duration.millis(1000 / desiredFPS), ae -> {
 			updateScreen(gameView, gbm);
-			System.out.println(timeline.getCycleDuration());
 		}));
 		timeline.setCycleCount(Animation.INDEFINITE);
 		timeline.play();

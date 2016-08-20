@@ -195,7 +195,6 @@ public class GameBoardModel {
 	}
 
 	private static Ball calcuateBallHitAnotherBall(Ball ball, LinkedList<Ball> balls, ICollisionDetector detector) {
-		@SuppressWarnings("unchecked")
 		LinkedList<Ball> copyBalls = (LinkedList<Ball>) balls.clone();
 		for (Ball anotherBall : copyBalls) {
 			if (detector.basicIntersects(anotherBall, ball) && anotherBall.getId() != ball.getId()) {

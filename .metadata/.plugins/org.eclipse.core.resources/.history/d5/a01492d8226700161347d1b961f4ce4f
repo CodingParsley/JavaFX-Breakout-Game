@@ -76,7 +76,7 @@ public class TheController extends Application {
 		}
 		timeline = new Timeline(new KeyFrame(Duration.millis(1000 / desiredFPS), ae -> {
 			updateScreen(gameView, gbm);
-			System.out.println(timeline.getCycleDuration());
+			System.out.println(timeline.getCycleCount());
 		}));
 		timeline.setCycleCount(Animation.INDEFINITE);
 		timeline.play();

@@ -1,4 +1,5 @@
 package application;
+
 import audio.AudioPlayer;
 import gameComponents.Ball;
 import gameComponents.Button;
@@ -35,21 +36,21 @@ public class TheController extends Application {
 	}
 
 	public void goToLevelScreen() {
-		LevelsScreenModel theModel = new LevelsScreenModel(2,2, 40);
+		LevelsScreenModel theModel = new LevelsScreenModel(2, 2, 40);
 		LevelsScreenView theView = new LevelsScreenView(theModel);
 		theView.drawArrayOfButtons();
 		int rectangleIterationCount = 0;
 
-		for(Rectangle r: theView.getGUIButtons()){
+		for (Rectangle r : theView.getGUIButtons()) {
 			rectangleIterationCount++;
 			final int finalRectangleIterationCount = rectangleIterationCount;
-			r.setOnMouseClicked(e->{
+			r.setOnMouseClicked(e -> {
 				int buttonIterationCount = 0;
-				for(Button button: theView.getDataButtons()){
+				for (Button button : theView.getDataButtons()) {
 					buttonIterationCount++;
-					if(buttonIterationCount==finalRectangleIterationCount){
-					button.getDoesSomething().run();
-					break;
+					if (buttonIterationCount == finalRectangleIterationCount) {
+						button.getDoesSomething().run();
+						break;
 					}
 				}
 				goToPlayScreen(theView.getLsm().getSelectedLevelNum());
@@ -65,23 +66,25 @@ public class TheController extends Application {
 	public void goToPlayScreen(int levelNum) {
 		int desiredFPS = 120;
 		Levels levels = new Levels();
-		GameBoardModel gbm=levels.findLevel(levelNum);
-		GameBoardView gameView=new GameBoardView(new MovePaddleLeft(gbm),
-		new MovePaddleRight(gbm));
-			try {
-				gameView.start(window);
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-			Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000/desiredFPS), ae -> updateScreen(gameView, gbm)));
-			timeline.setCycleCount(Animation.INDEFINITE);
-			timeline.play();
-			window.show();
+		GameBoardModel gbm = levels.findLevel(levelNum);
+		GameBoardView gameView = new GameBoardView(new MovePaddleLeft(gbm), new MovePaddleRight(gbm));
+		try {
+			gameView.start(window);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		Timeline timeline = new Timeline(
+				new KeyFrame(Duration.millis(1000 / desiredFPS), ae -> updateScreen(gameView, gbm)));
+		timeline.setCycleCount(Animation.INDEFINITE);
+		timeline.play();
+		window.show();
 	}
 
 	public void goToStartScreen() throws Exception {
 		StartScreenView theView = new StartScreenView();
-		theView.getPlay().setOnAction(e->{goToLevelScreen();});
+		theView.getPlay().setOnAction(e -> {
+			goToLevelScreen();
+		});
 		theView.start(window);
 		window.show();
 
@@ -96,22 +99,24 @@ public class TheController extends Application {
 		if (window.getScene() == theView.getScene()) {
 			theView.drawRectangle(theModel.getBat());
 
-			for(Ball ball: theModel.getBalls()){
-			theView.drawRectangle(ball);
+			for (Ball ball : theModel.getBalls()) {
+				theView.drawRectangle(ball);
 			}
-			for(Packet packet:theModel.getPackets()){
+			for (Packet packet : theModel.getPackets()) {
 				theView.drawRectangle(packet);
 			}
 			for (gameComponents.Brick brick : theModel.getBricks()) {
 				theView.drawRectangle(brick);
 			}
 
-			for(gameComponents.Rectangle rectangle: theModel.getPhotonBullets()){
+			for (gameComponents.Rectangle rectangle : theModel.getPhotonBullets()) {
 				theView.drawRectangle(rectangle);
 			}
-
 			theView.drawRectangle(theModel.getPhotonBlasters().getLeftBlaster());
 			theView.drawRectangle(theModel.getPhotonBlasters().getRightBlaster());
+//			if(theModel.getRectangleOfDestruction()!=null){
+//			theView.drawRectangle(theModel.getRectangleOfDestruction());
+//			}
 
 			theModel.updateAll();
 		} else {

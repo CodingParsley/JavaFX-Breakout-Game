@@ -24,15 +24,27 @@ import javafx.event.EventHandler;
 public class GameBoardView extends Application {
 	private Stage window;
 	private Scene scene;
+
 	private Runnable onTypePaddleMoveLeft;
 	private Runnable onTypePaddleMoveRight;
-	private ImagePattern brickPattern;
-	private ImagePattern batPattern;
-	private ImagePattern ballPattern;
-	private ImagePattern chiseledBrick1Pattern;
 
-	private Image brickImage;
-	private Image chiseledBrick1Image;
+	private ImagePattern threeHit3Pattern;
+	private ImagePattern threeHit2Pattern;
+	private ImagePattern threeHit1Pattern;
+
+	private ImagePattern twohit2Pattern;
+	private ImagePattern twoHit1Pattern;
+
+	private ImagePattern batPattern;
+
+	private ImagePattern ballPattern;
+
+	private Image threeHit3Image;
+	private Image threeHit2Image;
+	private Image threeHit1Image;
+
+	private Image twoHit2Image;
+	private Image twoHit1Image;
 	private Image batImage;
 	private Image ballImage;
 	private Image bgImage;
@@ -46,14 +58,27 @@ public class GameBoardView extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		window = primaryStage;
-		brickImage = new Image("images/Square.png");
-		batImage = new Image("images/Paddle.png");
-		ballImage = new Image("images/Ball.png");
-		bgImage = new Image("images/Background.png");
-		chiseledBrick1Image = new Image("images/ChiseledSquare.png");
 
-		brickPattern = new ImagePattern(brickImage);
-		chiseledBrick1Pattern = new ImagePattern(chiseledBrick1Image);
+		threeHit3Image = new Image("images/threeHit3.png");
+		threeHit2Image = new Image("images/threeHit2.png");
+		threeHit1Image = new Image("images/threeHit1.png");
+
+		twoHit2Image = new Image("images/twoHit2.png");
+		twoHit1Image = new Image("images/twoHit1.png");
+
+		batImage = new Image("images/bat.png");
+
+		ballImage = new Image("images/Ball.png");
+
+		bgImage = new Image("images/Background.png");
+
+		threeHit3Pattern = new ImagePattern(threeHit3Image);
+		threeHit2Pattern = new ImagePattern(threeHit2Image);
+		threeHit1Pattern = new ImagePattern(threeHit1Image);
+
+		twohit2Pattern = new ImagePattern(twoHit2Image);
+		twoHit1Pattern = new ImagePattern(twoHit1Image);
+
 		batPattern = new ImagePattern(batImage);
 		ballPattern = new ImagePattern(ballImage);
 
@@ -99,10 +124,19 @@ public class GameBoardView extends Application {
 			layout.getChildren().add(graphicalRect);
 		}
 
-		if (r.getType() == RectangleType.Twohit2) {
-			graphicalRect.setFill(brickPattern);
+		if(r.getType()==RectangleType.Threehit3){
+			graphicalRect.setFill(threeHit3Pattern);
+		}
+		else if(r.getType()==RectangleType.Threehit2){
+			graphicalRect.setFill(threeHit2Pattern);
+		}
+		else if(r.getType()==RectangleType.Threehit1){
+			graphicalRect.setFill(threeHit1Pattern);
+		}
+		else if (r.getType() == RectangleType.Twohit2) {
+			graphicalRect.setFill(twohit2Pattern);
 		} else if (r.getType() == RectangleType.Twohit1) {
-			graphicalRect.setFill(chiseledBrick1Pattern);
+			graphicalRect.setFill(twoHit1Pattern);
 		} else if (r.getType() == RectangleType.Bat) {
 			graphicalRect.setFill(batPattern);
 		} else if (r.getType() == RectangleType.Ball) {

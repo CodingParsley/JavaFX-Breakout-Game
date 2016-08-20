@@ -1,0 +1,36 @@
+package application;
+
+import java.util.LinkedList;
+
+import gameComponents.GameBoardModel;
+import gameComponents.JavaCollisionDetector;
+
+public class Levels {
+	public Levels(){
+		levels.add(level3);
+	}
+	LinkedList<GameBoardModel> levels = new LinkedList<GameBoardModel>();
+
+	public GameBoardModel findLevel(int levelNum){
+		for(GameBoardModel gbm: this.levels){
+			if(gbm.getLevelNum()==levelNum){
+				return gbm;
+			}
+		}
+		return null;
+	}
+	JavaCollisionDetector jcd = new JavaCollisionDetector();
+	GameBoardModel level3 = new GameBoardModel(3,
+			80, // Brick Height
+			40, // Horizontal Brick Gap
+			40, // Vertical Brick Gap
+			70, // Gap above bricks
+			6, // # of Columns
+			4, // # of Rows
+			100, // Bat Width
+			20, // Bat Height
+			8, // Bat Speed
+			1, // Ball size
+			1, // Ball Speed
+			jcd);
+}

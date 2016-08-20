@@ -3,13 +3,18 @@ package gameComponents;
 import java.util.LinkedList;
 
 public class PhotonBlasters {
+	private boolean isOn=false;
 	private Rectangle rightBlaster;
 	private Rectangle leftBlaster;
 	private int bulletWidth = 3;
+	private Coordinate batTopLeft;
+	private double batWidth;
 	private double width = 12;
 	private double height = 17;
 
 	protected PhotonBlasters(double batWidth, Coordinate batTopLeft) {
+		this.batWidth=batWidth;
+		this.batTopLeft=batTopLeft;
 		double yPosition = batTopLeft.getY() - height;
 		Coordinate leftBlasterTopLeft = new Coordinate(batTopLeft.getX(), yPosition);
 		Coordinate rightBlasterTopLeft = new Coordinate(batTopLeft.getX() + batWidth - this.getWidth(), yPosition);
@@ -17,7 +22,10 @@ public class PhotonBlasters {
 		rightBlaster = new Rectangle(rightBlasterTopLeft, width, height, RectangleType.PhotonBlaster);
 	}
 
-	protected PhotonBlasters(double batWidth, Coordinate batTopLeft, int leftBlasterId, int rightBlasterId) {
+	protected PhotonBlasters(double batWidth, Coordinate batTopLeft, int leftBlasterId, int rightBlasterId, boolean isOn) {
+		this.batWidth=batWidth;
+		this.batTopLeft=batTopLeft;
+		this.isOn=isOn;
 		double yPosition = batTopLeft.getY() - height;
 		Coordinate leftBlasterTopLeft = new Coordinate(batTopLeft.getX(), yPosition);
 		Coordinate rightBlasterTopLeft = new Coordinate(batTopLeft.getX() + batWidth - this.getWidth(), yPosition);
@@ -26,7 +34,13 @@ public class PhotonBlasters {
 	}
 
 	public PhotonBlasters getMove(double batWidth, Coordinate batTopLeft) {
-		return new PhotonBlasters(batWidth, batTopLeft, this.getLeftBlaster().getId(), this.getRightBlaster().getId());
+		return new PhotonBlasters(batWidth, batTopLeft, this.getLeftBlaster().getId(), this.getRightBlaster().getId(),this.isOn);
+	}
+	public PhotonBlasters getOffScreen(){
+		return new PhotonBlasters(0,new Coordinate(0,0), this.getLeftBlaster().getId(),this.getRightBlaster().getId(),false);
+	}
+	public PhotonBlasters setTurnedOn(boolean isOn){
+		return new PhotonBlasters(batWidth, batTopLeft, this.getLeftBlaster().getId(), this.getRightBlaster().getId(),isOn);
 	}
 
 	public void fireRightBlaster(LinkedList<PhotonBullet> photonBullets){
@@ -55,5 +69,8 @@ public class PhotonBlasters {
 
 	public double getHeight() {
 		return height;
+	}
+	public boolean isOn() {
+		return isOn;
 	}
 }

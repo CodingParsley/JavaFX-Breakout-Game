@@ -1,8 +1,0 @@
-package gameComponents;
-
-public class PhotonBlasters {
-	private Rectangle rightBlaster;
-	private Rectangle leftBlaster;
-	private double gap;
-	Photon
-}

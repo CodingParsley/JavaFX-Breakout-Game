@@ -1,0 +1,9 @@
+package gameComponents;
+
+public class DetectionTest {
+	public static void main(String[] args){
+		Rectangle r1;
+		Rectangle r2;
+		JavaCollisionDetector detector = new JavaCollisionDetector();
+	}
+}

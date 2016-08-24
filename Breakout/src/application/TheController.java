@@ -68,7 +68,7 @@ public class TheController extends Application {
 		int desiredFPS = 120;
 		Levels levels = new Levels();
 		GameBoardModel gbm = levels.findLevel(levelNum);
-		GameBoardView gameView = new GameBoardView(new MovePaddleLeft(gbm), new MovePaddleRight(gbm));
+		GameBoardView gameView = new GameBoardView(new MovePaddleLeft(gbm), new MovePaddleRight(gbm), gbm);
 		try {
 			gameView.start(window);
 		} catch (Exception e1) {
@@ -76,7 +76,6 @@ public class TheController extends Application {
 		}
 		timeline = new Timeline(new KeyFrame(Duration.millis(1000 / desiredFPS), ae -> {
 			updateScreen(gameView, gbm);
-			System.out.println(timeline.getCycleDuration());
 		}));
 		timeline.setCycleCount(Animation.INDEFINITE);
 		timeline.play();
@@ -115,8 +114,10 @@ public class TheController extends Application {
 			for (gameComponents.Rectangle rectangle : theModel.getPhotonBullets()) {
 				theView.drawRectangle(rectangle);
 			}
-			theView.drawRectangle(theModel.getPhotonBlasters().getLeftBlaster());
-			theView.drawRectangle(theModel.getPhotonBlasters().getRightBlaster());
+			if (theModel.getPhotonBlasters()!=null) {
+				theView.drawRectangle(theModel.getPhotonBlasters().getLeftBlaster());
+				theView.drawRectangle(theModel.getPhotonBlasters().getRightBlaster());
+			}
 			// if(theModel.getRectangleOfDestruction()!=null){
 			// theView.drawRectangle(theModel.getRectangleOfDestruction());
 			// }

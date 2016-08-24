@@ -37,7 +37,7 @@ public class PhotonBlasters {
 		return new PhotonBlasters(batWidth, batTopLeft, this.getLeftBlaster().getId(), this.getRightBlaster().getId(),this.isOn);
 	}
 	public PhotonBlasters getOffScreen(){
-		return new PhotonBlasters(0,new Coordinate(0,0), this.getLeftBlaster().getId(),this.getRightBlaster().getId(),false);
+		return new PhotonBlasters(0,new Coordinate(0,0), this.getLeftBlaster().getId(),this.getRightBlaster().getId(),isOn);
 	}
 	public PhotonBlasters setTurnedOn(boolean isOn){
 		return new PhotonBlasters(batWidth, batTopLeft, this.getLeftBlaster().getId(), this.getRightBlaster().getId(),isOn);

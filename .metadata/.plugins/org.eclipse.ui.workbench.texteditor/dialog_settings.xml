@@ -6,37 +6,37 @@
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="updateBrick" key="selection"/>
+		<item value="movePad" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="updateBrick"/>
-			<item value="hitBrick"/>
-			<item value="unstoppableOn"/>
-			<item value="Unst"/>
-			<item value="Usp"/>
-			<item value="updateb"/>
-			<item value="hitBrick()"/>
-			<item value="hitbrick"/>
+			<item value="movepad"/>
+			<item value="ballsc"/>
+			<item value="unstoppable"/>
+			<item value="10"/>
+			<item value="20"/>
+			<item value="update"/>
+			<item value="&gt; 0"/>
+			<item value="unstopp"/>
 		</list>
 		<list key="replacehistory">
+			<item value="Rectangle"/>
+			<item value="brickHeight"/>
+			<item value=""/>
+			<item value="brickWidth"/>
+			<item value="2"/>
 			<item value="BALL_SIZE"/>
 			<item value="brick"/>
-			<item value=""/>
 			<item value="changedBall2"/>
-			<item value="changedBall1"/>
-			<item value="ball"/>
-			<item value="currentBrick"/>
-			<item value="xAdjustment"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item value="353" key="DIALOG_WIDTH"/>
-		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-18|0|0|0|400|0|0|0|1|0|0|5|0|Segoe UI" key="DIALOG_FONT_NAME"/>
-		<item value="512" key="DIALOG_HEIGHT"/>
-		<item value="1841" key="DIALOG_X_ORIGIN"/>
-		<item value="127" key="DIALOG_Y_ORIGIN"/>
+		<item value="399" key="DIALOG_WIDTH"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-21|0|0|0|400|0|0|0|1|0|0|5|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+		<item value="580" key="DIALOG_HEIGHT"/>
+		<item value="1881" key="DIALOG_X_ORIGIN"/>
+		<item value="577" key="DIALOG_Y_ORIGIN"/>
 	</section>
 </section>

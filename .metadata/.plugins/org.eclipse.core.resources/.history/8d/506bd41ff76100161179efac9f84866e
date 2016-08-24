@@ -1,5 +1,0 @@
-package gameComponents;
-
-public enum RectangleType {
-	RegularBrick,Unchisled, ChiseledBrick1, Bat, Ball, Window, LevelButton;
-}

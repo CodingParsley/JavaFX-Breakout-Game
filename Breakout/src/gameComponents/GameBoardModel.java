@@ -13,6 +13,7 @@ public class GameBoardModel {
 	private int gunCount = 0;
 	private int unstoppableCount = 0;
 	private boolean unstoppableOn = false;
+	private int DESTRUCTION_RADIUS = 85;
 	private final int FIRE_INTERVAL_TIME = 300;
 	private final int GUN_TIME = 1200;
 	private final int UNSTOPPABLE_TIME = 1200;
@@ -21,9 +22,9 @@ public class GameBoardModel {
 	private final int BAT_WIDTH;
 	private final int BAT_HEIGHT;
 	private final int BAT_SPEED;
-	private final int PACKET_ODDS = 1;
+	private final int PACKET_ODDS = 4;
 	private final double BALL_SPEED;
-	private final double BALL_SIZE = 10;
+	private final double BALL_SIZE = 12;
 	private int brickHeight; // Similar to brickRowHeight but gap is included
 	private int columnWidth;
 	private int brickWidth;
@@ -71,11 +72,11 @@ public class GameBoardModel {
 		bat = new Bat(batUL, BAT_WIDTH, BAT_HEIGHT, RectangleType.Bat);
 		balls.add(new Ball(new Coordinate(300, TheController.getBoardHeight() / 2 + 100), BALL_SIZE, BALL_SIZE,
 				BALL_SPEED, Math.toRadians(225), RectangleType.Ball));
-		balls.add(new Ball(new Coordinate(300, TheController.getBoardHeight() / 2 + 100), BALL_SIZE, BALL_SIZE,
-				BALL_SPEED, Math.toRadians(154), RectangleType.Ball));
-		balls.add(new Ball(new Coordinate(300, TheController.getBoardHeight() / 2 + 100), BALL_SIZE, BALL_SIZE,
-				BALL_SPEED, Math.toRadians(150), RectangleType.Ball));
-		photonBlasters = new PhotonBlasters(bat.getWidth(), bat.getTopLeftCoordinate()).setTurnedOn(false);
+//		balls.add(new Ball(new Coordinate(300, TheController.getBoardHeight() / 2 + 100), BALL_SIZE, BALL_SIZE,
+//				BALL_SPEED, Math.toRadians(154), RectangleType.Ball));
+//		balls.add(new Ball(new Coordinate(300, TheController.getBoardHeight() / 2 + 100), BALL_SIZE, BALL_SIZE,
+//				BALL_SPEED, Math.toRadians(150), RectangleType.Ball));
+		photonBlasters = new PhotonBlasters(bat.getWidth(), bat.getTopLeftCoordinate()).setTurnedOn(true);
 	}
 
 	// Updating Ball and Destroying bricks
@@ -90,7 +91,7 @@ public class GameBoardModel {
 			if (nextBall.getTopLeftCoordinate().getY() <= r.get()) {
 				for (Brick brick : copyBricks) {
 					if (brick.isAlive() && detector.basicIntersects(nextBall, brick)) {
-						ball = ball.setBrickItHit(brick).setSpeed(ball.getSpeed() + 0.03);
+						ball = ball.setBrickItHit(brick).setSpeed(ball.getSpeed() + 0.13);
 						int xScore = xScore(brick, ball, detector);
 						int yScore = yScore(brick, ball, detector);
 						if (!unstoppableOn) {
@@ -410,7 +411,7 @@ public class GameBoardModel {
 			bricks.add(brick.kill());
 			bricks.remove(brick);
 		} else if (brick.getType() == RectangleType.ExplosiveBrick) {
-			destroyBricksWithinRadius(61, brick.getCenterCoordinate());
+			destroyBricksWithinRadius(DESTRUCTION_RADIUS, brick.getCenterCoordinate());
 		} else if (brick.hitBrick().getHitCount() >= brick.getHitResistance()) {
 			bricks.add(brick.kill());
 			bricks.remove(brick);
@@ -453,7 +454,22 @@ public class GameBoardModel {
 
 	// This method is for manually adding bricks so that they do not have to be
 	// in a dumb row
-	public void addBrick(int width, int height, int posX, int posY, RectangleType type, int hitResistance) {
+	public void addBrick(int width, int height, int posX, int posY, RectangleType type) {
+		int hitResistance;
+		if (type.equals(RectangleType.ExplosiveBrick))
+			hitResistance = 1;
+		else if (type.equals(RectangleType.Threehit3))
+			hitResistance = 3;
+		else if(type.equals(RectangleType.Threehit2)||type.equals(RectangleType.Twohit2)){
+			hitResistance=2;
+		}
+		else if (type.equals(RectangleType.Threehit1)||type.equals(RectangleType.Twohit1)){
+			hitResistance=1;
+		}
+		else{
+			hitResistance=1;
+		}
+
 		Brick r = new Brick(new Coordinate(posX, posY), width, height, type, 0, hitResistance);
 		bricks.add(r);
 	}
@@ -481,6 +497,19 @@ public class GameBoardModel {
 		}
 		if (photonBlasters.isOn()) {
 			photonBlasters = photonBlasters.getMove(bat.getWidth(), bat.getTopLeftCoordinate());
+		}
+	}
+
+	public void movePaddle(double newTranslateX){
+		bat = new Bat(new Coordinate(newTranslateX,bat.getTopLeftCoordinate().getY()), bat.getWidth(), bat.getHeight(), bat.getId(), bat.getType());
+		if ((bat.getTopLeftCoordinate().getX()) < 0) {
+			bat = new Bat(new Coordinate(0,bat.getTopLeftCoordinate().getY()), bat.getWidth(), bat.getHeight(), bat.getId(), bat.getType());
+		}
+		else if ((bat.getTopRightCoordinate().getX()) > TheController.getBoardWidth()) {
+			bat = new Bat(new Coordinate(TheController.getBoardWidth()-bat.getWidth(),bat.getTopLeftCoordinate().getY()), bat.getWidth(), bat.getHeight(), bat.getId(), bat.getType());
+		}
+		if (photonBlasters.isOn()) {
+			photonBlasters = photonBlasters.getMove(bat.getWidth(), new Coordinate(bat.getTopLeftCoordinate().getX(),bat.getTopLeftCoordinate().getY()));
 		}
 	}
 
@@ -584,6 +613,10 @@ public class GameBoardModel {
 		return bat;
 	}
 
+	public void setBat(Bat bat) {
+		this.bat = bat;
+	}
+
 	public PhotonBlasters getPhotonBlasters() {
 		return photonBlasters;
 	}
@@ -611,8 +644,5 @@ public class GameBoardModel {
 	public double getSpeedOfBalls() {
 		return BALL_SPEED;
 	}
-	// public Rectangle getRectangleOfDestruction() {
-	// return rectangleOfDestruction;
-	// }
 
 }

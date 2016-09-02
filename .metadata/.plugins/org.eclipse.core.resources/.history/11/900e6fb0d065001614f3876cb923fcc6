@@ -1,5 +1,0 @@
-package gameComponents;
-
-public enum PacketType {
-
-}

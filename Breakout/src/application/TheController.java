@@ -68,7 +68,10 @@ public class TheController extends Application {
 		int desiredFPS = 120;
 		Levels levels = new Levels();
 		GameBoardModel gbm = levels.findLevel(levelNum);
-		GameBoardView gameView = new GameBoardView(new MovePaddleLeft(gbm), new MovePaddleRight(gbm), gbm);
+		GameBoardView gameView = new GameBoardView(new MovePaddleLeft(gbm), new MovePaddleRight(gbm),gbm, gbm.getExplosionRadius());
+
+		gbm.bindAttemptedBatPosX(gameView.getBatPosX());
+
 		try {
 			gameView.start(window);
 		} catch (Exception e1) {

@@ -7,7 +7,7 @@ public class GameRunner extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		new TheController(500,700).start(primaryStage);
+		new TheController(500,600).start(primaryStage);
 	}
 	public static void main(String[] args){
 		launch(args);

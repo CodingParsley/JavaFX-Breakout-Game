@@ -17,3 +17,86 @@
 1472012580540	Rename field 'WIDTH'
 1472012586045	Rename field 'HEIGHT'
 1472013655277	Delete element
+1472021574340	Delete element
+1472021577499	Rename resource 'DoodleBaseball.png'
+1472021830329	Delete element
+1472021834308	Rename resource 'DoodleBaseball.png'
+1472022615179	Delete element
+1472022618745	Rename resource 'DoodleBaseball2.png'
+1472022788863	Delete element
+1472022791949	Rename resource 'DoodleBaseball2.png'
+1472022889251	Delete element
+1472022893297	Rename resource 'DoodleBaseball2.png'
+1472069473010	Delete element
+1472069476372	Rename resource 'DoodleBaseball3.png'
+1472069854296	Delete element
+1472069857726	Rename resource 'DoodleBaseball3.png'
+1472072350217	Delete element
+1472072353353	Rename resource 'DoodleBaseball3.png'
+1472074386486	Rename resource 'RegularBrick1.png'
+1472074406488	Rename resource 'RegularBrick2.png'
+1472075406797	Delete element
+1472075413288	Rename resource 'Bat.png'
+1472075463214	Delete element
+1472075468588	Rename resource 'Bat.png'
+1472075639267	Delete element
+1472075644316	Rename resource 'Bat.png'
+1472079387094	Delete element
+1472079390837	Rename resource 'Bomb.png'
+1472080366467	Delete element
+1472080376108	Rename resource 'Bomb.png'
+1472081884812	Delete element
+1472081891170	Rename resource 'Bomb.png'
+1472082624513	Delete element
+1472082630027	Rename resource 'Bomb.png'
+1472083188040	Delete element
+1472083193315	Rename resource 'Bat.png'
+1472159115815	Delete element
+1472159125659	Rename resource 'BombSquare.png'
+1472159947535	Delete element
+1472159951998	Rename resource 'BombSquare.png'
+1472161032430	Delete element
+1472161038587	Rename resource 'BombSquare.png'
+1472161272707	Rename resource 'Ball.png'
+1472161283086	Delete element
+1472161335155	Delete element
+1472161371927	Delete element
+1472245541721	Rename resource 'TwoHitBrick1.png'
+1472246118126	Rename enum constant 'RegularBrick'
+1472246126316	Rename enum constant 'Twohit2'
+1472246130616	Rename enum constant 'TwoHitBrick11'
+1472246156241	Rename enum constant 'HitTwohit1'
+1472246168321	Rename resource 'explosive.png'
+1472246176854	Rename enum constant 'ExplosiveBrick'
+1472246182966	Rename enum constant 'HitExplosiveBrick'
+1472246191840	Rename resource 'GraphPaper.png'
+1472246399476	Rename field 'regularImage1'
+1472246411875	Rename field 'twoHit1Image'
+1472246432735	Rename field 'regularBrick1Image'
+1472246442232	Rename enum constant 'RegularBrick1'
+1472246456878	Rename field 'explosiveImage'
+1472246476899	Delete elements
+1472246496498	Delete elements
+1472246502188	Rename resource 'TestAnimationSheet.png'
+1472246566583	Rename resource 'regularBrick1.png'
+1472246592294	Rename resource 'oneHitBrick1.png'
+1472246601907	Rename resource 'twoHitBrick1.png'
+1472246609739	Delete element
+1472246665086	Rename field 'twoHitBrick1Image'
+1472246669071	Rename field 'oneHitBrick1Image'
+1472246683718	Rename field 'twoHit1Pattern'
+1472246690812	Rename field 'regularPattern1'
+1472246695867	Rename field 'oneBrick1Pattern1'
+1472246749524	Rename field 'explosivePattern'
+1472246754665	Rename field 'bombImage1'
+1472246758800	Rename field 'bombPattern1'
+1472246812350	Delete element
+1472246855468	Rename enum constant 'oneHitBrick1'
+1472246992333	Rename enum constant 'Threehit3'
+1472247040838	Rename enum constant 'OneHitBrick1'
+1472247045277	Rename enum constant 'TwoHitBrick1'
+1472247050532	Rename enum constant 'ThreeHitBrick1'
+1472247082367	Rename enum constant 'BombBrick'
+1472247354692	Rename resource 'bombBrick.png'
+1472330630159	Rename field 'DESTRUCTION_RADIUS'
+1472330687818	Rename method 'getEXPLOSION_RADIUS'

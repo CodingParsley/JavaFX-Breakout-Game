@@ -1,7 +1,0 @@
-package gameComponents;
-
-public enum PacketType {
-	Ball,
-	Unstoppable,
-	Gun,
-}

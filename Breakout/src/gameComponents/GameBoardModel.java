@@ -4,27 +4,31 @@ import java.util.LinkedList;
 import java.util.Optional;
 import java.util.Random;
 import application.TheController;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ReadOnlyIntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 
 public class GameBoardModel {
-	// private Rectangle rectangleOfDestruction;
 	private Random random;
 	private int levelNum;
 	private int fireCount = 0;
 	private int gunCount = 0;
 	private int unstoppableCount = 0;
 	private boolean unstoppableOn = false;
-	private int DESTRUCTION_RADIUS = 85;
-	private final int FIRE_INTERVAL_TIME = 300;
-	private final int GUN_TIME = 1200;
-	private final int UNSTOPPABLE_TIME = 1200;
-	private final double LEFT_ANGLE_LIMIT = -35;
-	private final double RIGHT_ANGLE_LIMIT = -150;
-	private final int BAT_WIDTH;
-	private final int BAT_HEIGHT;
-	private final int BAT_SPEED;
-	private final int PACKET_ODDS = 4;
-	private final double BALL_SPEED;
-	private final double BALL_SIZE = 12;
+	private final static int EXPLOSION_RADIUS = 85;
+	private final static int FIRE_INTERVAL_TIME = 300;
+	private final static int GUN_TIME = 1200;
+	private final static int UNSTOPPABLE_TIME = 1200;
+	private final static double LEFT_ANGLE_LIMIT = -35;
+	private final static double RIGHT_ANGLE_LIMIT = -150;
+	private int BAT_SPEED;
+	private final static int PACKET_ODDS = 4;
+	private double BALL_SPEED;
+	private final static double BALL_SIZE = 15;
+	private final static double UNSTOPPABLE_BALL_SIZE= 25;
+	private final static double BALL_SPEED_INCREASE = 0.13;
+	private double BAT_WIDTH = 100;
+	private double BAT_HEIGHT= 20;
 	private int brickHeight; // Similar to brickRowHeight but gap is included
 	private int columnWidth;
 	private int brickWidth;
@@ -38,20 +42,24 @@ public class GameBoardModel {
 
 	private ICollisionDetector detector;
 
+	private IntegerProperty attemptedBatPosX = new SimpleIntegerProperty(0);
+
 	public GameBoardModel(int levelNum, int brickRowHeight, int brickGapH, int brickGapV, int gapAboveBricks,
-			int brickColumns, int brickRows, int batWidth, int batHeight, int batSpeed, double ballSpeed,
+			int brickColumns, int brickRows, int batSpeed, double ballSpeed,
 			ICollisionDetector detector) {
 		this.random = new Random();
 		this.levelNum = levelNum;
 		this.detector = detector;
+
+		this.attemptedBatPosX.addListener((o, oldVal,newVal)->dragBat(attemptedBatPosX.getValue()));
+
 		this.windowRectangle = new Rectangle(new Coordinate(0, 0), TheController.getBoardWidth(),
 				TheController.getBoardHeight(), RectangleType.Window);
+
 		if (brickColumns != 0)
 			this.columnWidth = (TheController.getBoardWidth() - 10) / brickColumns;
 		this.brickWidth = columnWidth - brickGapH;
 		this.brickHeight = brickRowHeight - brickGapV;
-		this.BAT_WIDTH = batWidth;
-		this.BAT_HEIGHT = batHeight;
 		this.BAT_SPEED = batSpeed;
 		this.BALL_SPEED = ballSpeed; // An optional variable to set the all the
 										// balls to the same speed
@@ -62,7 +70,7 @@ public class GameBoardModel {
 				Brick r = new Brick(
 						new Coordinate(4 + (column * columnWidth) + (brickGapH / 2),
 								(row * brickRowHeight) + gapAboveBricks),
-						brickWidth, brickHeight, RectangleType.Threehit3, 0, 3);
+						brickWidth, brickHeight, RectangleType.ThreeBrick1, 0, 3);
 				bricks.add(r);
 			}
 		}
@@ -76,7 +84,7 @@ public class GameBoardModel {
 //				BALL_SPEED, Math.toRadians(154), RectangleType.Ball));
 //		balls.add(new Ball(new Coordinate(300, TheController.getBoardHeight() / 2 + 100), BALL_SIZE, BALL_SIZE,
 //				BALL_SPEED, Math.toRadians(150), RectangleType.Ball));
-		photonBlasters = new PhotonBlasters(bat.getWidth(), bat.getTopLeftCoordinate()).setTurnedOn(true);
+		photonBlasters = new PhotonBlasters(bat.getWidth(), bat.getTopLeftCoordinate()).setTurnedOn(false);
 	}
 
 	// Updating Ball and Destroying bricks
@@ -91,7 +99,7 @@ public class GameBoardModel {
 			if (nextBall.getTopLeftCoordinate().getY() <= r.get()) {
 				for (Brick brick : copyBricks) {
 					if (brick.isAlive() && detector.basicIntersects(nextBall, brick)) {
-						ball = ball.setBrickItHit(brick).setSpeed(ball.getSpeed() + 0.13);
+						ball = ball.setBrickItHit(brick).setSpeed(ball.getSpeed() + BALL_SPEED_INCREASE);
 						int xScore = xScore(brick, ball, detector);
 						int yScore = yScore(brick, ball, detector);
 						if (!unstoppableOn) {
@@ -195,22 +203,12 @@ public class GameBoardModel {
 		return ball;
 	}
 
-	private static Ball calcuateBallHitAnotherBall(Ball ball, LinkedList<Ball> balls, ICollisionDetector detector) {
-		@SuppressWarnings("unchecked")
-		LinkedList<Ball> copyBalls = (LinkedList<Ball>) balls.clone();
-		for (Ball anotherBall : copyBalls) {
-			if (detector.basicIntersects(anotherBall, ball) && anotherBall.getId() != ball.getId()) {
-				return ball.flipYDirection().getMove();
-			}
-		}
-		return ball;
-	}
-
 	private void moveBalls() {
 		@SuppressWarnings("unchecked")
 		LinkedList<Ball> ballsCopy = (LinkedList<Ball>) balls.clone();
 
 		for (Ball ball : ballsCopy) {
+			System.out.println(ball.getSpeed());
 
 			// WINDOW COLLISION DETECTION
 			if (calculateBallHitWall(ball, windowRectangle, detector) != ball) {
@@ -228,16 +226,10 @@ public class GameBoardModel {
 				balls.add(calculateBallHitBricks(ball, bricks, detector, unstoppableOn));
 				balls.remove(ball);
 			}
-			// else if(calcuateBallHitAnotherBall(ball,balls,detector)!=ball){
-			// balls.add(calcuateBallHitAnotherBall(ball,balls,detector));
-			// balls.remove(ball);
-			//
-			// }
 			else {
 				balls.add(ball.getMove().setBrickItHit(null));
 				balls.remove(ball);
 			}
-			calcuateBallHitAnotherBall(ball, balls, detector);
 		}
 	}
 
@@ -395,7 +387,7 @@ public class GameBoardModel {
 			} else {
 				for (Ball ball : ballsCopy) {
 					balls.remove(ball);
-					replaceBall(ball, 20);
+					replaceBall(ball, UNSTOPPABLE_BALL_SIZE);
 				}
 			}
 		}
@@ -410,8 +402,8 @@ public class GameBoardModel {
 		if (unstoppableOn) {
 			bricks.add(brick.kill());
 			bricks.remove(brick);
-		} else if (brick.getType() == RectangleType.ExplosiveBrick) {
-			destroyBricksWithinRadius(DESTRUCTION_RADIUS, brick.getCenterCoordinate());
+		} else if (brick.getType() == RectangleType.BombBrick1) {
+			destroyBricksWithinRadius(EXPLOSION_RADIUS, brick.getCenterCoordinate());
 		} else if (brick.hitBrick().getHitCount() >= brick.getHitResistance()) {
 			bricks.add(brick.kill());
 			bricks.remove(brick);
@@ -454,16 +446,14 @@ public class GameBoardModel {
 
 	// This method is for manually adding bricks so that they do not have to be
 	// in a dumb row
-	public void addBrick(int width, int height, int posX, int posY, RectangleType type) {
+	public void addBrick(double width, double height, double posX, double posY, RectangleType type) {
 		int hitResistance;
-		if (type.equals(RectangleType.ExplosiveBrick))
-			hitResistance = 1;
-		else if (type.equals(RectangleType.Threehit3))
+		if (type.equals(RectangleType.ThreeBrick1))
 			hitResistance = 3;
-		else if(type.equals(RectangleType.Threehit2)||type.equals(RectangleType.Twohit2)){
+		else if(type.equals(RectangleType.TwoBrick1)){
 			hitResistance=2;
 		}
-		else if (type.equals(RectangleType.Threehit1)||type.equals(RectangleType.Twohit1)){
+		else if (type.equals(RectangleType.OneBrick1)||type.equals(RectangleType.BombBrick1)){
 			hitResistance=1;
 		}
 		else{
@@ -478,7 +468,7 @@ public class GameBoardModel {
 		Coordinate topLeft = new Coordinate(explosionStartingPoint.getX() - radius,
 				explosionStartingPoint.getY() - radius);
 		Coordinate bottomRight = new Coordinate(topLeft.getX() + (2 * radius), topLeft.getY() + (2 * radius));
-		Rectangle rectangleOfDestruction = new Rectangle(topLeft, bottomRight, RectangleType.RegularBrick);
+		Rectangle rectangleOfDestruction = new Rectangle(topLeft, bottomRight, RectangleType.OneBrick1);
 
 		@SuppressWarnings("unchecked")
 		LinkedList<Brick> copyBricks = (LinkedList<Brick>) bricks.clone();
@@ -500,8 +490,8 @@ public class GameBoardModel {
 		}
 	}
 
-	public void movePaddle(double newTranslateX){
-		bat = new Bat(new Coordinate(newTranslateX,bat.getTopLeftCoordinate().getY()), bat.getWidth(), bat.getHeight(), bat.getId(), bat.getType());
+	private void dragBat(int batPosX){
+		bat = new Bat(new Coordinate(batPosX,bat.getTopLeftCoordinate().getY()), bat.getWidth(), bat.getHeight(), bat.getId(), bat.getType());
 		if ((bat.getTopLeftCoordinate().getX()) < 0) {
 			bat = new Bat(new Coordinate(0,bat.getTopLeftCoordinate().getY()), bat.getWidth(), bat.getHeight(), bat.getId(), bat.getType());
 		}
@@ -616,6 +606,9 @@ public class GameBoardModel {
 	public void setBat(Bat bat) {
 		this.bat = bat;
 	}
+	public void bindAttemptedBatPosX(ReadOnlyIntegerProperty p){
+		attemptedBatPosX.bind(p);
+	}
 
 	public PhotonBlasters getPhotonBlasters() {
 		return photonBlasters;
@@ -643,6 +636,9 @@ public class GameBoardModel {
 
 	public double getSpeedOfBalls() {
 		return BALL_SPEED;
+	}
+	public int getExplosionRadius() {
+		return EXPLOSION_RADIUS;
 	}
 
 }

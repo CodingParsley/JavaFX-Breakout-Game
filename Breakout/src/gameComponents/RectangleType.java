@@ -1,14 +1,12 @@
 package gameComponents;
 
 public enum RectangleType {
-	RegularBrick,HitRegularBrick,
-	Twohit2,
-	Twohit1, HitTwohit1,
-	Threehit3,
-	Threehit2,Threehit1,
-	ExplosiveBrick, HitExplosiveBrick,
+	OneBrick1,
+	TwoBrick1,
+	ThreeBrick1,
+	BombBrick1,
 	BallPacket,UnstoppablePacket,PhotonPacket,
-	PhotonBullet, HitBullet,
+	PhotonBullet,
 	PhotonBlaster,
 	Bat,
 	Ball, HitBall,

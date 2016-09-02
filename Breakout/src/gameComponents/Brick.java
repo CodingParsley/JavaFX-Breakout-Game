@@ -43,14 +43,11 @@ public class Brick extends Rectangle {
 
 	public Brick hitBrick() {
 		RectangleType nextType=this.getType();
-		if(this.getType()==RectangleType.Twohit2){
-			nextType=RectangleType.Twohit1;
+		if(this.getType()==RectangleType.ThreeBrick1){
+			nextType=RectangleType.TwoBrick1;
 		}
-		else if(this.getType()==RectangleType.Threehit3){
-			nextType=RectangleType.Threehit2;
-		}
-		else if(this.getType()==RectangleType.Threehit2){
-			nextType=RectangleType.Threehit1;
+		else if(this.getType()==RectangleType.TwoBrick1){
+			nextType=RectangleType.OneBrick1;
 		}
 		return new Brick(this.getTopLeftCoordinate(), this.getBottomRightCoordinate(), this.getId(), nextType,
 				this.hitCount + 1, this.hitResistance);

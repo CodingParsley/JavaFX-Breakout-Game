@@ -22,3 +22,11 @@
 1472859562521	Rename method 'isUnstoppableOn'
 1472861134825	Rename method 'makeBallsStoppable'
 1472865375442	Rename local variable 'i'
+1472880427379	Delete element
+1472880432304	Rename resource 'ball1.png'
+1472880538014	Delete element
+1472880541573	Rename resource 'DoodleBaseball3.png'
+1472880674730	Delete element
+1472880677554	Rename resource 'DoodleBaseball3.png'
+1472888085883	Rename field 'leftLaserImage'
+1472888090784	Rename field 'leftLaserPattern'

@@ -22,10 +22,13 @@ public class GameBoardModel {
 	private final static int PACKET_ODDS = 1;
 	private double BALL_SPEED;
 	private final static double BALL_SIZE = 15;
-	private final static double UNSTOPPABLE_BALL_SIZE = 25;
-	private final static double BALL_SPEED_INCREASE = 0.13;
-	private double BAT_WIDTH = 100;
-	private double BAT_HEIGHT = 20;
+	private final static double PACKET_SIZE = 18;
+	private final static double PACKET_SPEED = 1;
+	//private final static double UNSTOPPABLE_BALL_SIZE = 25;
+	private final static double BALL_SPEED_INCREASE = 0.17;
+	private double BAT_WIDTH = 70;
+	private double BAT_HEIGHT = 15;
+
 	private int brickHeight; // Similar to brickRowHeight but gap is included
 	private int columnWidth;
 	private int brickWidth;
@@ -74,15 +77,10 @@ public class GameBoardModel {
 
 		// DO NOT MAKE ANGLE LESS THAN 0 OR GREATER THAN 2PI
 		Coordinate batUL = new Coordinate((TheController.getBoardWidth() - BAT_WIDTH) / 2,
-				(TheController.getBoardHeight() - BAT_HEIGHT - 30));
+				(TheController.getBoardHeight() - BAT_HEIGHT - 80));
 		bat = new Bat(batUL, BAT_WIDTH, BAT_HEIGHT, RectangleType.Bat);
 		balls.add(new Ball(new Coordinate(300, TheController.getBoardHeight() / 2 + 100), BALL_SIZE, BALL_SIZE,
-				BALL_SPEED, 2, RectangleType.Ball));
-
-		// Radians 0 Makes you go right
-		// Radians PI makes you go left
-		// Anything less than PI goes down
-		// Anything greater than Pi goes up
+				BALL_SPEED, 2.4, RectangleType.Ball));
 
 		// balls.add(new Ball(new Coordinate(300, TheController.getBoardHeight()
 		// / 2 + 100), BALL_SIZE, BALL_SIZE,
@@ -90,7 +88,7 @@ public class GameBoardModel {
 		// balls.add(new Ball(new Coordinate(300, TheController.getBoardHeight()
 		// / 2 + 100), BALL_SIZE, BALL_SIZE,
 		// BALL_SPEED, Math.toRadians(150), RectangleType.Ball));
-		photonBlasters = new PhotonBlasters(bat.getWidth(), bat.getTopLeftCoordinate()).setTurnedOn(false);
+		photonBlasters = new PhotonBlasters(bat.getWidth(), bat.getTopLeftCoordinate()).setTurnedOn(true);
 	}
 
 	// Updating Ball and Destroying bricks
@@ -167,11 +165,11 @@ public class GameBoardModel {
 		if (ball.getBottomLeftCoordinate().getY() < bat.getTopLeftCoordinate().getY()) {
 			canUseBat = true;
 			if (ball.getCanUseBat() == false) {
-				return ball.setCanUseBat(true).getMove();
+				return ball.setCanUseBat(true);
 			}
 		}
 		if (ball.getCanUseBat() == false) {
-			return ball.getMove();
+			return ball;
 		}
 
 		if (canUseBat) {
@@ -392,13 +390,13 @@ public class GameBoardModel {
 			if (random.nextInt(odds) == (odds - 1)) {
 				int randomNum = random.nextInt(3);
 				if (randomNum == 0) {
-					packets.add(new Packet(brick.getCenterCoordinate(), 10, 10, RectangleType.BallPacket, 0.6, false));
+					packets.add(new Packet(brick.getCenterCoordinate(), PACKET_SIZE, PACKET_SIZE, RectangleType.BallPacket, PACKET_SPEED, false));
 				} else if (randomNum == 1) {
-					packets.add(new Packet(brick.getCenterCoordinate(), 10, 10, RectangleType.UnstoppablePacket, 0.6,
+					packets.add(new Packet(brick.getCenterCoordinate(), PACKET_SIZE, PACKET_SIZE, RectangleType.UnstoppablePacket, 0.6,
 							false));
 				} else if (randomNum == 2) {
 					packets.add(
-							new Packet(brick.getCenterCoordinate(), 10, 10, RectangleType.PhotonPacket, 0.6, false));
+							new Packet(brick.getCenterCoordinate(), PACKET_SIZE, PACKET_SIZE, RectangleType.PhotonPacket, 0.6, false));
 				}
 			}
 		} else {

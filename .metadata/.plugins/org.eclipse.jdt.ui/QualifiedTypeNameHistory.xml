@@ -5,7 +5,6 @@
 <fullyQualifiedTypeName name="fxmlScreens.ffe"/>
 <fullyQualifiedTypeName name="gameComponenets.ChiselBrick"/>
 <fullyQualifiedTypeName name="javafx.scene.layout.VBox"/>
-<fullyQualifiedTypeName name="java.awt.Paint"/>
 <fullyQualifiedTypeName name="javafx.scene.paint.ImagePattern"/>
 <fullyQualifiedTypeName name="javafx.scene.image.Image"/>
 <fullyQualifiedTypeName name="gameComponenets.Brick"/>
@@ -41,7 +40,6 @@
 <fullyQualifiedTypeName name="java.util.RandomAccess"/>
 <fullyQualifiedTypeName name="java.util.Random"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
-<fullyQualifiedTypeName name="gameComponents.RectangleType"/>
 <fullyQualifiedTypeName name="javafx.scene.image.ImageView"/>
 <fullyQualifiedTypeName name="javafx.animation.Animation"/>
 <fullyQualifiedTypeName name="java.time.Duration"/>
@@ -52,7 +50,6 @@
 <fullyQualifiedTypeName name="javafx.scene.Cursor"/>
 <fullyQualifiedTypeName name="javafx.scene.shape.Rectangle"/>
 <fullyQualifiedTypeName name="gameComponents.Rectangle"/>
-<fullyQualifiedTypeName name="javafx.scene.paint.Color"/>
 <fullyQualifiedTypeName name="javafx.beans.property.IntegerProperty"/>
 <fullyQualifiedTypeName name="javafx.beans.property.SimpleIntegerProperty"/>
 <fullyQualifiedTypeName name="javafx.beans.value.ChangeListener"/>
@@ -60,4 +57,7 @@
 <fullyQualifiedTypeName name="javafx.beans.property.ReadOnlyIntegerProperty"/>
 <fullyQualifiedTypeName name="gameComponents.Ball"/>
 <fullyQualifiedTypeName name="java.lang.Math"/>
+<fullyQualifiedTypeName name="java.awt.Paint"/>
+<fullyQualifiedTypeName name="javafx.scene.paint.Color"/>
+<fullyQualifiedTypeName name="gameComponents.RectangleType"/>
 </qualifiedTypeNameHistroy>

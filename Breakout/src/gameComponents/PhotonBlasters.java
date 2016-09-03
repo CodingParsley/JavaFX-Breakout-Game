@@ -6,11 +6,12 @@ public class PhotonBlasters {
 	private boolean isOn=false;
 	private Rectangle rightBlaster;
 	private Rectangle leftBlaster;
-	private int bulletWidth = 3;
+	private int bulletWidth = 4;
+	private int bulletHeight = 15;
 	private Coordinate batTopLeft;
 	private double batWidth;
-	private double width = 12;
-	private double height = 17;
+	private double width = 15;
+	private double height = 21;
 
 	protected PhotonBlasters(double batWidth, Coordinate batTopLeft) {
 		this.batWidth=batWidth;
@@ -46,13 +47,13 @@ public class PhotonBlasters {
 	public void fireRightBlaster(LinkedList<PhotonBullet> photonBullets){
 		Coordinate middleOfBlaster = new Coordinate(rightBlaster.getTopLeftCoordinate().getX()+(rightBlaster.getWidth()/2)-(bulletWidth/2),
 				rightBlaster.getTopLeftCoordinate().getY());
-		photonBullets.add(new PhotonBullet(middleOfBlaster,bulletWidth,10,RectangleType.PhotonBullet));
+		photonBullets.add(new PhotonBullet(middleOfBlaster,bulletWidth,bulletHeight,RectangleType.PhotonBullet));
 	}
 
 	public void fireLeftBlaster(LinkedList<PhotonBullet> photonBullets) {
 		Coordinate middleOfBlaster = new Coordinate(leftBlaster.getTopLeftCoordinate().getX()+(leftBlaster.getWidth()/2)-(bulletWidth/2),
 				leftBlaster.getTopLeftCoordinate().getY());
-		photonBullets.add(new PhotonBullet(middleOfBlaster, bulletWidth, 10, RectangleType.PhotonBullet));
+		photonBullets.add(new PhotonBullet(middleOfBlaster, bulletWidth, bulletHeight, RectangleType.PhotonBullet));
 	}
 
 	public Rectangle getRightBlaster() {

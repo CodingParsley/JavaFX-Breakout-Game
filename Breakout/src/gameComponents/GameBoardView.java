@@ -16,9 +16,11 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
+import java.awt.Paint;
 import java.util.LinkedList;
 import java.util.Optional;
 
@@ -40,6 +42,7 @@ public class GameBoardView extends Application {
 
 	private Runnable onTypePaddleMoveLeft;
 	private Runnable onTypePaddleMoveRight;
+
 	private Image threeBrick1Image;
 	private Image twoBrick1Image;
 	private Image oneBrick1Image;
@@ -55,6 +58,18 @@ public class GameBoardView extends Application {
 
 	private Image ballImage;
 	private ImagePattern ballPattern;
+
+	private Image ballPacketImage;
+	private ImagePattern ballPacketPattern;
+
+	private Image unstoppablePacketImage;
+	private ImagePattern unstoppablePacketPattern;
+
+	private Image leftBlasterImage;
+	private ImagePattern leftBlasterPattern;
+
+	private Image laserImage;
+	private ImagePattern laserPattern;
 
 	private Image bgImage;
 
@@ -93,6 +108,15 @@ public class GameBoardView extends Application {
 
 		ballImage = new Image("images/ball.png");
 
+		ballPacketImage = new Image("images/ballPacket.png");
+		unstoppablePacketImage = new Image("images/unstoppablePacket.png");
+
+		leftBlasterImage = new Image("images/leftLaserBlaster.png");
+		leftBlasterPattern = new ImagePattern(leftBlasterImage);
+
+		laserImage = new Image("images/laserBeam.png");
+		laserPattern = new ImagePattern(laserImage);
+
 		bgImage = new Image("images/graphPaper.png");
 
 		threeBrick1Pattern = new ImagePattern(threeBrick1Image);
@@ -103,6 +127,9 @@ public class GameBoardView extends Application {
 
 		batPattern = new ImagePattern(batImage);
 		ballPattern = new ImagePattern(ballImage);
+
+		ballPacketPattern = new ImagePattern(ballPacketImage);
+		unstoppablePacketPattern = new ImagePattern(unstoppablePacketImage);
 
 		layout = new Pane();
 
@@ -155,13 +182,29 @@ public class GameBoardView extends Application {
 			graphicalRect.setFill(oneBrick1Pattern);
 		} else if (r.getType() == RectangleType.BombBrick1) {
 			graphicalRect.setFill(bomb1Pattern);
-		} else if (r.getType() == RectangleType.Bat) {
+		}
+		else if(r.getType()==RectangleType.BallPacket){
+			graphicalRect.setFill(ballPacketPattern);
+		}
+		else if(r.getType()==RectangleType.UnstoppablePacket){
+			graphicalRect.setFill(unstoppablePacketPattern);
+		}
+		else if(r.getType()==RectangleType.PhotonBlaster){
+			graphicalRect.setFill(leftBlasterPattern);
+		}
+		else if(r.getType()==RectangleType.PhotonBullet){
+			graphicalRect.setFill(laserPattern);
+		}
+		else if (r.getType() == RectangleType.Bat) {
 			graphicalRect.setFill(batPattern);
 			graphicalRect.setOnMousePressed(rectangleOnMousePressedEventHandler);
 			graphicalRect.setOnMouseDragged(rectangleOnMouseDraggedEventHandler);
 			graphicalRect.setCursor(Cursor.HAND);
 		} else if (r.getType() == RectangleType.Ball) {
 			graphicalRect.setFill(ballPattern);
+			if(((Ball )r).isUnstoppable()==true){
+				//Animate fire!!
+			}
 		}
 		graphicalRectNode = null;
 

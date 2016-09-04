@@ -7,10 +7,9 @@ import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
 public class SpriteAnimation extends Transition {
-
     private final ImageView imageView;
 	private final int count;
-    private final int columns;
+	private final int columns;
     private final int offsetX;
     private final int offsetY;
     private final int width;
@@ -48,4 +47,10 @@ public class SpriteAnimation extends Transition {
     public ImageView getImageView() {
 		return imageView;
 	}
+    public void jumpOneFrame(){
+		double timeForOneFrame = this.getCycleDuration().toMillis()/count;
+		Duration newTime = this.getCurrentTime().add(Duration.millis(timeForOneFrame));
+		this.jumpTo(newTime);
+    }
+
 }

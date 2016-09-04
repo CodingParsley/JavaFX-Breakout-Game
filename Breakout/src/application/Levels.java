@@ -22,8 +22,8 @@ public class Levels {
 		level1.addBrick(brickWidth, brickHeight, 120, 260, RectangleType.OneBrick1);
 		level1.addBrick(brickWidth, brickHeight, 330, 260, RectangleType.OneBrick1);
 
-		level1.addBrick(brickWidth, brickHeight, 190, 360, RectangleType.OneBrick1);
-		level1.addBrick(brickWidth, brickHeight, 260, 360, RectangleType.OneBrick1);
+		level1.addBrick(brickWidth, brickHeight, 150, 360, RectangleType.OneBrick1);
+		level1.addBrick(brickWidth, brickHeight, 250, 360, RectangleType.OneBrick1);
 
 		level1.addBrick(brickWidth, brickHeight, 225, 460, RectangleType.BombBrick1);
 

@@ -16,11 +16,8 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
-
-import java.awt.Paint;
 import java.util.LinkedList;
 import java.util.Optional;
 
@@ -70,6 +67,8 @@ public class GameBoardView extends Application {
 
 	private Image laserImage;
 	private ImagePattern laserPattern;
+	private Image laserPacketImage;
+	private ImagePattern laserPacketPattern = new ImagePattern(new Image("images/photonPacket.png"));
 
 	private Image bgImage;
 
@@ -77,12 +76,12 @@ public class GameBoardView extends Application {
 
 	private LinkedList<ImageView> imageViews = new LinkedList<ImageView>();
 
-	private static final int EXPLOSION_COLUMNS = 5;
-	private static final int EXPLOSION_COUNT = 25;
+	private static final int EXPLOSION_COLUMNS = 4;
+	private static final int EXPLOSION_COUNT = 16;
 	private static final int EXPLOSION_OFFSET_X = 0;
 	private static final int EXPLOSION_OFFSET_Y = 0;
-	private static final int EXPLOSION_WIDTH = 64;
-	private static final int EXPLOSION_HEIGHT = 64;
+	private static final int EXPLOSION_WIDTH = 125;
+	private static final int EXPLOSION_HEIGHT = 125;
 	private static int EXPLOSIION_RADIUS;
 
 	GameBoardModel gbm;
@@ -182,28 +181,51 @@ public class GameBoardView extends Application {
 			graphicalRect.setFill(oneBrick1Pattern);
 		} else if (r.getType() == RectangleType.BombBrick1) {
 			graphicalRect.setFill(bomb1Pattern);
-		}
-		else if(r.getType()==RectangleType.BallPacket){
+		} else if (r.getType() == RectangleType.BallPacket) {
 			graphicalRect.setFill(ballPacketPattern);
-		}
-		else if(r.getType()==RectangleType.UnstoppablePacket){
+		} else if (r.getType() == RectangleType.UnstoppablePacket) {
 			graphicalRect.setFill(unstoppablePacketPattern);
-		}
-		else if(r.getType()==RectangleType.PhotonBlaster){
+		} else if (r.getType() == RectangleType.PhotonPacket) {
+			graphicalRect.setFill(laserPacketPattern);
+		} else if (r.getType() == RectangleType.PhotonBlaster) {
 			graphicalRect.setFill(leftBlasterPattern);
-		}
-		else if(r.getType()==RectangleType.PhotonBullet){
+		} else if (r.getType() == RectangleType.PhotonBullet) {
 			graphicalRect.setFill(laserPattern);
-		}
-		else if (r.getType() == RectangleType.Bat) {
+		} else if (r.getType() == RectangleType.Bat) {
 			graphicalRect.setFill(batPattern);
 			graphicalRect.setOnMousePressed(rectangleOnMousePressedEventHandler);
 			graphicalRect.setOnMouseDragged(rectangleOnMouseDraggedEventHandler);
 			graphicalRect.setCursor(Cursor.HAND);
 		} else if (r.getType() == RectangleType.Ball) {
 			graphicalRect.setFill(ballPattern);
-			if(((Ball )r).isUnstoppable()==true){
-				//Animate fire!!
+			if (((Ball) r).isUnstoppable() == true) {
+				if (Math.random() < 0.1) {
+					ImageView imageView = new ImageView(new Image("images/animationSheet.png"));
+					imageView.setTranslateX(r.getCenterCoordinate().getX()-r.getWidth());
+					imageView.setTranslateY(r.getCenterCoordinate().getY()-r.getHeight());
+					imageView.setViewport(
+							new Rectangle2D(EXPLOSION_OFFSET_X, EXPLOSION_OFFSET_Y, EXPLOSION_WIDTH, EXPLOSION_HEIGHT));
+					SpriteAnimation animation = new SpriteAnimation(imageView, Duration.millis(800), EXPLOSION_COUNT,
+							EXPLOSION_COLUMNS, EXPLOSION_OFFSET_X, EXPLOSION_OFFSET_Y, EXPLOSION_WIDTH,
+							EXPLOSION_HEIGHT);
+					animation.setCycleCount(1);
+					animation.play();
+					imageView.setFitWidth(EXPLOSIION_RADIUS);
+					imageView.setFitHeight(EXPLOSIION_RADIUS);
+					imageViews.add(imageView);
+					animation.setOnFinished(e -> {
+						@SuppressWarnings("unchecked")
+						LinkedList<ImageView> imageViewsCopy = (LinkedList<ImageView>) imageViews.clone();
+						for (ImageView iv : imageViewsCopy) {
+							if (animation.getImageView().equals(iv)) {
+								imageViews.remove(iv);
+								layout.getChildren().remove(iv);
+								break;
+							}
+						}
+					});
+					layout.getChildren().add(imageView);
+				}
 			}
 		}
 		graphicalRectNode = null;
@@ -211,30 +233,7 @@ public class GameBoardView extends Application {
 		if (r instanceof Brick && ((Brick) r).isAlive() == false) {
 			graphicalRect.setOpacity(0);
 			if (r.getType() == RectangleType.BombBrick1) {
-				ImageView imageView = new ImageView(new Image("images/testAnimationSheet.png"));
-				imageView.setTranslateX(r.getCenterCoordinate().getX() - EXPLOSIION_RADIUS);
-				imageView.setTranslateY(r.getCenterCoordinate().getY() - EXPLOSIION_RADIUS);
-				imageView.setViewport(
-						new Rectangle2D(EXPLOSION_OFFSET_X, EXPLOSION_OFFSET_Y, EXPLOSION_WIDTH, EXPLOSION_HEIGHT));
-				SpriteAnimation animation = new SpriteAnimation(imageView, Duration.millis(1000), EXPLOSION_COUNT,
-						EXPLOSION_COLUMNS, EXPLOSION_OFFSET_X, EXPLOSION_OFFSET_Y, EXPLOSION_WIDTH, EXPLOSION_HEIGHT);
-				animation.setCycleCount(1);
-				animation.play();
-				imageView.setFitWidth(EXPLOSIION_RADIUS * 2);
-				imageView.setFitHeight(EXPLOSIION_RADIUS * 2);
-				imageViews.add(imageView);
-				animation.setOnFinished(e -> {
-					@SuppressWarnings("unchecked")
-					LinkedList<ImageView> imageViewsCopy = (LinkedList<ImageView>) imageViews.clone();
-					for (ImageView iv : imageViewsCopy) {
-						if (animation.getImageView().equals(iv)) {
-							imageViews.remove(iv);
-							layout.getChildren().remove(iv);
-							break;
-						}
-					}
-				});
-				layout.getChildren().add(imageView);
+				setAnimationOnto(r);
 			}
 		} else if (r instanceof Packet && ((Packet) r).isConsumed()) {
 			graphicalRect.setOpacity(0);
@@ -272,5 +271,32 @@ public class GameBoardView extends Application {
 
 	public ReadOnlyIntegerProperty getBatPosX() {
 		return batPosX;
+	}
+
+	public void setAnimationOnto(gameComponents.Rectangle r) {
+		ImageView imageView = new ImageView(new Image("images/animationSheet.png"));
+		imageView.setTranslateX(r.getCenterCoordinate().getX() - EXPLOSIION_RADIUS);
+		imageView.setTranslateY(r.getCenterCoordinate().getY() - EXPLOSIION_RADIUS);
+		imageView.setViewport(
+				new Rectangle2D(EXPLOSION_OFFSET_X, EXPLOSION_OFFSET_Y, EXPLOSION_WIDTH, EXPLOSION_HEIGHT));
+		SpriteAnimation animation = new SpriteAnimation(imageView, Duration.millis(800), EXPLOSION_COUNT,
+				EXPLOSION_COLUMNS, EXPLOSION_OFFSET_X, EXPLOSION_OFFSET_Y, EXPLOSION_WIDTH, EXPLOSION_HEIGHT);
+		animation.setCycleCount(1);
+		animation.play();
+		imageView.setFitWidth(EXPLOSIION_RADIUS * 2);
+		imageView.setFitHeight(EXPLOSIION_RADIUS * 2);
+		imageViews.add(imageView);
+		animation.setOnFinished(e -> {
+			@SuppressWarnings("unchecked")
+			LinkedList<ImageView> imageViewsCopy = (LinkedList<ImageView>) imageViews.clone();
+			for (ImageView iv : imageViewsCopy) {
+				if (animation.getImageView().equals(iv)) {
+					imageViews.remove(iv);
+					layout.getChildren().remove(iv);
+					break;
+				}
+			}
+		});
+		layout.getChildren().add(imageView);
 	}
 }

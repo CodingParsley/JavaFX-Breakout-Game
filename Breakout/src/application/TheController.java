@@ -11,7 +11,6 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -94,7 +93,7 @@ public class TheController extends Application {
 		window.show();
 
 		// Play Background Music
-		AudioPlayer.playSoundEffectIndefinitely(AudioPlayer.gameMusicFile);
+		//AudioPlayer.playSoundEffectIndefinitely(AudioPlayer.gameMusicFile);
 		// Play Background Music end
 	}
 
@@ -122,6 +121,8 @@ public class TheController extends Application {
 				theView.drawRectangle(theModel.getPhotonBlasters().getRightBlaster());
 			}
 			theModel.updateAll();
+			theView.onUpdate();
+
 		} else {
 			try {
 				theView.stop();

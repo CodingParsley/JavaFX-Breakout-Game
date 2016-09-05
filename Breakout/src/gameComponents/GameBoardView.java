@@ -4,15 +4,9 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.SnapshotParameters;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -22,20 +16,12 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 import application.TheController;
-import javafx.animation.AnimationTimer;
-import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ReadOnlyIntegerProperty;
@@ -44,7 +30,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 
 public class GameBoardView extends Application {
-	double orgSceneX, orgSceneY;
+	private double orgSceneX;
 	private IntegerProperty orgTranslateX = new SimpleIntegerProperty(0);
 	private IntegerProperty batPosX = new SimpleIntegerProperty(0);
 
@@ -86,8 +72,7 @@ public class GameBoardView extends Application {
 	private Image bgImage;
 
 	private Pane layout;
-
-	private GraphicsContext g;
+	private Pane particleLayout = new Pane();
 
 	private LinkedList<ImageView> imageViews = new LinkedList<ImageView>();
 
@@ -101,17 +86,18 @@ public class GameBoardView extends Application {
 
 	GameBoardModel gbm;
 
+	private Emitter emitter = new FireEmitter();
+
+	private LinkedList<Particle> particles = new LinkedList<>();
+
+	private LinkedList<gameComponents.Rectangle> unstoppableRects = new LinkedList<gameComponents.Rectangle>();
+
 	public GameBoardView(Runnable onTypePaddleMoveLeft, Runnable onTypePaddleMoveRight, GameBoardModel gbm,
 			int explosionRadius) {
 		this.onTypePaddleMoveLeft = onTypePaddleMoveLeft;
 		this.onTypePaddleMoveRight = onTypePaddleMoveRight;
 		this.gbm = gbm;
 		EXPLOSIION_RADIUS = explosionRadius;
-	}
-
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		window = primaryStage;
 		threeBrick1Image = new Image("images/threeBrick1.png");
 		twoBrick1Image = new Image("images/twoBrick1.png");
 		oneBrick1Image = new Image("images/oneBrick1.png");
@@ -146,7 +132,13 @@ public class GameBoardView extends Application {
 		unstoppablePacketPattern = new ImagePattern(unstoppablePacketImage);
 
 		layout = new Pane();
+		particleLayout = new Pane();
+		layout.getChildren().add(particleLayout);
+	}
 
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		window = primaryStage;
 		scene = new Scene(layout, TheController.getBoardWidth(), TheController.getBoardHeight());
 		BackgroundImage myBI = new BackgroundImage(bgImage, BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT,
 				BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
@@ -169,6 +161,7 @@ public class GameBoardView extends Application {
 		// layout.getChildren().add(imageView);
 		window.setScene(scene);
 		window.show();
+
 	}
 
 	public void drawRectangle(gameComponents.Rectangle r) {
@@ -213,6 +206,9 @@ public class GameBoardView extends Application {
 			graphicalRect.setCursor(Cursor.HAND);
 		} else if (r.getType() == RectangleType.Ball) {
 			graphicalRect.setFill(ballPattern);
+			if (((Ball) r).isUnstoppable()) {
+				unstoppableRects.add(r);
+			}
 		}
 		graphicalRectNode = null;
 
@@ -236,7 +232,6 @@ public class GameBoardView extends Application {
 		@Override
 		public void handle(MouseEvent t) {
 			orgSceneX = t.getSceneX();
-			orgSceneY = t.getSceneY();
 			orgTranslateX.setValue(((Rectangle) (t.getSource())).getTranslateX());
 		}
 	};
@@ -251,12 +246,22 @@ public class GameBoardView extends Application {
 		}
 	};
 
-	public Scene getScene() {
-		return scene;
-	}
-
-	public ReadOnlyIntegerProperty getBatPosX() {
-		return batPosX;
+	public void onUpdate() {
+		particleLayout.getChildren().clear();
+		System.out.println(particles.size());
+		for (gameComponents.Rectangle r : unstoppableRects) {
+			particles.addAll(emitter.emit(r.getCenterCoordinate().getX(), r.getCenterCoordinate().getY()));
+		}
+		unstoppableRects.clear();
+		@SuppressWarnings("unchecked")
+		LinkedList<Particle> copyParticles = (LinkedList<Particle>) particles.clone();
+		for (Particle p : copyParticles) {
+			if (!p.isAlive()) {
+				particles.remove(p);
+			}
+			p.update();
+			particleLayout.getChildren().add(p.render());
+		}
 	}
 
 	public void setExplosionAnimationOnto(gameComponents.Rectangle r) {
@@ -284,5 +289,13 @@ public class GameBoardView extends Application {
 			}
 		});
 		layout.getChildren().add(imageView);
+	}
+
+	public Scene getScene() {
+		return scene;
+	}
+
+	public ReadOnlyIntegerProperty getBatPosX() {
+		return batPosX;
 	}
 }

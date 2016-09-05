@@ -1,0 +1,55 @@
+package gameComponents;
+import javafx.geometry.Point2D;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
+
+public class Particle {
+	private double x;
+	private double y;
+
+	private Point2D velocity;
+
+	private double radius;
+	double life = 1.0;
+	private double decay;
+
+	private Paint color;
+	//private BlendMode blendMode;
+	public Particle(double x, double y, Point2D velocity, double radius, double expireTime, Paint color
+			//,BlendMode blendMode
+			) {
+		this.x = x;
+		this.y = y;
+		this.velocity = velocity;
+		this.radius = radius;
+		this.color = color;
+		//this.blendMode = blendMode;
+
+		this.decay = 0.016/expireTime;
+	}
+
+	public boolean isAlive(){
+		return life > 0;
+	}
+
+	public void update(){
+		x+=velocity.getX();
+		y+=velocity.getY();
+		life-=decay;
+	}
+	public Circle render(
+			//GraphicsContext g
+			){
+		Circle c = new Circle();
+		c.setTranslateX(x);
+		c.setTranslateY(y);
+		c.setRadius(radius);
+		c.setOpacity(life);
+		c.setFill(color);
+		c.setBlendMode(BlendMode.COLOR_DODGE);
+		return c;
+	}
+
+
+}

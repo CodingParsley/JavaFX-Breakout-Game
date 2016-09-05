@@ -7,7 +7,7 @@ public class Ball extends Rectangle {
 	private int xScore;
 	private int yScore;
 	private Brick brickItHit;
-	private boolean isUnstoppable = true;
+	private boolean isUnstoppable = false;
 
 	// For creating a brand new ball
 	public Ball(Coordinate topLeft, double width, double height, double speed, double angleOfMovement,

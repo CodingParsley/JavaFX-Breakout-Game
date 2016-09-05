@@ -80,7 +80,7 @@ public class GameBoardModel {
 				(TheController.getBoardHeight() - BAT_HEIGHT - 80));
 		bat = new Bat(batUL, BAT_WIDTH, BAT_HEIGHT, RectangleType.Bat);
 		balls.add(new Ball(new Coordinate(300, TheController.getBoardHeight() / 2 + 200), BALL_SIZE, BALL_SIZE,
-				BALL_SPEED, 2.4, RectangleType.Ball));
+				BALL_SPEED, 4, RectangleType.Ball).setUnstoppable(true));
 
 		// balls.add(new Ball(new Coordinate(300, TheController.getBoardHeight()
 		// / 2 + 100), BALL_SIZE, BALL_SIZE,

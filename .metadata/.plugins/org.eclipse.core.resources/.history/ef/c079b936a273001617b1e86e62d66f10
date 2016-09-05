@@ -1,0 +1,52 @@
+package gameComponents;
+
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.paint.Color;
+
+public class ParticleThread extends Thread{
+	LinkedList<Rectangle> unstoppableRects;
+	Canvas canvas;
+	List<Particle> particles;
+	Emitter emitter;
+
+
+
+    public ParticleThread(LinkedList<Rectangle> unstoppableRects, Canvas canvas, List<Particle> particles,
+			Emitter emitter) {
+		this.unstoppableRects = unstoppableRects;
+		this.canvas = canvas;
+		this.particles = particles;
+		this.emitter = emitter;
+	}
+
+
+
+	public void run() {
+		for (gameComponents.Rectangle r : unstoppableRects) {
+			particles.addAll(emitter.emit(r.getCenterCoordinate().getX(), r.getCenterCoordinate().getY()));
+		}
+		GraphicsContext g = canvas.getGraphicsContext2D();
+		g.setGlobalAlpha(1.0);
+		g.setGlobalBlendMode(BlendMode.SRC_OVER);
+		g.setFill(Color.BLACK);
+		g.fillRect(0, 0, 500, 700);
+		for (Iterator<Particle> it = particles.iterator(); it.hasNext();) {
+			Particle p = it.next();
+			p.update();
+			if (!p.isAlive()) {
+				it.remove();
+				continue;
+			}
+			g.setFill(Color.BEIGE);
+			g.setGlobalBlendMode(BlendMode.ADD);
+			p.render(g);
+		}
+		unstoppableRects.clear();
+    }
+}

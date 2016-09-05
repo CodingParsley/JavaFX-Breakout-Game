@@ -1,0 +1,11 @@
+package gameComponents;
+
+import javafx.scene.canvas.Canvas;
+
+public class DifferentCanvas extends Canvas{
+	public DifferentCanvas(int i, int j) {
+		super(i,j)
+	}
+
+	Rectangle rectangle;
+}

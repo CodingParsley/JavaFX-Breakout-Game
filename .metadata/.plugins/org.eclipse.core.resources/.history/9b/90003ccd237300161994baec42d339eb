@@ -1,0 +1,18 @@
+package gameComponents;
+
+import javafx.event.Event;
+import javafx.event.EventHandler;
+
+// This class will add a listener to a viewModel rectangle and whenever that rectangle becomes unstoppable,
+// This animation will animate the ball
+public class UnstoppableAnimationHandler implements EventHandler{
+
+	@Override
+	public void handle(Event event) {
+		if(event.getSource() instanceof Rectangle){
+			System.out.println("hey");
+		}
+
+	}
+
+}

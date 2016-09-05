@@ -4,9 +4,15 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -16,12 +22,20 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import application.TheController;
+import javafx.animation.AnimationTimer;
+import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ReadOnlyIntegerProperty;
@@ -67,12 +81,13 @@ public class GameBoardView extends Application {
 
 	private Image laserImage;
 	private ImagePattern laserPattern;
-	private Image laserPacketImage;
 	private ImagePattern laserPacketPattern = new ImagePattern(new Image("images/photonPacket.png"));
 
 	private Image bgImage;
 
 	private Pane layout;
+
+	private GraphicsContext g;
 
 	private LinkedList<ImageView> imageViews = new LinkedList<ImageView>();
 
@@ -198,42 +213,13 @@ public class GameBoardView extends Application {
 			graphicalRect.setCursor(Cursor.HAND);
 		} else if (r.getType() == RectangleType.Ball) {
 			graphicalRect.setFill(ballPattern);
-			if (((Ball) r).isUnstoppable() == true) {
-				if (Math.random() < 0.1) {
-					ImageView imageView = new ImageView(new Image("images/animationSheet.png"));
-					imageView.setTranslateX(r.getCenterCoordinate().getX()-r.getWidth());
-					imageView.setTranslateY(r.getCenterCoordinate().getY()-r.getHeight());
-					imageView.setViewport(
-							new Rectangle2D(EXPLOSION_OFFSET_X, EXPLOSION_OFFSET_Y, EXPLOSION_WIDTH, EXPLOSION_HEIGHT));
-					SpriteAnimation animation = new SpriteAnimation(imageView, Duration.millis(800), EXPLOSION_COUNT,
-							EXPLOSION_COLUMNS, EXPLOSION_OFFSET_X, EXPLOSION_OFFSET_Y, EXPLOSION_WIDTH,
-							EXPLOSION_HEIGHT);
-					animation.setCycleCount(1);
-					animation.play();
-					imageView.setFitWidth(EXPLOSIION_RADIUS);
-					imageView.setFitHeight(EXPLOSIION_RADIUS);
-					imageViews.add(imageView);
-					animation.setOnFinished(e -> {
-						@SuppressWarnings("unchecked")
-						LinkedList<ImageView> imageViewsCopy = (LinkedList<ImageView>) imageViews.clone();
-						for (ImageView iv : imageViewsCopy) {
-							if (animation.getImageView().equals(iv)) {
-								imageViews.remove(iv);
-								layout.getChildren().remove(iv);
-								break;
-							}
-						}
-					});
-					layout.getChildren().add(imageView);
-				}
-			}
 		}
 		graphicalRectNode = null;
 
 		if (r instanceof Brick && ((Brick) r).isAlive() == false) {
 			graphicalRect.setOpacity(0);
 			if (r.getType() == RectangleType.BombBrick1) {
-				setAnimationOnto(r);
+				setExplosionAnimationOnto(r);
 			}
 		} else if (r instanceof Packet && ((Packet) r).isConsumed()) {
 			graphicalRect.setOpacity(0);
@@ -273,7 +259,7 @@ public class GameBoardView extends Application {
 		return batPosX;
 	}
 
-	public void setAnimationOnto(gameComponents.Rectangle r) {
+	public void setExplosionAnimationOnto(gameComponents.Rectangle r) {
 		ImageView imageView = new ImageView(new Image("images/animationSheet.png"));
 		imageView.setTranslateX(r.getCenterCoordinate().getX() - EXPLOSIION_RADIUS);
 		imageView.setTranslateY(r.getCenterCoordinate().getY() - EXPLOSIION_RADIUS);

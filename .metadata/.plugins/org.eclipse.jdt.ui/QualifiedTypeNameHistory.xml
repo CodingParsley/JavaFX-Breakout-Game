@@ -1,30 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="javax.sound.sampled.LineUnavailableException"/>
-<fullyQualifiedTypeName name="fxmlScreens.ffe"/>
-<fullyQualifiedTypeName name="gameComponenets.ChiselBrick"/>
-<fullyQualifiedTypeName name="javafx.scene.layout.VBox"/>
-<fullyQualifiedTypeName name="javafx.scene.paint.ImagePattern"/>
-<fullyQualifiedTypeName name="javafx.scene.image.Image"/>
-<fullyQualifiedTypeName name="gameComponenets.Brick"/>
-<fullyQualifiedTypeName name="gameComponenets.Rectangle"/>
-<fullyQualifiedTypeName name="gameComponenets.Coordinate"/>
-<fullyQualifiedTypeName name="gameComponenets.RectangleType"/>
-<fullyQualifiedTypeName name="java.lang.Integer"/>
 <fullyQualifiedTypeName name="gameComponenets.Button"/>
 <fullyQualifiedTypeName name="gameComponenets.BarebonesLevelPicker"/>
 <fullyQualifiedTypeName name="javafx.scene.Node"/>
 <fullyQualifiedTypeName name="javafx.animation.KeyValue"/>
 <fullyQualifiedTypeName name="javafx.scene.CacheHint"/>
-<fullyQualifiedTypeName name="javafx.animation.AnimationTimer"/>
 <fullyQualifiedTypeName name="gameComponenets.Variables"/>
-<fullyQualifiedTypeName name="javafx.scene.Parent"/>
 <fullyQualifiedTypeName name="gameComponenets.GameBoardModel"/>
 <fullyQualifiedTypeName name="application.TheController"/>
 <fullyQualifiedTypeName name="javafx.application.Application"/>
 <fullyQualifiedTypeName name="javafx.scene.layout.Pane"/>
 <fullyQualifiedTypeName name="javafx.scene.LightBase"/>
-<fullyQualifiedTypeName name="javafx.scene.control.Button"/>
 <fullyQualifiedTypeName name="javafx.scene.Scene"/>
 <fullyQualifiedTypeName name="gameComponents.StartScreenView"/>
 <fullyQualifiedTypeName name="java.lang.reflect.Method"/>
@@ -37,7 +23,6 @@
 <fullyQualifiedTypeName name="gameComponents.Button"/>
 <fullyQualifiedTypeName name="gameComponents.Packet"/>
 <fullyQualifiedTypeName name="java.util.RandomAccess"/>
-<fullyQualifiedTypeName name="java.util.Random"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="javafx.scene.image.ImageView"/>
 <fullyQualifiedTypeName name="javafx.animation.Animation"/>
@@ -48,8 +33,6 @@
 <fullyQualifiedTypeName name="java.util.LinkedList"/>
 <fullyQualifiedTypeName name="javafx.scene.Cursor"/>
 <fullyQualifiedTypeName name="javafx.scene.shape.Rectangle"/>
-<fullyQualifiedTypeName name="gameComponents.Rectangle"/>
-<fullyQualifiedTypeName name="javafx.beans.property.IntegerProperty"/>
 <fullyQualifiedTypeName name="javafx.beans.property.SimpleIntegerProperty"/>
 <fullyQualifiedTypeName name="javafx.beans.value.ChangeListener"/>
 <fullyQualifiedTypeName name="javafx.beans.Observable"/>
@@ -57,7 +40,24 @@
 <fullyQualifiedTypeName name="gameComponents.Ball"/>
 <fullyQualifiedTypeName name="java.lang.Math"/>
 <fullyQualifiedTypeName name="java.awt.Paint"/>
-<fullyQualifiedTypeName name="javafx.scene.paint.Color"/>
 <fullyQualifiedTypeName name="gameComponents.RectangleType"/>
 <fullyQualifiedTypeName name="javafx.scene.shape.Circle"/>
+<fullyQualifiedTypeName name="javafx.event.ActionEvent"/>
+<fullyQualifiedTypeName name="javafx.beans.property.IntegerProperty"/>
+<fullyQualifiedTypeName name="java.lang.Integer"/>
+<fullyQualifiedTypeName name="java.lang.Double"/>
+<fullyQualifiedTypeName name="javafx.event.EventHandler"/>
+<fullyQualifiedTypeName name="gameComponents.Rectangle"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="javafx.scene.canvas.GraphicsContext"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.util.Iterator"/>
+<fullyQualifiedTypeName name="javafx.scene.effect.BlendMode"/>
+<fullyQualifiedTypeName name="javafx.scene.paint.Color"/>
+<fullyQualifiedTypeName name="javafx.scene.Parent"/>
+<fullyQualifiedTypeName name="javafx.animation.AnimationTimer"/>
+<fullyQualifiedTypeName name="java.util.Random"/>
+<fullyQualifiedTypeName name="javafx.scene.canvas.Canvas"/>
+<fullyQualifiedTypeName name="javafx.animation.TranslateTransition"/>
+<fullyQualifiedTypeName name="javafx.scene.control.Button"/>
 </qualifiedTypeNameHistroy>

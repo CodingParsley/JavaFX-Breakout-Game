@@ -1,0 +1,9 @@
+package gameComponents;
+
+import javafx.scene.canvas.Canvas;
+
+public class OtherCanvas extends Canvas{
+
+	int otherRects id;
+
+}

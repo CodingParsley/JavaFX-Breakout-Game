@@ -24,7 +24,7 @@ public class GameBoardModel {
 	private final static double BALL_SIZE = 15;
 	private final static double PACKET_SIZE = 18;
 	private final static double PACKET_SPEED = 1;
-	private final static double UNSTOPPABLE_BALL_SIZE = 25;
+	private final static double UNSTOPPABLE_BALL_SIZE = 30;
 	private final static double BALL_SPEED_INCREASE = 0.17;
 	private double BAT_WIDTH = 70;
 	private double BAT_HEIGHT = 15;
@@ -79,7 +79,7 @@ public class GameBoardModel {
 		Coordinate batUL = new Coordinate((TheController.getBoardWidth() - BAT_WIDTH) / 2,
 				(TheController.getBoardHeight() - BAT_HEIGHT - 80));
 		bat = new Bat(batUL, BAT_WIDTH, BAT_HEIGHT, RectangleType.Bat);
-		balls.add(new Ball(new Coordinate(300, TheController.getBoardHeight() / 2 + 100), BALL_SIZE, BALL_SIZE,
+		balls.add(new Ball(new Coordinate(300, TheController.getBoardHeight() / 2 + 200), BALL_SIZE, BALL_SIZE,
 				BALL_SPEED, 2.4, RectangleType.Ball));
 
 		// balls.add(new Ball(new Coordinate(300, TheController.getBoardHeight()

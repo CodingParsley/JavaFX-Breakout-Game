@@ -4,3 +4,21 @@
 1472965033102	Rename resource 'animationSheet.png'
 1472966284373	Delete element
 1472971778667	Rename local variable 'currentSpot'
+1473049943298	Rename local variable 'z'
+1473050080228	Rename method 'setAnimationOnto'
+1473050646201	Rename type 'unstoppableAnimation'
+1473050651662	Rename type 'unstoppableAnimationHandler'
+1473050818025	Rename local variable 'arg0'
+1473051201867	Rename method 'getImageOf'
+1473051304756	Rename method 'getSourceRect'
+1473051313556	Rename field 'sourceRect'
+1473051318144	Rename method 'setSourceRectangle'
+1473051333427	Rename local variable 'r'
+1473051748239	Rename resource 'BallAnimationSheet.png'
+1473052582095	Delete element
+1473058391177	Delete element
+1473059460672	Delete element
+1473061341672	Delete element
+1473061345895	Delete elements
+1473061373373	Delete element
+1473061534572	Rename method 'setAnimationOnto'

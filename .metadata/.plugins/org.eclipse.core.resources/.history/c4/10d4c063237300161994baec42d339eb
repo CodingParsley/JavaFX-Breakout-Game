@@ -1,0 +1,6 @@
+package gameComponents;
+// This class will add a listener to a viewModel rectangle and whenever that rectangle becomes unstoppable,
+// This animation will animate the ball
+public class unstoppableAnimationHandler {
+
+}

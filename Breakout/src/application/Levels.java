@@ -3,18 +3,26 @@ package application;
 import java.util.LinkedList;
 
 import gameComponents.GameBoardModel;
+import gameComponents.HighscoreManager;
 import gameComponents.JavaCollisionDetector;
 import gameComponents.RectangleType;
 
 public class Levels {
+	public static HighscoreManager hm = new HighscoreManager("Highscore.txt");
+	static{
+		hm.setHighscore(0);
+	}
 	public Levels(){
-		double brickWidth = 40;
-		double brickHeight=40;
-		level1.addBrick(brickWidth, brickHeight, 50, 160, RectangleType.ThreeBrick1);
+		levels.add(level1);
+		levels.add(level2);
+		levels.add(level3);
+		double brickWidth = 30;
+		double brickHeight = 30;
+		level1.addBrick(brickWidth, brickHeight, 50, 160, RectangleType.TwoBrick1);
 		level1.addBrick(brickWidth, brickHeight, 120, 160, RectangleType.TwoBrick1);
-		level1.addBrick(brickWidth, brickHeight, 190, 160, RectangleType.ThreeBrick1);
+		level1.addBrick(brickWidth, brickHeight, 190, 160, RectangleType.TwoBrick1);
 		level1.addBrick(brickWidth, brickHeight, 260, 160, RectangleType.TwoBrick1);
-		level1.addBrick(brickWidth, brickHeight, 330, 160, RectangleType.ThreeBrick1);
+		level1.addBrick(brickWidth, brickHeight, 330, 160, RectangleType.TwoBrick1);
 		level1.addBrick(brickWidth, brickHeight, 400, 160, RectangleType.TwoBrick1);
 
 		level1.addBrick(brickWidth, brickHeight, 260, 260, RectangleType.OneBrick1);
@@ -22,14 +30,10 @@ public class Levels {
 		level1.addBrick(brickWidth, brickHeight, 120, 260, RectangleType.OneBrick1);
 		level1.addBrick(brickWidth, brickHeight, 330, 260, RectangleType.OneBrick1);
 
-		level1.addBrick(brickWidth, brickHeight, 150, 360, RectangleType.OneBrick1);
-		level1.addBrick(brickWidth, brickHeight, 250, 360, RectangleType.OneBrick1);
+		level1.addBrick(brickWidth, brickHeight, 190, 360, RectangleType.OneBrick1);
+		level1.addBrick(brickWidth, brickHeight, 260, 360, RectangleType.OneBrick1);
 
 		level1.addBrick(brickWidth, brickHeight, 225, 460, RectangleType.BombBrick1);
-
-		levels.add(level1);
-		levels.add(level2);
-		levels.add(level3);
 	}
 	LinkedList<GameBoardModel> levels = new LinkedList<GameBoardModel>();
 
@@ -73,4 +77,7 @@ public class Levels {
 			8, // Bat Speed
 			1, // Ball Speed
 			jcd);
+	public int getHighScore(){
+		return hm.getHighscore();
+	}
 }

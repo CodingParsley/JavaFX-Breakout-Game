@@ -6,20 +6,20 @@
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="Button" key="selection"/>
+		<item value="GameResul" key="selection"/>
 		<item value="true" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="gameComponents.Button"/>
-			<item value="makeBa"/>
-			<item value="BALL"/>
-			<item value="3002"/>
-			<item value="300"/>
-			<item value="package gameComponents;"/>
-			<item value="event"/>
-			<item value="import e"/>
+			<item value="GameResul"/>
+			<item value="gbm"/>
+			<item value="Model"/>
+			<item value="MOdel"/>
+			<item value="hm"/>
+			<item value="set"/>
+			<item value="updat"/>
+			<item value="level"/>
 		</list>
 		<list key="replacehistory">
 			<item value="Button"/>
@@ -35,8 +35,8 @@
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="399" key="DIALOG_WIDTH"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-21|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
-		<item value="581" key="DIALOG_HEIGHT"/>
+		<item value="579" key="DIALOG_HEIGHT"/>
 		<item value="892" key="DIALOG_X_ORIGIN"/>
-		<item value="789" key="DIALOG_Y_ORIGIN"/>
+		<item value="791" key="DIALOG_Y_ORIGIN"/>
 	</section>
 </section>

@@ -1,0 +1,71 @@
+package application;
+
+import java.util.LinkedList;
+
+import gameComponents.GameBoardModel;
+import gameComponents.HighscoreManager;
+import gameComponents.JavaCollisionDetector;
+import gameComponents.RectangleType;
+
+public class Levels {
+	private HighscoreManager hm = new HighscoreManager("Highscore.txt");
+	GameBoardModel level1,level2,level3;
+	public Levels() {
+		resetLevels();
+		levels.add(level1);
+		levels.add(level2);
+		levels.add(level3);
+		hm.setHighscore(0);
+		for (GameBoardModel gbm : levels) {
+			gbm.setHighScoreManager(hm);
+		}
+	}
+
+	LinkedList<GameBoardModel> levels = new LinkedList<GameBoardModel>();
+
+	public GameBoardModel findLevel(int levelNum) {
+		resetLevels();
+		for (GameBoardModel gbm : this.levels) {
+			if (gbm.getLevelNum() == levelNum) {
+				return gbm;
+			}
+		}
+		return null;
+	}
+
+	public void resetLevels() {
+		JavaCollisionDetector jcd = new JavaCollisionDetector();
+		level1 = new GameBoardModel(1, 0, // Brick Height
+				0, // Horizontal Brick Gap
+				0, // Vertical Brick Gap
+				0, // Gap above bricks
+				0, // # of Columns
+				0, // # of Rows
+				8, // Bat Speed
+				2, // Ball Speed
+				jcd);
+
+		level2 = new GameBoardModel(2, 50, // Brick Height
+				30, // Horizontal Brick Gap
+				30, // Vertical Brick Gap
+				100, // Gap above bricks
+				4, // # of Columns
+				4, // # of Rows
+				8, // Bat Speed
+				1, // Ball Speed
+				jcd);
+		level3 = new GameBoardModel(3, 80, // Brick Height
+				40, // Horizontal Brick Gap
+				40, // Vertical Brick Gap
+				70, // Gap above bricks
+				6, // # of Columns
+				4, // # of Rows
+				8, // Bat Speed
+				1, // Ball Speed
+				jcd);
+	}
+
+	public int getHighScore() {
+		return hm.getHighscore();
+	}
+}

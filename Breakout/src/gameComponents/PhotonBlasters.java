@@ -6,8 +6,8 @@ public class PhotonBlasters {
 	private boolean isOn=false;
 	private Rectangle rightBlaster;
 	private Rectangle leftBlaster;
-	private int bulletWidth = 4;
-	private int bulletHeight = 15;
+	private int bulletWidth = 6;
+	private int bulletHeight = 17;
 	private Coordinate batTopLeft;
 	private double batWidth;
 	private double width = 15;

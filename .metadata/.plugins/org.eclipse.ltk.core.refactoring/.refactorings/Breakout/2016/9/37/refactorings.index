@@ -24,3 +24,12 @@
 1473061534572	Rename method 'setAnimationOnto'
 1473108080135	Delete element
 1473110338730	Rename local variable 'c'
+1473112196719	Delete element
+1473112202161	Rename resource 'Bat.png'
+1473114864587	Rename local variable 'graphicalParticle'
+1473114885716	Rename local variable 'r'
+1473213717635	Rename method 'isGameOver'
+1473310241043	Rename method 'increaseHighScore'
+1473310333272	Rename local variable 'i'
+1473311348178	Rename method 'setHm'
+1473312703497	Rename field 'hs'

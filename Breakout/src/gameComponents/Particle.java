@@ -3,6 +3,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Shape;
 
 public class Particle {
 	private double x;
@@ -34,15 +35,25 @@ public class Particle {
 		y+=velocity.getY();
 		life-=decay;
 	}
-	public Circle render(){
-		Circle graphicalParticle = new Circle();
-		graphicalParticle.setTranslateX(x);
-		graphicalParticle.setTranslateY(y);
-		graphicalParticle.setRadius(radius);
-		graphicalParticle.setOpacity(life);
-		graphicalParticle.setFill(color);
-		graphicalParticle.setBlendMode(BlendMode.MULTIPLY);
-		return graphicalParticle;
+	public Shape render(){
+		Circle graphicalCircle = new Circle();
+		graphicalCircle.setTranslateX(x);
+		graphicalCircle.setTranslateY(y);
+		graphicalCircle.setRadius(radius);
+		graphicalCircle.setOpacity(life);
+		graphicalCircle.setFill(color);
+		graphicalCircle.setBlendMode(BlendMode.MULTIPLY);
+
+		javafx.scene.shape.Rectangle graphicalRectangle = new javafx.scene.shape.Rectangle();
+		graphicalRectangle.setTranslateX(x);
+		graphicalRectangle.setTranslateY(y);
+		graphicalRectangle.setWidth(radius);
+		graphicalRectangle.setHeight(radius);
+		graphicalRectangle.setOpacity(life);
+		graphicalRectangle.setFill(color);
+		graphicalRectangle.setBlendMode(BlendMode.MULTIPLY);
+
+		return graphicalCircle;
 	}
 
 

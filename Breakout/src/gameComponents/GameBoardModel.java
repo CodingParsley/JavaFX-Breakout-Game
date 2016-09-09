@@ -3,6 +3,9 @@ package gameComponents;
 import java.util.LinkedList;
 import java.util.Optional;
 import java.util.Random;
+
+import gameComponents.HighscoreManager;
+import application.Levels;
 import application.TheController;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ReadOnlyIntegerProperty;
@@ -19,12 +22,12 @@ public class GameBoardModel {
 	private final static double LEFT_ANGLE_LIMIT = -35;
 	private final static double RIGHT_ANGLE_LIMIT = -150;
 	private int BAT_SPEED;
-	private final static int PACKET_ODDS = 1;
+	private final static int PACKET_ODDS = 7;
 	private double BALL_SPEED;
 	private final static double BALL_SIZE = 15;
 	private final static double PACKET_SIZE = 18;
 	private final static double PACKET_SPEED = 1;
-	private final static double UNSTOPPABLE_BALL_SIZE = 30;
+	public final static double UNSTOPPABLE_BALL_SIZE = BALL_SIZE;
 	private final static double BALL_SPEED_INCREASE = 0.17;
 	private double BAT_WIDTH = 70;
 	private double BAT_HEIGHT = 15;
@@ -80,7 +83,8 @@ public class GameBoardModel {
 				(TheController.getBoardHeight() - BAT_HEIGHT - 80));
 		bat = new Bat(batUL, BAT_WIDTH, BAT_HEIGHT, RectangleType.Bat);
 		balls.add(new Ball(new Coordinate(300, TheController.getBoardHeight() / 2 + 200), BALL_SIZE, BALL_SIZE,
-				BALL_SPEED, 4, RectangleType.Ball).setUnstoppable(true));
+				BALL_SPEED, 4, RectangleType.Ball));
+		makeBallsUnstoppable();
 
 		// balls.add(new Ball(new Coordinate(300, TheController.getBoardHeight()
 		// / 2 + 100), BALL_SIZE, BALL_SIZE,
@@ -108,13 +112,13 @@ public class GameBoardModel {
 						int yScore = yScore(brick, ball, detector);
 						if (!unstoppableOn) {
 							if (xScore > yScore) {
-								return ball.flipXDirection();
+								return ball.getMove().flipXDirection();
 							} else if (yScore > xScore) {
-								return ball.flipYDirection();
+								return ball.getMove().flipYDirection();
 
 							} else if (xScore == yScore) {
 								System.out.println("XY");
-								return ball.flipYDirection();
+								return ball.getMove().flipYDirection();
 							}
 						}
 					}
@@ -376,6 +380,11 @@ public class GameBoardModel {
 		updatePhotonBullets();
 		updatePackets();
 
+		if (gameStatus() == GameResult.PlayerWon) {
+			System.out.println("YO");
+			setHighScoreToLevelNum();
+		}
+
 	}
 
 	private void hitBrick(Brick brick, int odds, boolean isUnstoppable) {
@@ -390,13 +399,14 @@ public class GameBoardModel {
 			if (random.nextInt(odds) == (odds - 1)) {
 				int randomNum = random.nextInt(3);
 				if (randomNum == 0) {
-					packets.add(new Packet(brick.getCenterCoordinate(), PACKET_SIZE, PACKET_SIZE, RectangleType.BallPacket, PACKET_SPEED, false));
+					packets.add(new Packet(brick.getCenterCoordinate(), PACKET_SIZE, PACKET_SIZE,
+							RectangleType.BallPacket, PACKET_SPEED, false));
 				} else if (randomNum == 1) {
-					packets.add(new Packet(brick.getCenterCoordinate(), PACKET_SIZE, PACKET_SIZE, RectangleType.UnstoppablePacket, 0.6,
-							false));
+					packets.add(new Packet(brick.getCenterCoordinate(), PACKET_SIZE, PACKET_SIZE,
+							RectangleType.UnstoppablePacket, 0.6, false));
 				} else if (randomNum == 2) {
-					packets.add(
-							new Packet(brick.getCenterCoordinate(), PACKET_SIZE, PACKET_SIZE, RectangleType.PhotonPacket, 0.6, false));
+					packets.add(new Packet(brick.getCenterCoordinate(), PACKET_SIZE, PACKET_SIZE,
+							RectangleType.PhotonPacket, 0.6, false));
 				}
 			}
 		} else {
@@ -417,10 +427,10 @@ public class GameBoardModel {
 		@SuppressWarnings("unchecked")
 		LinkedList<Ball> copyBalls = (LinkedList<Ball>) balls.clone();
 		for (Ball ball : copyBalls) {
-			double allRotations = ball.getAngleOfMovement()/(2*Math.PI);
-			double answer = allRotations-Math.floor(allRotations);
-			double answerInRadians = answer*(Math.PI*2);
-			if (answerInRadians>Math.PI) {
+			double allRotations = ball.getAngleOfMovement() / (2 * Math.PI);
+			double answer = allRotations - Math.floor(allRotations);
+			double answerInRadians = answer * (Math.PI * 2);
+			if (answerInRadians > Math.PI) {
 				balls.remove(ball);
 				balls.add(ball.setUnstoppable(true).setSize(UNSTOPPABLE_BALL_SIZE));
 			}
@@ -486,6 +496,16 @@ public class GameBoardModel {
 		}
 	}
 
+	public GameResult gameStatus() {
+		if (bricks.size() == 0) {
+			return GameResult.PlayerWon;
+		}
+		if (balls.size() == 0) {
+			return GameResult.PlayerLost;
+		} else
+			return GameResult.GameContinuing;
+	}
+
 	public void movePaddleLeft() {
 		if ((bat.getTopLeftCoordinate().getX() - BAT_SPEED) >= 0) {
 			bat = bat.createMove(-BAT_SPEED, 0);
@@ -501,9 +521,10 @@ public class GameBoardModel {
 		if ((bat.getTopLeftCoordinate().getX()) < 0) {
 			bat = new Bat(new Coordinate(0, bat.getTopLeftCoordinate().getY()), bat.getWidth(), bat.getHeight(),
 					bat.getId(), bat.getType());
-		} else if ((bat.getTopRightCoordinate().getX()) > TheController.getBoardWidth()) {
+		} else if ((bat.getTopRightCoordinate().getX()) > TheController.getBoardWidth() - 3) {
 			bat = new Bat(
-					new Coordinate(TheController.getBoardWidth() - bat.getWidth(), bat.getTopLeftCoordinate().getY()),
+					new Coordinate(TheController.getBoardWidth() - bat.getWidth() - 3,
+							bat.getTopLeftCoordinate().getY()),
 					bat.getWidth(), bat.getHeight(), bat.getId(), bat.getType());
 		}
 		if (photonBlasters.isOn()) {
@@ -511,6 +532,14 @@ public class GameBoardModel {
 					new Coordinate(bat.getTopLeftCoordinate().getX(), bat.getTopLeftCoordinate().getY()));
 		}
 	}
+
+	public void setHighScoreToLevelNum() {
+		if (Levels.hm.getHighscore() < levelNum) {
+			Levels.hm.setHighscore(levelNum);
+		}
+	}
+
+	public void setHighScoreManager(HighscoreManager hm) {}
 
 	public void movePaddleRight() {
 		if (bat.getBottomRightCoordinate().getX() + BAT_SPEED <= TheController.getBoardWidth()) {

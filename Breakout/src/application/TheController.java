@@ -5,6 +5,8 @@ import gameComponents.Ball;
 import gameComponents.Button;
 import gameComponents.GameBoardModel;
 import gameComponents.GameBoardView;
+import gameComponents.GameResult;
+import gameComponents.HighscoreManager;
 import gameComponents.Packet;
 import gameComponents.StartScreenView;
 import javafx.animation.Animation;
@@ -36,7 +38,9 @@ public class TheController extends Application {
 	}
 
 	public void goToLevelScreen() {
-		LevelsScreenModel theModel = new LevelsScreenModel(2, 2, 40);
+		Levels levels = new Levels();
+		System.out.println(levels.getHighScore());
+		LevelsScreenModel theModel = new LevelsScreenModel(2, 2, 40, levels.getHighScore());
 		LevelsScreenView theView = new LevelsScreenView(theModel);
 		theView.drawArrayOfButtons();
 		int rectangleIterationCount = 0;
@@ -64,10 +68,10 @@ public class TheController extends Application {
 	}
 
 	public void goToPlayScreen(int levelNum) {
-		int desiredFPS = 120;
 		Levels levels = new Levels();
+		int desiredFPS = 120;
 		GameBoardModel gbm = levels.findLevel(levelNum);
-		GameBoardView gameView = new GameBoardView(new MovePaddleLeft(gbm), new MovePaddleRight(gbm),gbm, gbm.getExplosionRadius());
+		GameBoardView gameView = new GameBoardView(new MovePaddleLeft(gbm), new MovePaddleRight(gbm), gbm.getExplosionRadius());
 
 		gbm.bindAttemptedBatPosX(gameView.getBatPosX());
 
@@ -78,6 +82,10 @@ public class TheController extends Application {
 		}
 		timeline = new Timeline(new KeyFrame(Duration.millis(1000 / desiredFPS), ae -> {
 			updateScreen(gameView, gbm);
+			if(gbm.gameStatus()!=GameResult.GameContinuing){
+				goToLevelScreen();
+				timeline.stop();
+			}
 		}));
 		timeline.setCycleCount(Animation.INDEFINITE);
 		timeline.play();
@@ -100,9 +108,7 @@ public class TheController extends Application {
 	// Method for redrawing bat and balls
 	public void updateScreen(GameBoardView theView, GameBoardModel theModel) {
 		// Temporary solution
-		if (window.getScene() == theView.getScene()) {
 			theView.drawRectangle(theModel.getBat());
-
 			for (Ball ball : theModel.getBalls()) {
 				theView.drawRectangle(ball);
 			}
@@ -122,14 +128,6 @@ public class TheController extends Application {
 			}
 			theModel.updateAll();
 			theView.onUpdate();
-
-		} else {
-			try {
-				theView.stop();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
 
 	}
 	// Method for redrawing bat and balls end

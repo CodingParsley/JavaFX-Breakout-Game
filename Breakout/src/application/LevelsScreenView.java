@@ -1,36 +1,29 @@
 package application;
 
 import javafx.stage.Stage;
-//import javafx.util.Duration;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 
 import java.util.LinkedList;
+import java.util.Optional;
 
-//import gameComponents.Ball;
-//import gameComponents.GameBoardModel;
-//import gameComponents.GameBoardView;
-
-//import javafx.animation.Animation;
-//import javafx.animation.KeyFrame;
-//import javafx.animation.Timeline;
 import javafx.application.Application;
 
 public class LevelsScreenView extends Application {
 	private Stage window;
 	private Scene scene;
 	private Pane layout;
-//	private Levels levels;
 	private LevelsScreenModel lsm;
 	private LinkedList<Button> guiButtons;
 	private LinkedList<gameComponents.Button> dataButtons;
+	private Label highScore;
 
 	public LevelsScreenView(LevelsScreenModel lsm) {
 		this.lsm = lsm;
 		dataButtons = new LinkedList<gameComponents.Button>();
 		guiButtons = new LinkedList<Button>();
-//		levels = new Levels();
 		layout = new Pane();
 	}
 
@@ -42,6 +35,13 @@ public class LevelsScreenView extends Application {
 		scene = new Scene(layout, TheController.getBoardWidth(), TheController.getBoardHeight());
 		window.setScene(scene);
 		window.show();
+		highScore = new Label();
+		highScore.setText(Integer.toString(lsm.getHighScore()));
+		highScore.setTranslateY(500);
+		highScore.setTranslateX(TheController.getBoardWidth()/2);
+		layout.getChildren().add(highScore);
+		//drawArrayOfButtons();
+		//Optional<Double> r = dataButtons.stream().map(i -> i.getBottomRightCoordinate().getY()).max(Double::compare);
 	}
 
 	public void drawArrayOfButtons() {
@@ -53,28 +53,11 @@ public class LevelsScreenView extends Application {
 				Button graphicalRect = new Button();
 				layout.getChildren().add(graphicalRect);
 				dataButtons.add(b);
-				// If statements are here for making the rectangle graphical
-
 				graphicalRect.setId(Integer.toString(b.getId()));
 				graphicalRect.setPrefWidth(b.getWidth());
 				graphicalRect.setPrefHeight(b.getHeight());
 				graphicalRect.setTranslateX(b.getTopLeftCoordinate().getX());
 				graphicalRect.setTranslateY(b.getTopLeftCoordinate().getY());
-				graphicalRect.setOnMouseClicked(e -> {
-//					b.getDoesSomething().run();
-//					GameBoardModel gbm=levels.findLevel(lsm.getSelectedLevelNum());
-//					GameBoardView gameView=new GameBoardView(new MovePaddleLeft(gbm),
-//					new MovePaddleRight(gbm));
-//						try {
-//							gameView.start(window);
-//						} catch (Exception e1) {
-//							e1.printStackTrace();
-//						}
-//						Timeline timeline = new Timeline(new KeyFrame(Duration.millis(8), ae -> updateScreen(gameView, gbm)));
-//						timeline.setCycleCount(Animation.INDEFINITE);
-//						timeline.play();
-//						window.show();
-				});
 				guiButtons.add(graphicalRect);
 			}
 		}
@@ -83,29 +66,6 @@ public class LevelsScreenView extends Application {
 	public LinkedList<gameComponents.Button> getDataButtons() {
 		return dataButtons;
 	}
-
-
-	// Method for redrawing bat and balls
-//	public void updateScreen(GameBoardView theView, GameBoardModel theModel) {
-//		// Temporary solution
-//		if (window.getScene() == theView.getScene()) {
-//			theView.drawRectangle(theModel.getBat());
-//			for(Ball ball: theModel.getBalls()){
-//			theView.drawRectangle(ball);
-//			}
-//			for (gameComponents.Brick brick : theModel.getBricks()) {
-//				theView.drawRectangle(brick);
-//			}
-//			theModel.updateAll();
-//		} else {
-//			try {
-//				theView.stop();
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
-//
-//	}
 	public LevelsScreenModel getLsm() {
 		return lsm;
 	}
@@ -114,33 +74,4 @@ public class LevelsScreenView extends Application {
 	public LinkedList<Button> getGUIButtons() {
 		return guiButtons;
 	}
-
-	// Connects Data Paddle Movement with view paddle movement
-//	class MovePaddleLeft implements Runnable {
-//		GameBoardModel theModel;
-//
-//		MovePaddleLeft(GameBoardModel theModel) {
-//			this.theModel = theModel;
-//		}
-//
-//		@Override
-//		public void run() {
-//			theModel.movePaddleLeft();
-//		}
-//	}
-//
-//	class MovePaddleRight implements Runnable {
-//
-//		GameBoardModel theModel;
-//
-//		MovePaddleRight(GameBoardModel theModel) {
-//			this.theModel = theModel;
-//		}
-//
-//		@Override
-//		public void run() {
-//			theModel.movePaddleRight();
-//		}
-//	}
-
 }

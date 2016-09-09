@@ -11,9 +11,11 @@ public class LevelsScreenModel {
 	private int buttonGapV;
 	private int brickRowHeight;
 	private int brickColumnWidth;
+	private int highScore;
 	private Button[][] arrayButtons;
 
-	public LevelsScreenModel(int rows, int columns, int buttonSize) {
+	public LevelsScreenModel(int rows, int columns, int buttonSize, int hs) {
+		this.highScore=hs;
 		this.numButtonRows = rows;
 		this.numButtonColumns = columns;
 		int count = 1;
@@ -35,7 +37,7 @@ public class LevelsScreenModel {
 						buttonSize, buttonSize, new Runnable() {
 							@Override
 							public void run() {
-								selectedLevelNum=finalCount;
+								selectedLevelNum = finalCount;
 								System.out.println("You have selected: " + selectedLevelNum);
 							}
 
@@ -46,9 +48,14 @@ public class LevelsScreenModel {
 		}
 	}
 
+	public int getHighScore() {
+		return highScore;
+	}
+
 	public Button[][] getButtons() {
 		return arrayButtons;
 	}
+
 	public int getSelectedLevelNum() {
 		return selectedLevelNum;
 	}

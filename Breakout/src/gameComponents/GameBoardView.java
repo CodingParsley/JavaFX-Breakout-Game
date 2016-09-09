@@ -84,19 +84,16 @@ public class GameBoardView extends Application {
 	private static final int EXPLOSION_HEIGHT = 125;
 	private static int EXPLOSIION_RADIUS;
 
-	GameBoardModel gbm;
-
 	private Emitter emitter = new FireEmitter();
 
 	private LinkedList<Particle> particles = new LinkedList<>();
 
 	private LinkedList<gameComponents.Rectangle> unstoppableRects = new LinkedList<gameComponents.Rectangle>();
 
-	public GameBoardView(Runnable onTypePaddleMoveLeft, Runnable onTypePaddleMoveRight, GameBoardModel gbm,
+	public GameBoardView(Runnable onTypePaddleMoveLeft, Runnable onTypePaddleMoveRight,
 			int explosionRadius) {
 		this.onTypePaddleMoveLeft = onTypePaddleMoveLeft;
 		this.onTypePaddleMoveRight = onTypePaddleMoveRight;
-		this.gbm = gbm;
 		EXPLOSIION_RADIUS = explosionRadius;
 		threeBrick1Image = new Image("images/threeBrick1.png");
 		twoBrick1Image = new Image("images/twoBrick1.png");
@@ -225,6 +222,10 @@ public class GameBoardView extends Application {
 		graphicalRect.setHeight(r.getHeight());
 		graphicalRect.setTranslateX(r.getTopLeftCoordinate().getX());
 		graphicalRect.setTranslateY(r.getTopLeftCoordinate().getY());
+		if(r instanceof Brick){
+			graphicalRect.setWidth(graphicalRect.getWidth());
+			graphicalRect.setHeight(graphicalRect.getHeight());
+		}
 	}
 
 	EventHandler<MouseEvent> rectangleOnMousePressedEventHandler = new EventHandler<MouseEvent>() {
@@ -248,7 +249,6 @@ public class GameBoardView extends Application {
 
 	public void onUpdate() {
 		particleLayout.getChildren().clear();
-		System.out.println(particles.size());
 		for (gameComponents.Rectangle r : unstoppableRects) {
 			particles.addAll(emitter.emit(r.getCenterCoordinate().getX(), r.getCenterCoordinate().getY()));
 		}
@@ -277,7 +277,7 @@ public class GameBoardView extends Application {
 		imageView.setFitWidth(EXPLOSIION_RADIUS * 2);
 		imageView.setFitHeight(EXPLOSIION_RADIUS * 2);
 		imageViews.add(imageView);
-		animation.setOnFinished(e -> {
+		animation.setOnFinished(e ->  {
 			@SuppressWarnings("unchecked")
 			LinkedList<ImageView> imageViewsCopy = (LinkedList<ImageView>) imageViews.clone();
 			for (ImageView iv : imageViewsCopy) {
